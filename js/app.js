@@ -93,76 +93,11 @@ function setupEventListeners() {
         shareBtn.addEventListener('click', handleShare);
     }
 
-    // Copy URL button
-    const copyUrlBtn = document.getElementById('copy-url-btn');
-    if (copyUrlBtn) {
-        copyUrlBtn.addEventListener('click', handleCopyUrl);
-    }
-
     // Reset Code button
     const resetBtn = document.getElementById('reset-btn');
     if (resetBtn) {
         resetBtn.addEventListener('click', handleReset);
     }
-
-    // Setup resize handle
-    setupResizeHandle();
-}
-
-/**
- * Setup resize handle for sidebar
- */
-function setupResizeHandle() {
-    const resizeHandle = document.getElementById('resize-handle');
-    const sidebar = document.getElementById('sidebar');
-    const container = document.querySelector('.container');
-
-    if (!resizeHandle || !sidebar || !container) {
-        return;
-    }
-
-    let isResizing = false;
-    let startX = 0;
-    let startWidth = 0;
-
-    resizeHandle.addEventListener('mousedown', (e) => {
-        isResizing = true;
-        startX = e.clientX;
-        startWidth = sidebar.offsetWidth;
-
-        // Add resizing class
-        resizeHandle.classList.add('resizing');
-        document.body.style.cursor = 'ew-resize';
-        document.body.style.userSelect = 'none';
-
-        e.preventDefault();
-    });
-
-    document.addEventListener('mousemove', (e) => {
-        if (!isResizing) return;
-
-        const deltaX = e.clientX - startX;
-        const newWidth = startWidth + deltaX;
-
-        // Set min and max width constraints
-        const minWidth = 250;
-        const maxWidth = window.innerWidth * 0.6; // Max 60% of window width
-
-        if (newWidth >= minWidth && newWidth <= maxWidth) {
-            sidebar.style.width = `${newWidth}px`;
-            sidebar.style.minWidth = `${newWidth}px`;
-            sidebar.style.maxWidth = `${newWidth}px`;
-        }
-    });
-
-    document.addEventListener('mouseup', () => {
-        if (isResizing) {
-            isResizing = false;
-            resizeHandle.classList.remove('resizing');
-            document.body.style.cursor = '';
-            document.body.style.userSelect = '';
-        }
-    });
 }
 
 /**
