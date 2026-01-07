@@ -438,11 +438,24 @@ a:hover {
   flex: 1;
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 .playground {
   width: 100%;
   height: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Ensure LiveCodes iframe fills the container */
+.playground iframe {
+  width: 100% !important;
+  height: 100% !important;
+  border: none;
+  flex: 1;
 }
 
 .playground-loading {
