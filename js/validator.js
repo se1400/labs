@@ -178,8 +178,8 @@ async function validateCSS(cssCode) {
 function validateJS(jsCode) {
     const errors = [];
 
-    // Skip validation if code is empty or just comments
-    if (!jsCode || jsCode.trim() === '' || jsCode.trim().startsWith('//')) {
+    // Skip validation if code is empty
+    if (!jsCode || jsCode.trim() === '') {
         return {
             valid: true,
             errors: []
