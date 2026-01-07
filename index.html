@@ -1,1 +1,121 @@
-test
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interactive HTML/CSS/JavaScript coding labs for students">
+    <title>Student Coding Labs</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked@11.1.1/marked.min.js"></script>
+
+    <!-- LiveCodes SDK -->
+    <script type="module">
+        import { createPlayground } from 'https://cdn.jsdelivr.net/npm/[email protected]';
+        window.livecodes = { createPlayground };
+    </script>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-spinner">⟳</div>
+        <div class="loading-text">Loading lab...</div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Left Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <!-- Sidebar Header -->
+            <div class="sidebar-header">
+                <button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle sidebar">
+                    <span class="toggle-icon">◀</span>
+                </button>
+                <h1 class="lab-title" id="lab-title">Loading...</h1>
+            </div>
+
+            <!-- Lab Description -->
+            <div class="lab-description-container">
+                <div class="lab-description" id="lab-description">
+                    <p class="skeleton-text"></p>
+                    <p class="skeleton-text"></p>
+                    <p class="skeleton-text"></p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="button-group">
+                <button class="btn btn-primary" id="run-tests-btn" disabled>
+                    <span class="btn-icon">▶</span>
+                    Run Tests
+                </button>
+                <button class="btn btn-secondary" id="validate-btn" disabled>
+                    <span class="btn-icon">✓</span>
+                    Validate
+                </button>
+                <button class="btn btn-secondary" id="share-btn" disabled>
+                    <span class="btn-icon">🔗</span>
+                    Share
+                </button>
+                <button class="btn btn-secondary" id="reset-btn" disabled>
+                    <span class="btn-icon">↻</span>
+                    Reset Code
+                </button>
+            </div>
+
+            <!-- Test Results -->
+            <div class="test-results" id="test-results" style="display: none;">
+                <h3>Test Results</h3>
+                <div class="test-summary">
+                    <span class="test-count" id="test-count">Tests: 0/0</span>
+                    <span class="test-percentage" id="test-percentage">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="test-list" id="test-list">
+                    <!-- Test items will be inserted here -->
+                </div>
+            </div>
+        </aside>
+
+        <!-- Right Panel - LiveCodes Playground -->
+        <main class="playground-container">
+            <div id="playground" class="playground">
+                <div class="playground-loading">
+                    <div class="loading-spinner">⟳</div>
+                    <p>Initializing code editor...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="notification" id="notification" style="display: none;">
+        <span class="notification-icon" id="notification-icon"></span>
+        <span class="notification-message" id="notification-message"></span>
+    </div>
+
+    <!-- Validation Results Modal -->
+    <div class="modal" id="validation-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Code Validation Results</h2>
+                <button class="modal-close" id="modal-close">✕</button>
+            </div>
+            <div class="modal-body" id="validation-results">
+                <!-- Validation results will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Modules -->
+    <script type="module" src="js/utils.js"></script>
+    <script type="module" src="js/lab-loader.js"></script>
+    <script type="module" src="js/livecodes-manager.js"></script>
+    <script type="module" src="js/test-runner.js"></script>
+    <script type="module" src="js/validator.js"></script>
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>
