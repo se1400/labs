@@ -17,6 +17,20 @@ export async function initPlayground(container, labData) {
     }
 
     try {
+        // Get the container element
+        let containerElement;
+        if (typeof container === 'string') {
+            containerElement = document.querySelector(container);
+            if (!containerElement) {
+                throw new Error(`Container element not found: ${container}`);
+            }
+        } else {
+            containerElement = container;
+        }
+
+        // Clear any existing content in the container
+        containerElement.innerHTML = '';
+
         const config = {
             markup: {
                 language: 'html',
@@ -48,13 +62,15 @@ export async function initPlayground(container, labData) {
             readonly: false
         };
 
-        // Create the playground
-        playgroundInstance = await window.livecodes.createPlayground(container, {
+        console.log('Creating LiveCodes playground with config:', { config, params });
+
+        // Create the playground - pass the element directly
+        playgroundInstance = await window.livecodes.createPlayground(containerElement, {
             config,
             params
         });
 
-        console.log('LiveCodes playground initialized');
+        console.log('LiveCodes playground initialized successfully');
 
         return playgroundInstance;
     } catch (error) {
