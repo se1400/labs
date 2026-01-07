@@ -170,49 +170,6 @@ a:hover {
   padding: 0;
 }
 
-.sidebar-header {
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.sidebar-toggle {
-  background: var(--btn-secondary-bg);
-  border: 1px solid var(--border-color);
-  color: var(--text-primary);
-  width: 32px;
-  height: 32px;
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-}
-
-.sidebar-toggle:hover {
-  background: var(--btn-secondary-hover);
-  border-color: var(--border-focus);
-}
-
-.toggle-icon {
-  font-size: 14px;
-  transition: transform 0.3s ease;
-}
-
-.sidebar.collapsed ~ .sidebar-toggle .toggle-icon {
-  transform: rotate(180deg);
-}
-
-.lab-title {
-  margin: 0;
-  font-size: 20px;
-  flex: 1;
-}
-
 .lab-description-container {
   flex: 0 0 auto;
 }
@@ -222,8 +179,6 @@ a:hover {
   padding: 16px;
   border-radius: 6px;
   border-left: 3px solid var(--accent-blue);
-  max-height: 400px;
-  overflow-y: auto;
 }
 
 .lab-description h1:first-child {

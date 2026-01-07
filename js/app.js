@@ -60,12 +60,6 @@ async function init() {
  * @param {Object} labData - Lab data object
  */
 function updateLabInfo(labData) {
-    // Update title
-    const titleElement = document.getElementById('lab-title');
-    if (titleElement) {
-        titleElement.textContent = labData.title;
-    }
-
     // Update page title
     document.title = `${labData.title} - Student Coding Labs`;
 
@@ -103,12 +97,6 @@ function setupEventListeners() {
     const resetBtn = document.getElementById('reset-btn');
     if (resetBtn) {
         resetBtn.addEventListener('click', handleReset);
-    }
-
-    // Sidebar toggle button
-    const toggleBtn = document.getElementById('sidebar-toggle');
-    if (toggleBtn) {
-        toggleBtn.addEventListener('click', handleSidebarToggle);
     }
 }
 
@@ -244,23 +232,6 @@ async function handleReset() {
         // Re-enable button
         btn.disabled = false;
         btn.innerHTML = originalText;
-    }
-}
-
-/**
- * Handle sidebar toggle button click
- */
-function handleSidebarToggle() {
-    const sidebar = document.getElementById('sidebar');
-    const toggleIcon = document.querySelector('.toggle-icon');
-
-    if (sidebar) {
-        sidebar.classList.toggle('collapsed');
-
-        // Update icon
-        if (toggleIcon) {
-            toggleIcon.textContent = sidebar.classList.contains('collapsed') ? '▶' : '◀';
-        }
     }
 }
 
