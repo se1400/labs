@@ -34,6 +34,12 @@ export function displayTestResults(results) {
         return;
     }
 
+    // Debug: Log the first result to see its structure
+    if (results.length > 0) {
+        console.log('Test result structure:', results[0]);
+        console.log('All results:', results);
+    }
+
     // Show test results container
     const testResults = document.getElementById('test-results');
     testResults.style.display = 'block';
