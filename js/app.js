@@ -173,6 +173,16 @@ async function handleShare() {
         // Get share URL
         const shareUrl = await livecodes.getShareUrl(true);
 
+        // Display the URL on the page
+        const shareUrlContainer = document.getElementById('share-url-container');
+        const shareUrlLink = document.getElementById('share-url-link');
+
+        if (shareUrlContainer && shareUrlLink) {
+            shareUrlLink.href = shareUrl;
+            shareUrlLink.textContent = shareUrl;
+            shareUrlContainer.style.display = 'block';
+        }
+
         // Copy to clipboard
         if (navigator.clipboard && navigator.clipboard.writeText) {
             await navigator.clipboard.writeText(shareUrl);
@@ -189,6 +199,38 @@ async function handleShare() {
         // Re-enable button
         btn.disabled = false;
         btn.innerHTML = originalText;
+    }
+}
+
+/**
+ * Handle Copy URL button click
+ */
+async function handleCopyUrl() {
+    const shareUrlLink = document.getElementById('share-url-link');
+
+    if (!shareUrlLink || !shareUrlLink.href) {
+        utils.showNotification('No URL to copy', 'error');
+        return;
+    }
+
+    const url = shareUrlLink.href;
+
+    try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(url);
+            utils.showNotification('URL copied to clipboard!', 'success');
+        } else {
+            // Fallback: select the text
+            const range = document.createRange();
+            range.selectNodeContents(shareUrlLink);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            utils.showNotification('URL selected - press Ctrl+C to copy', 'info');
+        }
+    } catch (error) {
+        console.error('Error copying URL:', error);
+        utils.showNotification('Failed to copy URL', 'error');
     }
 }
 

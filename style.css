@@ -277,6 +277,72 @@ a:hover {
 }
 
 /* ===================================
+   Share URL Display
+   =================================== */
+.share-url-container {
+  background: var(--bg-secondary);
+  padding: 16px;
+  border-radius: 6px;
+  border-left: 3px solid var(--accent-blue);
+}
+
+.share-url-container h3 {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+}
+
+.share-url-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-tertiary);
+  padding: 10px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.share-url-link {
+  flex: 1;
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-size: 13px;
+  font-family: monospace;
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+.share-url-link:hover {
+  text-decoration: underline;
+}
+
+.btn-copy {
+  background: var(--btn-secondary-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-copy:hover {
+  background: var(--btn-secondary-hover);
+  border-color: var(--border-focus);
+}
+
+.btn-copy:active {
+  transform: scale(0.95);
+}
+
+.copy-icon {
+  font-size: 16px;
+}
+
+/* ===================================
    Test Results
    =================================== */
 .test-results {
