@@ -80,10 +80,6 @@ function createTestItem(result, index) {
     const item = document.createElement('div');
     item.className = `test-item ${result.status}`;
 
-    // Create header (always visible)
-    const header = document.createElement('div');
-    header.className = 'test-item-header';
-
     // Icon
     const icon = document.createElement('span');
     icon.className = `test-icon ${result.status}`;
@@ -94,47 +90,14 @@ function createTestItem(result, index) {
     };
     icon.textContent = icons[result.status] || '⊙';
 
-    // Test name/description
+    // Test name/description with number
     const name = document.createElement('div');
     name.className = 'test-name';
-    const testName = extractTestName(result) || `Test ${index + 1}`;
-    name.textContent = testName;
+    const testName = extractTestName(result) || 'Unknown test';
+    name.textContent = `Test ${index + 1}: ${testName}`;
 
-    // Expand/collapse arrow (for all tests)
-    const expand = document.createElement('span');
-    expand.className = 'test-expand';
-    expand.textContent = '▼';
-
-    header.appendChild(icon);
-    header.appendChild(name);
-    header.appendChild(expand);
-
-    // Create details section (collapsible)
-    const details = document.createElement('div');
-    details.className = `test-details ${result.status}`;
-
-    // Build details content
-    let detailsContent = testName; // Start with test name
-
-    if (result.status === 'fail' && result.errors && result.errors.length > 0) {
-        // Add error details for failed tests
-        const cleanedErrors = result.errors.map(error => cleanErrorMessage(error));
-        detailsContent += '\n' + cleanedErrors.join('\n\n');
-    } else if (result.status === 'pass') {
-        // Add success message for passed tests
-        detailsContent += '\n✓ Test passed';
-    }
-
-    details.textContent = detailsContent;
-
-    // Toggle details visibility on header click
-    header.addEventListener('click', () => {
-        details.classList.toggle('visible');
-        expand.classList.toggle('expanded');
-    });
-
-    item.appendChild(header);
-    item.appendChild(details);
+    item.appendChild(icon);
+    item.appendChild(name);
 
     return item;
 }

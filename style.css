@@ -373,7 +373,8 @@ a:hover {
 
 .test-item {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  gap: 12px;
   padding: 8px;
   border-radius: 4px;
   transition: background 0.2s;
@@ -390,14 +391,6 @@ a:hover {
 
 .test-item.pass {
   border-left-color: var(--test-pass);
-}
-
-.test-item-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  cursor: pointer;
-  user-select: none;
 }
 
 .test-icon {
@@ -423,44 +416,6 @@ a:hover {
   font-size: 13px;
   line-height: 1.4;
   word-break: break-word;
-  font-weight: 500;
-}
-
-.test-expand {
-  cursor: pointer;
-  color: var(--text-secondary);
-  font-size: 12px;
-  flex-shrink: 0;
-  transition: transform 0.2s ease;
-}
-
-.test-expand.expanded {
-  transform: rotate(180deg);
-}
-
-.test-details {
-  margin-top: 8px;
-  padding: 8px 8px 8px 28px;
-  font-size: 12px;
-  font-family: monospace;
-  border-radius: 3px;
-  white-space: pre-wrap;
-  word-break: break-word;
-  display: none;
-}
-
-.test-details.visible {
-  display: block;
-}
-
-.test-details.fail {
-  background: rgba(241, 76, 76, 0.1);
-  color: var(--accent-red);
-}
-
-.test-details.pass {
-  background: rgba(137, 209, 133, 0.1);
-  color: var(--test-pass);
 }
 
 /* ===================================
