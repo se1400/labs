@@ -440,6 +440,32 @@ a:hover {
 }
 
 /* ===================================
+   Resize Handle
+   =================================== */
+.resize-handle {
+  width: 4px;
+  background: var(--border-color);
+  cursor: ew-resize;
+  flex-shrink: 0;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.resize-handle:hover,
+.resize-handle.resizing {
+  background: var(--accent-blue);
+}
+
+.resize-handle::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -4px;
+  right: -4px;
+}
+
+/* ===================================
    Playground Container
    =================================== */
 .playground-container {
@@ -707,6 +733,11 @@ a:hover {
 
   .test-item {
     font-size: 12px;
+  }
+
+  /* Hide resize handle on mobile */
+  .resize-handle {
+    display: none;
   }
 
   .notification {
