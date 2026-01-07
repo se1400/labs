@@ -34,12 +34,6 @@ export function displayTestResults(results) {
         return;
     }
 
-    // Debug: Log the first result to see its structure
-    if (results.length > 0) {
-        console.log('Test result structure:', results[0]);
-        console.log('All results:', results);
-    }
-
     // Show test results container
     const testResults = document.getElementById('test-results');
     testResults.style.display = 'block';
@@ -176,7 +170,16 @@ function cleanErrorMessage(errorMessage) {
  * @returns {string|null} Test name or null
  */
 function extractTestName(result) {
-    // First, check if result has a title property (most common)
+    // LiveCodes uses testPath array: ['ROOT_DESCRIBE_BLOCK', 'Test name']
+    if (result.testPath && Array.isArray(result.testPath)) {
+        // Get the last element (the actual test name)
+        const testName = result.testPath[result.testPath.length - 1];
+        if (testName && testName !== 'ROOT_DESCRIBE_BLOCK') {
+            return testName;
+        }
+    }
+
+    // Fallback: check if result has a title property
     if (result.title) {
         return result.title;
     }
@@ -184,25 +187,6 @@ function extractTestName(result) {
     // Check for name property
     if (result.name) {
         return result.name;
-    }
-
-    // Try to extract from errors if present
-    if (result.errors && result.errors.length > 0) {
-        const firstError = result.errors[0];
-
-        // Look for lines before "Error:" that might contain the test name
-        const lines = firstError.split('\n');
-        for (const line of lines) {
-            const trimmed = line.trim();
-            // Skip empty lines and error lines
-            if (trimmed &&
-                !trimmed.startsWith('Error:') &&
-                !trimmed.startsWith('Expected') &&
-                !trimmed.startsWith('Received') &&
-                !trimmed.startsWith('at ')) {
-                return trimmed;
-            }
-        }
     }
 
     return null;
