@@ -50,7 +50,7 @@ export async function initPlayground(container, labData) {
             },
             tools: {
                 enabled: ['console', 'tests'],
-                active: 'tests',
+                active: 'console',
                 status: 'open'
             }
         };
