@@ -110,6 +110,12 @@ function setupEventListeners() {
     if (toggleBtn) {
         toggleBtn.addEventListener('click', handleSidebarToggle);
     }
+
+    // Test results collapse/expand toggle
+    const testResultsHeader = document.getElementById('test-results-header');
+    if (testResultsHeader) {
+        testResultsHeader.addEventListener('click', handleTestResultsToggle);
+    }
 }
 
 /**
@@ -261,6 +267,19 @@ function handleSidebarToggle() {
         if (toggleIcon) {
             toggleIcon.textContent = sidebar.classList.contains('collapsed') ? '▶' : '◀';
         }
+    }
+}
+
+/**
+ * Handle test results section collapse/expand
+ */
+function handleTestResultsToggle() {
+    const content = document.getElementById('test-results-content');
+    const toggle = document.getElementById('test-results-toggle');
+
+    if (content && toggle) {
+        content.classList.toggle('collapsed');
+        toggle.classList.toggle('collapsed');
     }
 }
 

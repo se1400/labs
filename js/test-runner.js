@@ -62,6 +62,12 @@ export function displayTestResults(results) {
         const testItem = createTestItem(result, index);
         testList.appendChild(testItem);
     });
+
+    // Ensure test list is visible by default
+    const testListContainer = document.getElementById('test-list');
+    if (testListContainer) {
+        testListContainer.style.display = 'flex';
+    }
 }
 
 /**
@@ -106,9 +112,9 @@ function createTestItem(result, index) {
         const errorDiv = document.createElement('div');
         errorDiv.className = 'test-error';
 
-        // Combine all error messages
-        const errorMessages = result.errors.join('\n');
-        errorDiv.textContent = errorMessages;
+        // Clean error messages - remove stack trace
+        const cleanedErrors = result.errors.map(error => cleanErrorMessage(error));
+        errorDiv.textContent = cleanedErrors.join('\n\n');
 
         // Toggle error visibility on click
         expand.addEventListener('click', () => {
@@ -121,6 +127,31 @@ function createTestItem(result, index) {
     }
 
     return item;
+}
+
+/**
+ * Clean error message by removing stack trace
+ * @param {string} errorMessage - Raw error message with stack trace
+ * @returns {string} Cleaned error message
+ */
+function cleanErrorMessage(errorMessage) {
+    if (!errorMessage) return '';
+
+    // Split by lines
+    const lines = errorMessage.split('\n');
+    const cleanedLines = [];
+
+    for (const line of lines) {
+        // Stop at stack trace markers
+        if (line.trim().startsWith('at ') ||
+            line.includes('https://') ||
+            line.includes('http://')) {
+            break;
+        }
+        cleanedLines.push(line);
+    }
+
+    return cleanedLines.join('\n').trim();
 }
 
 /**

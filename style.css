@@ -330,6 +330,46 @@ a:hover {
   border-radius: 6px;
 }
 
+.test-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 12px;
+  padding: 4px 0;
+  user-select: none;
+}
+
+.test-results-header:hover {
+  opacity: 0.8;
+}
+
+.test-results-header h3 {
+  margin: 0;
+}
+
+.test-results-toggle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  transition: transform 0.2s ease;
+}
+
+.test-results-toggle.collapsed {
+  transform: rotate(-90deg);
+}
+
+.test-results-content {
+  max-height: 1000px;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity: 1;
+}
+
+.test-results-content.collapsed {
+  max-height: 0;
+  opacity: 0;
+}
+
 .test-summary {
   display: flex;
   justify-content: space-between;
