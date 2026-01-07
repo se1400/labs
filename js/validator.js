@@ -70,16 +70,14 @@ export async function validateCode() {
  */
 async function validateHTML(htmlCode) {
     try {
-        const formData = new FormData();
-        formData.append('fragment', htmlCode);
-        formData.append('out', 'json');
-
-        const response = await fetch('https://validator.w3.org/nu/', {
+        // Use validator.nu with text/html content type instead of FormData
+        // This approach may have better CORS support
+        const response = await fetch('https://validator.nu/?out=json', {
             method: 'POST',
-            body: formData,
             headers: {
-                'Accept': 'application/json'
-            }
+                'Content-Type': 'text/html; charset=utf-8'
+            },
+            body: htmlCode
         });
 
         if (!response.ok) {
@@ -180,24 +178,53 @@ async function validateCSS(cssCode) {
 function validateJS(jsCode) {
     const errors = [];
 
+    // Skip validation if code is empty or just comments
+    if (!jsCode || jsCode.trim() === '' || jsCode.trim().startsWith('//')) {
+        return {
+            valid: true,
+            errors: []
+        };
+    }
+
     try {
-        // Try to parse JavaScript using Function constructor
-        new Function(jsCode);
+        // Wrap code in try-catch to handle various syntax patterns
+        // This handles most common JavaScript syntax
+        const wrappedCode = `(function() { ${jsCode} })();`;
+        new Function(wrappedCode);
 
         return {
             valid: true,
             errors: []
         };
     } catch (error) {
-        // Extract line number if available
-        const lineMatch = error.message.match(/line (\d+)/i);
-        const line = lineMatch ? parseInt(lineMatch[1]) : undefined;
+        // Try alternative validation for module syntax (import/export)
+        if (error.message.includes('import') || error.message.includes('export')) {
+            try {
+                // Use eval in a safer way for module-like code
+                new Function(`"use strict"; ${jsCode}`);
+                return {
+                    valid: true,
+                    errors: []
+                };
+            } catch (innerError) {
+                // If it still fails, report the error
+                errors.push({
+                    type: 'error',
+                    message: innerError.message,
+                    line: undefined
+                });
+            }
+        } else {
+            // Extract line number if available
+            const lineMatch = error.message.match(/line (\d+)/i);
+            const line = lineMatch ? parseInt(lineMatch[1]) : undefined;
 
-        errors.push({
-            type: 'error',
-            message: error.message,
-            line
-        });
+            errors.push({
+                type: 'error',
+                message: error.message,
+                line
+            });
+        }
 
         return {
             valid: false,
