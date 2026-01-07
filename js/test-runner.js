@@ -78,53 +78,63 @@ export function displayTestResults(results) {
  */
 function createTestItem(result, index) {
     const item = document.createElement('div');
-    item.className = 'test-item';
+    item.className = `test-item ${result.status}`;
+
+    // Create header (always visible)
+    const header = document.createElement('div');
+    header.className = 'test-item-header';
 
     // Icon
     const icon = document.createElement('span');
     icon.className = `test-icon ${result.status}`;
-
     const icons = {
         pass: '✓',
         fail: '✗',
         skip: '⊙'
     };
-
     icon.textContent = icons[result.status] || '⊙';
 
     // Test name/description
     const name = document.createElement('div');
     name.className = 'test-name';
-    // Try to get test name from errors or use generic name
     const testName = extractTestName(result) || `Test ${index + 1}`;
     name.textContent = testName;
 
-    item.appendChild(icon);
-    item.appendChild(name);
+    // Expand/collapse arrow (for all tests)
+    const expand = document.createElement('span');
+    expand.className = 'test-expand';
+    expand.textContent = '▼';
 
-    // If test failed, add error details
+    header.appendChild(icon);
+    header.appendChild(name);
+    header.appendChild(expand);
+
+    // Create details section (collapsible)
+    const details = document.createElement('div');
+    details.className = `test-details ${result.status}`;
+
+    // Build details content
+    let detailsContent = testName; // Start with test name
+
     if (result.status === 'fail' && result.errors && result.errors.length > 0) {
-        const expand = document.createElement('span');
-        expand.className = 'test-expand';
-        expand.textContent = '▼';
-        expand.style.cursor = 'pointer';
-
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'test-error';
-
-        // Clean error messages - remove stack trace
+        // Add error details for failed tests
         const cleanedErrors = result.errors.map(error => cleanErrorMessage(error));
-        errorDiv.textContent = cleanedErrors.join('\n\n');
-
-        // Toggle error visibility on click
-        expand.addEventListener('click', () => {
-            errorDiv.classList.toggle('visible');
-            expand.textContent = errorDiv.classList.contains('visible') ? '▲' : '▼';
-        });
-
-        item.appendChild(expand);
-        name.appendChild(errorDiv);
+        detailsContent += '\n' + cleanedErrors.join('\n\n');
+    } else if (result.status === 'pass') {
+        // Add success message for passed tests
+        detailsContent += '\n✓ Test passed';
     }
+
+    details.textContent = detailsContent;
+
+    // Toggle details visibility on header click
+    header.addEventListener('click', () => {
+        details.classList.toggle('visible');
+        expand.classList.toggle('expanded');
+    });
+
+    item.appendChild(header);
+    item.appendChild(details);
 
     return item;
 }
@@ -160,25 +170,33 @@ function cleanErrorMessage(errorMessage) {
  * @returns {string|null} Test name or null
  */
 function extractTestName(result) {
-    // Check if errors contain test name (common in Jest output)
-    if (result.errors && result.errors.length > 0) {
-        const firstError = result.errors[0];
-
-        // Try to extract test name from error message
-        // Jest format: "TestName › should do something"
-        const match = firstError.match(/^(.+?)(?:\s+›|\s+\(|$)/);
-        if (match && match[1]) {
-            return match[1].trim();
-        }
-    }
-
-    // If result has a title or name property
+    // First, check if result has a title property (most common)
     if (result.title) {
         return result.title;
     }
 
+    // Check for name property
     if (result.name) {
         return result.name;
+    }
+
+    // Try to extract from errors if present
+    if (result.errors && result.errors.length > 0) {
+        const firstError = result.errors[0];
+
+        // Look for lines before "Error:" that might contain the test name
+        const lines = firstError.split('\n');
+        for (const line of lines) {
+            const trimmed = line.trim();
+            // Skip empty lines and error lines
+            if (trimmed &&
+                !trimmed.startsWith('Error:') &&
+                !trimmed.startsWith('Expected') &&
+                !trimmed.startsWith('Received') &&
+                !trimmed.startsWith('at ')) {
+                return trimmed;
+            }
+        }
     }
 
     return null;
