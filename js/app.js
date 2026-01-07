@@ -264,13 +264,53 @@ function handleSidebarToggle() {
     }
 }
 
-// Initialize app when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-} else {
-    // DOM is already ready
-    init();
+// Wait for both DOM and LiveCodes SDK to be ready
+function waitForReady() {
+    return new Promise((resolve, reject) => {
+        // Check if SDK is already loaded
+        if (window.livecodes && window.livecodes.createPlayground) {
+            resolve();
+            return;
+        }
+
+        // Set a timeout in case SDK fails to load
+        const timeout = setTimeout(() => {
+            reject(new Error('LiveCodes SDK failed to load. Please check your internet connection and try refreshing the page.'));
+        }, 10000); // 10 second timeout
+
+        // Wait for SDK to load
+        window.addEventListener('livecodes-ready', () => {
+            clearTimeout(timeout);
+            resolve();
+        }, { once: true });
+    });
 }
+
+// Initialize app when both DOM and SDK are ready
+async function startApp() {
+    try {
+        // Wait for DOM
+        if (document.readyState === 'loading') {
+            await new Promise(resolve => {
+                document.addEventListener('DOMContentLoaded', resolve, { once: true });
+            });
+        }
+
+        // Wait for SDK
+        await waitForReady();
+
+        // Now initialize
+        init();
+    } catch (error) {
+        console.error('Failed to start app:', error);
+        utils.hideLoading();
+        utils.showError(error.message);
+        utils.showNotification(error.message, 'error', 10000);
+    }
+}
+
+// Start the app
+startApp();
 
 // Export for debugging
 window.app = {
