@@ -16,20 +16,21 @@ test('Your img element should have an alt attribute instead of the non-existent 
 
 // Test 3: img should not have closing tag
 test('Your img element should not have a </img> closing tag', () => {
-  // Get the full HTML source from the document
-  const fullHTML = document.documentElement.outerHTML;
+  // Try to access LiveCodes globals that might contain raw source
+  const rawSource =
+    (typeof __code !== 'undefined' && __code?.markup?.content) ||
+    (typeof code !== 'undefined' && code?.markup?.content) ||
+    (typeof livecodes !== 'undefined' && livecodes?.markup?.content) ||
+    document.documentElement.outerHTML;
+
+  console.log('Raw source type:', typeof rawSource);
+  console.log('Raw source preview:', rawSource.substring(0, 200));
 
   // Check if the source contains the invalid closing tag
-  const hasClosingTag = fullHTML.includes('</img>') || fullHTML.includes('</IMG>');
+  const hasClosingTag = rawSource.includes('</img>') || rawSource.includes('</IMG>');
 
   // Fail if closing tag is found
-  if (hasClosingTag) {
-    throw new Error('Found invalid </img> closing tag. Image elements should be self-closing.');
-  }
-
-  // Also verify the img element exists and is valid
-  const img = document.querySelector('img');
-  expect(img).toBeTruthy();
+  expect(hasClosingTag).toBe(false);
 });
 
 // Test 4: First a element should have href instead of src
