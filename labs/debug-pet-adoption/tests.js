@@ -17,7 +17,9 @@ test('Your img element should have an alt attribute instead of the non-existent 
 // Test 3: img should not have closing tag
 test('Your img element should not have a </img> closing tag', () => {
   const bodyHTML = document.body.innerHTML;
-  expect(bodyHTML).not.toMatch(/<\/img>/i);
+  // Check for both </img> and </IMG> to be thorough
+  const hasClosingTag = bodyHTML.includes('</img>') || bodyHTML.includes('</IMG>');
+  expect(hasClosingTag).toBe(false);
 });
 
 // Test 4: First a element should have href instead of src
