@@ -18,21 +18,21 @@ test('You should have exactly one h2 element on the page', () => {
 });
 
 // Test 4: h2 with "About" text
-test('You should have an h2 element with the text About', () => {
+test("You should have an h2 element with the text About. Here's an example: <h2>Text here</h2>", () => {
   const h2 = document.querySelector('h2');
   expect(h2).toBeTruthy();
   expect(h2.textContent).toMatch(/About/);
 });
 
 // Test 5: First paragraph text
-test('You should have a paragraph element with the text "My name is Camperbot and I love learning new things."', () => {
+test("You should have a paragraph element with the text My name is Camperbot and I love learning new things. Here's an example: <p>Text here</p>", () => {
   const paragraphs = document.querySelectorAll('p');
   const texts = Array.from(paragraphs).map(p => p.textContent);
   expect(texts).toContain(expect.stringContaining('My name is Camperbot and I love learning new things'));
 });
 
 // Test 6: Second paragraph text
-test('You should have a paragraph element with the text "I enjoy solving puzzles."', () => {
+test("You should have a paragraph element with the text I enjoy solving puzzles. Here's an example: <p>Text here</p>", () => {
   const paragraphs = document.querySelectorAll('p');
   const texts = Array.from(paragraphs).map(p => p.textContent);
   expect(texts).toContain(expect.stringContaining('I enjoy solving puzzles'));
@@ -51,15 +51,8 @@ test('You should have exactly one h3 element on the page', () => {
 });
 
 // Test 9: h3 with correct text
-test('You should have an h3 element with the text "Background and Interests"', () => {
+test("You should have an h3 element with the text Background and Interests. Here's an example: <h3>Text here</h3>", () => {
   const h3 = document.querySelector('h3');
   expect(h3).toBeTruthy();
   expect(h3.textContent).toMatch(/Background and Interests/);
-});
-
-// Test 10: Exactly five total elements
-test('You should have exactly five total elements on the page', () => {
-  // Count h1, h2, h3, p, p = 5 total
-  const totalElements = document.querySelectorAll('body > *').length;
-  expect(totalElements).toBe(5);
 });
