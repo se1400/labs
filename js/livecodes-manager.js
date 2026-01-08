@@ -59,6 +59,7 @@ export async function initPlayground(container, labData) {
             activeEditor: 'markup',
             mode: 'full',
             theme: 'dark',
+            wordWrap: 'true',
             readonly: false
         };
 
