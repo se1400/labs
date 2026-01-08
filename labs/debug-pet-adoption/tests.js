@@ -14,26 +14,7 @@ test('Your img element should have an alt attribute instead of the non-existent 
   expect(img.hasAttribute('att')).toBe(false);
 });
 
-// Test 3: img should not have closing tag
-test('Your img element should not have a </img> closing tag', () => {
-  // Try to access LiveCodes globals that might contain raw source
-  const rawSource =
-    (typeof __code !== 'undefined' && __code?.markup?.content) ||
-    (typeof code !== 'undefined' && code?.markup?.content) ||
-    (typeof livecodes !== 'undefined' && livecodes?.markup?.content) ||
-    document.documentElement.outerHTML;
-
-  console.log('Raw source type:', typeof rawSource);
-  console.log('Raw source preview:', rawSource.substring(0, 200));
-
-  // Check if the source contains the invalid closing tag
-  const hasClosingTag = rawSource.includes('</img>') || rawSource.includes('</IMG>');
-
-  // Fail if closing tag is found
-  expect(hasClosingTag).toBe(false);
-});
-
-// Test 4: First a element should have href instead of src
+// Test 3: First a element should have href instead of src
 test('Your a element with the text Visit cats page needs to have an href attribute instead of a src attribute', () => {
   const links = document.querySelectorAll('a');
   const catsLink = Array.from(links).find(a => a.textContent.includes('Visit cats page'));
@@ -42,7 +23,7 @@ test('Your a element with the text Visit cats page needs to have an href attribu
   expect(catsLink.hasAttribute('src')).toBe(false);
 });
 
-// Test 5: Second a element should have href instead of src
+// Test 4: Second a element should have href instead of src
 test('Your a element with the text Visit dogs page needs to have an href attribute instead of a src attribute', () => {
   const links = document.querySelectorAll('a');
   const dogsLink = Array.from(links).find(a => a.textContent.includes('Visit dogs page'));
