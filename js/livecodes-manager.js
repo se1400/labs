@@ -52,6 +52,9 @@ export async function initPlayground(container, labData) {
                 enabled: ['console', 'tests'],
                 active: 'console',
                 status: 'open'
+            },
+            editorSettings: {
+                wordWrap: 'on'
             }
         };
 
@@ -59,8 +62,7 @@ export async function initPlayground(container, labData) {
             activeEditor: 'markup',
             mode: 'full',
             theme: 'dark',
-            readonly: false,
-            wordWrap: true
+            readonly: false
         };
 
         console.log('Creating LiveCodes playground with config:', { config, params });
