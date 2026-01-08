@@ -75,17 +75,6 @@ export async function initPlayground(container, labData) {
         // Expose playground instance globally for tests to access
         window.__livecodes__ = playgroundInstance;
 
-        // Set editor options after initialization to enable word wrap
-        try {
-            await playgroundInstance.setConfig({
-                editor: {
-                    wordWrap: 'on'
-                }
-            });
-        } catch (err) {
-            console.log('Could not set word wrap:', err);
-        }
-
         return playgroundInstance;
     } catch (error) {
         console.error('Error initializing LiveCodes:', error);
