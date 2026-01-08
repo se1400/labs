@@ -16,8 +16,8 @@ test('Your img element should have an alt attribute instead of the non-existent 
 
 // Test 3: img should not have closing tag
 test('Your img element should not have a </img> closing tag', async () => {
-  // Access the playground instance from parent window
-  const playground = window.parent.__livecodes__;
+  // Access the playground instance from parent.parent window (two levels up)
+  const playground = window.parent.parent.__livecodes__;
 
   // Get the raw HTML source code from the editor
   const code = await playground.getCode();
