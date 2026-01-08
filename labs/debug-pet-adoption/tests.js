@@ -15,13 +15,24 @@ test('Your img element should have an alt attribute instead of the non-existent 
 });
 
 // Test 3: img should not have closing tag
-test('Your img element should not have a </img> closing tag', () => {
-  const img = document.querySelector('img');
-  expect(img).toBeTruthy();
-  // Check the outerHTML - if there's a closing tag, it will be present
-  const outerHTML = img.outerHTML;
-  // img should be self-closing, check it doesn't have separate closing tag
-  const hasClosingTag = outerHTML.includes('></img>') || outerHTML.includes('></IMG>');
+test('Your img element should not have a </img> closing tag', async () => {
+  // Access the playground instance from parent window
+  const playground = window.parent.__livecodes__;
+  console.log('Playground instance:', playground);
+
+  // Get the raw HTML source code from the editor
+  const code = await playground.getCode();
+  console.log('Code object:', code);
+
+  const htmlSource = code.markup.content;
+  console.log('HTML source:', htmlSource);
+  console.log('Contains </img>:', htmlSource.includes('</img>'));
+  console.log('Contains </IMG>:', htmlSource.includes('</IMG>'));
+
+  // Check if the source contains the invalid closing tag
+  const hasClosingTag = htmlSource.includes('</img>') || htmlSource.includes('</IMG>');
+  console.log('hasClosingTag:', hasClosingTag);
+
   expect(hasClosingTag).toBe(false);
 });
 
