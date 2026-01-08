@@ -15,11 +15,21 @@ test('Your img element should have an alt attribute instead of the non-existent 
 });
 
 // Test 3: img should not have closing tag
-test('Your img element should not have a </img> closing tag', () => {
-  const bodyHTML = document.body.innerHTML;
-  // Check for both </img> and </IMG> to be thorough
-  const hasClosingTag = bodyHTML.includes('</img>') || bodyHTML.includes('</IMG>');
-  expect(hasClosingTag).toBe(false);
+test('Your img element should not have a </img> closing tag', async () => {
+  // Get the actual source code from LiveCodes instead of parsed DOM
+  // because browsers auto-correct invalid HTML
+  const playground = window.parent.__livecodes__ || window.__livecodes__;
+  if (playground) {
+    const code = await playground.getCode();
+    const htmlSource = code.markup.content;
+    const hasClosingTag = htmlSource.includes('</img>') || htmlSource.includes('</IMG>');
+    expect(hasClosingTag).toBe(false);
+  } else {
+    // Fallback to DOM check if playground not available
+    const bodyHTML = document.body.innerHTML;
+    const hasClosingTag = bodyHTML.includes('</img>') || bodyHTML.includes('</IMG>');
+    expect(hasClosingTag).toBe(false);
+  }
 });
 
 // Test 4: First a element should have href instead of src

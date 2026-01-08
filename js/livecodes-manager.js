@@ -52,9 +52,6 @@ export async function initPlayground(container, labData) {
                 enabled: ['console', 'tests'],
                 active: 'console',
                 status: 'open'
-            },
-            editorSettings: {
-                wordWrap: 'on'
             }
         };
 
@@ -62,7 +59,10 @@ export async function initPlayground(container, labData) {
             activeEditor: 'markup',
             mode: 'full',
             theme: 'dark',
-            readonly: false
+            readonly: false,
+            editorSettings: {
+                wordWrap: 'on'
+            }
         };
 
         console.log('Creating LiveCodes playground with config:', { config, params });
@@ -74,6 +74,9 @@ export async function initPlayground(container, labData) {
         });
 
         console.log('LiveCodes playground initialized successfully');
+
+        // Expose playground instance globally for tests to access
+        window.__livecodes__ = playgroundInstance;
 
         return playgroundInstance;
     } catch (error) {
