@@ -16,16 +16,42 @@ test('Your img element should have an alt attribute instead of the non-existent 
 
 // Test 3: img should not have closing tag
 test('Your img element should not have a </img> closing tag', async () => {
-  // Access the playground instance from parent.parent window (two levels up)
-  const playground = window.parent.parent.__livecodes__;
+  // Try to find the playground instance at different window levels
+  let playground;
+  try {
+    // Try parent.parent first (most likely)
+    if (window.parent?.parent?.__livecodes__) {
+      playground = window.parent.parent.__livecodes__;
+    }
+    // Try parent
+    else if (window.parent?.__livecodes__) {
+      playground = window.parent.__livecodes__;
+    }
+    // Try top window
+    else if (window.top?.__livecodes__) {
+      playground = window.top.__livecodes__;
+    }
+    // Try current window
+    else if (window.__livecodes__) {
+      playground = window.__livecodes__;
+    }
 
-  // Get the raw HTML source code from the editor
-  const code = await playground.getCode();
-  const htmlSource = code.markup.content;
+    if (!playground) {
+      throw new Error('Playground instance not found');
+    }
 
-  // Check if the source contains the invalid closing tag
-  const hasClosingTag = htmlSource.includes('</img>') || htmlSource.includes('</IMG>');
-  expect(hasClosingTag).toBe(false);
+    // Get the raw HTML source code from the editor
+    const code = await playground.getCode();
+    const htmlSource = code.markup.content;
+
+    // Check if the source contains the invalid closing tag
+    const hasClosingTag = htmlSource.includes('</img>') || htmlSource.includes('</IMG>');
+    expect(hasClosingTag).toBe(false);
+  } catch (error) {
+    // If we can't access the playground, skip this test
+    // This allows the other tests to still work
+    throw new Error(`Cannot verify closing tag: ${error.message}`);
+  }
 });
 
 // Test 4: First a element should have href instead of src
