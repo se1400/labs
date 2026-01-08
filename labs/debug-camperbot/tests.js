@@ -27,15 +27,15 @@ test("You should have an h2 element with the text About. Here's an example: <h2>
 // Test 5: First paragraph text
 test("You should have a paragraph element with the text My name is Camperbot and I love learning new things. Here's an example: <p>Text here</p>", () => {
   const paragraphs = document.querySelectorAll('p');
-  const texts = Array.from(paragraphs).map(p => p.textContent);
-  expect(texts).toContain(expect.stringContaining('My name is Camperbot and I love learning new things'));
+  const hasText = Array.from(paragraphs).some(p => p.textContent.includes('My name is Camperbot and I love learning new things'));
+  expect(hasText).toBe(true);
 });
 
 // Test 6: Second paragraph text
 test("You should have a paragraph element with the text I enjoy solving puzzles. Here's an example: <p>Text here</p>", () => {
   const paragraphs = document.querySelectorAll('p');
-  const texts = Array.from(paragraphs).map(p => p.textContent);
-  expect(texts).toContain(expect.stringContaining('I enjoy solving puzzles'));
+  const hasText = Array.from(paragraphs).some(p => p.textContent.includes('I enjoy solving puzzles'));
+  expect(hasText).toBe(true);
 });
 
 // Test 7: Exactly two paragraphs
