@@ -1,13 +1,39 @@
+// Helper function to get raw editor code (not rendered HTML)
+// Tests run in: Result iframe -> LiveCodes iframe -> Main app window
+// We need to go up 2 levels to reach where __livecodes__ is exposed
+async function getRawDocument() {
+  try {
+    // Access main app window where playground is exposed
+    const playground = window.parent.parent.__livecodes__;
+    if (!playground) {
+      console.error('Playground instance not found');
+      return { doc: document, rawHTML: document.documentElement.outerHTML };
+    }
+
+    const code = await playground.getCode();
+    const rawHTML = code.markup.content;
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(rawHTML, 'text/html');
+
+    return { doc, rawHTML };
+  } catch (error) {
+    console.error('Error accessing raw code:', error);
+    // Fallback to rendered document
+    return { doc: document, rawHTML: document.documentElement.outerHTML };
+  }
+}
+
 // Test 1: DOCTYPE declaration
-test('Your travel agency page should have a <!DOCTYPE html> declaration', () => {
-  const doctype = document.doctype;
-  expect(doctype).toBeTruthy();
-  expect(doctype.name).toBe('html');
+test('Your travel agency page should have a <!DOCTYPE html> declaration', async () => {
+  const { rawHTML } = await getRawDocument();
+  expect(rawHTML.trim().toLowerCase().startsWith('<!doctype html>')).toBe(true);
 });
 
 // Test 2: html element with lang="en"
-test('You should have an html element with lang set to en', () => {
-  const html = document.querySelector('html');
+test('You should have an html element with lang set to en', async () => {
+  const { doc } = await getRawDocument();
+  const html = doc.querySelector('html');
   expect(html).toBeTruthy();
   expect(html.getAttribute('lang')).toBe('en');
 });
