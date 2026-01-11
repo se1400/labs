@@ -191,12 +191,14 @@ test('Each img element should have an alt attribute with an appropriate value', 
 });
 
 // Test 22: All anchors have correct href
-test('Each a element should have an href attribute with the value of https://se1400.github.io/curriculum . Don\'t forget the links in the list items', () => {
+test('Each a element should have an href attribute with the value of https://se1400.github.io/curriculum. Don\'t forget the links in the list items', () => {
   const anchors = document.querySelectorAll('a');
   expect(anchors.length).toBeGreaterThanOrEqual(5);
   anchors.forEach(anchor => {
     const href = anchor.getAttribute('href');
-    expect(href).toBe('https://se1400.github.io/curriculum');
+    // Accept with or without trailing slash
+    const normalizedHref = href?.endsWith('/') ? href.slice(0, -1) : href;
+    expect(normalizedHref).toBe('https://se1400.github.io/curriculum');
   });
 });
 

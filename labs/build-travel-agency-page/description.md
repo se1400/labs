@@ -17,5 +17,5 @@ Build an app that is functionally similar to this example project. Try not to co
 9. You should have an unordered list element with two list items. The two list items should have the text `Group Travels` and `Private Tours`, respectively. The text of each list item should be enclosed by an anchor element.
 10. You should have an `h2` element with the text `Top Itineraries`.
 11. You should have at least three `figure` elements, each containing an anchor element and a `figcaption` element.
-12. The three anchor elements should have an `img` element with an appropriate `alt` attribute and a `src` attribute set to a valid image as their content. You can use `https://se1400.github.io/curriculum/labs/colosseo.jpg`, `https://se1400.github.io/curriculum/labs/alps.jpg`, and `https://se1400.github.io/curriculum/labs/sea.jpg` if you would like.
+12. The three anchor elements should have an `img` element with an appropriate `alt` attribute and a `src` attribute set to a valid image as their content. You can use `https://se1400.github.io/curriculum/colosseo.jpg`, `https://se1400.github.io/curriculum/alps.jpg`, and `https://se1400.github.io/curriculum/sea.jpg` if you would like.
 13. All your five anchor elements should have an `href` attribute with the value of `https://se1400.github.io/curriculum` and a `target` attribute with the value of `_blank`.
