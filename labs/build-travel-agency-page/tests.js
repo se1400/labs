@@ -1,27 +1,12 @@
 // Helper function to get raw editor code (not rendered HTML)
 async function getRawHTML() {
   try {
-    // Debug: Check different window levels
-    console.log('window.__livecodes__:', window.__livecodes__);
-    console.log('window.parent.__livecodes__:', window.parent.__livecodes__);
-    console.log('window.parent.parent.__livecodes__:', window.parent.parent.__livecodes__);
-    console.log('window.top.__livecodes__:', window.top.__livecodes__);
-
-    // Try multiple levels
-    let playground = window.__livecodes__
-                  || window.parent.__livecodes__
-                  || window.parent.parent.__livecodes__
-                  || window.top.__livecodes__;
-
+    const playground = window.parent.parent.__livecodes__;
     if (!playground) {
-      console.error('Playground instance not found at any window level');
+      console.error('Playground instance not found');
       return '';
     }
-
-    console.log('Found playground:', playground);
     const code = await playground.getCode();
-    console.log('Raw code length:', code.markup.content.length);
-    console.log('Raw code preview:', code.markup.content.substring(0, 100));
     return code.markup.content;
   } catch (error) {
     console.error('Error accessing raw code:', error);
