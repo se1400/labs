@@ -8,7 +8,7 @@
 
 2. Inside the <code>main</code> element, you should have an <code>h1</code> element for the movie title.
 
-3. Below the <code>h1</code> element, you should have an <code>img</code> element displaying the movie cover. Your <code>img</code> element should have a descriptive <code>alt</code> text describing the image. You are free to use the following image if you like: <code>https://se1400.github.io/labs/assets/rise-beyond-2.png</code>.
+3. Below the <code>h1</code> element, you should have an <code>img</code> element displaying the movie cover. Your <code>img</code> element should have a descriptive <code>alt</code> text describing the image. You are free to use the following image if you like: <code>https://se1400.github.io/labs/assets/rise-beyond-2.webp</code>.
 
 4. You should have a <code>p</code> element containing a brief movie description.
 
