@@ -1,5 +1,7 @@
 # Build a Movie Review
 
+You will build a movie review website for a selected movie.
+
 **Objective:** Fulfill the user stories below and get all the tests to pass to complete the lab.
 
 ## User Stories:
