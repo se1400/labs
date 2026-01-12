@@ -1,5 +1,7 @@
 # Build a Recipe Page
 
+You are to build a webpage with one of your favorite recipes on it to share with the world.
+
 **Objective:** Fulfill the user stories below and get all the tests to pass to complete the lab.
 
 ## User Stories:

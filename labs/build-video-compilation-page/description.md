@@ -1,6 +1,6 @@
 # Build a Video Compilation Page
 
-Build an app that is functionally similar to this example project. Try not to copy the example project, give it your own personal style.
+You are to build an app that shows multiple videos for the user to watch. You are welcome to embed any video of your choice.
 
 **Objective:** Fulfill the user stories below and get all the tests to pass to complete the lab.
 
