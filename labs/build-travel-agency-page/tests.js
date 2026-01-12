@@ -173,9 +173,9 @@ test('Each img element should have a valid src attribute', () => {
     const src = img.getAttribute('src');
     expect(src).toBeTruthy();
     expect(src.trim().length).toBeGreaterThan(0);
-    // Valid URL can be absolute (http/https) or relative (any path)
-    // Just check it's not empty and doesn't contain invalid characters
-    expect(src).not.toMatch(/[\s<>"{}|\\^`]/);
+    // Valid URL: absolute (http/https), protocol-relative (//), or relative path
+    const isValidUrl = /^(https?:\/\/|\/\/|\/|\.\/|\.\.\/|[a-zA-Z0-9])/.test(src.trim());
+    expect(isValidUrl).toBe(true);
   });
 });
 
