@@ -155,12 +155,14 @@ test('You should have a p element with an id of card-number-help immediately aft
   const cardNumberInput = document.querySelector('input#card-number');
   expect(cardNumberInput).toBeTruthy();
 
+  const helpText = document.querySelector('#card-number-help');
+  expect(helpText).toBeTruthy();
+  expect(helpText.tagName).toBe('P');
+
   const nextElement = cardNumberInput.nextElementSibling;
   expect(nextElement).toBeTruthy();
   expect(nextElement.tagName).toBe('P');
-
-  const id = nextElement.getAttribute('id');
-  expect(id).toBe('card-number-help');
+  expect(nextElement.getAttribute('id')).toBe('card-number-help');
 });
 
 // Test 17: card-number-help text is not empty
