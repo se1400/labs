@@ -173,9 +173,9 @@ test('Each img element should have a valid src attribute', () => {
     const src = img.getAttribute('src');
     expect(src).toBeTruthy();
     expect(src.trim().length).toBeGreaterThan(0);
-    // Valid URL should start with http/https or be relative
-    const isValidUrl = src.startsWith('http://') || src.startsWith('https://') || src.startsWith('/') || src.startsWith('./') || src.startsWith('../');
-    expect(isValidUrl).toBe(true);
+    // Valid URL can be absolute (http/https) or relative (any path)
+    // Just check it's not empty and doesn't contain invalid characters
+    expect(src).not.toMatch(/[\s<>"{}|\\^`]/);
   });
 });
 
@@ -191,14 +191,15 @@ test('Each img element should have an alt attribute with an appropriate value', 
 });
 
 // Test 22: All anchors have correct href
-test('Each a element should have an href attribute with the value of https://se1400.github.io/curriculum. Don\'t forget the links in the list items', () => {
+test('Each a element should have an href attribute with the value of https://se1400.github.io/labs. Don\'t forget the links in the list items', () => {
   const anchors = document.querySelectorAll('a');
   expect(anchors.length).toBeGreaterThanOrEqual(5);
   anchors.forEach(anchor => {
     const href = anchor.getAttribute('href');
-    // Accept with or without trailing slash
-    const normalizedHref = href?.endsWith('/') ? href.slice(0, -1) : href;
-    expect(normalizedHref).toBe('https://se1400.github.io/curriculum');
+    expect(href).toBeTruthy();
+    // Normalize: remove trailing slash, convert to lowercase
+    const normalizedHref = href.trim().toLowerCase().replace(/\/$/, '');
+    expect(normalizedHref).toBe('https://se1400.github.io/labs');
   });
 });
 
