@@ -39,7 +39,7 @@ The <code>source</code> element can also be used in the <code>video</code> eleme
 
 7. Below the <code>h2</code> element, you should have a <code>video</code> element with <code>controls</code>, <code>width</code> attributes and an <code>aria-label</code> attribute.
 
-8. Inside the <code>video</code> element, you should have a <code>source</code> element with a <code>src</code> attribute pointing to a video file and a <code>type</code> attribute. You are free to use this video URL if you like: <code>https://se1400.github.io/labs/assets/</code>
+8. Inside the <code>video</code> element, you should have a <code>source</code> element with a <code>src</code> attribute pointing to a video file and a <code>type</code> attribute. You are free to use this video URL if you like: <code>https://se1400.github.io/labs/assets/mov_bbb.mp4</code>
 
 9. Below the <code>source</code> element, you should have a <code>track</code> element with a <code>src</code> attribute pointing to a subtitles file and a <code>kind</code> attribute, a <code>srclang</code> attribute and a <code>label</code> attribute. You are free to use this subtitles URL if you like: <code>https://se1400.github.io/labs/assets/sample-transcript.vtt</code>
 
