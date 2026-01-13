@@ -218,31 +218,7 @@ test('The href of the third a element should point to a valid link', () => {
   expect(href.trim().length).toBeGreaterThan(0);
 });
 
-// Test 27: link element in head
-test('Your link element should be within your head element', () => {
-  const head = document.querySelector('head');
-  expect(head).toBeTruthy();
-  const link = head.querySelector('link[rel="stylesheet"]');
-  expect(link).toBeTruthy();
-});
-
-// Test 28: link has rel="stylesheet"
-test('Your link element should have a rel attribute with the value stylesheet', () => {
-  const link = document.querySelector('link[rel="stylesheet"]');
-  expect(link).toBeTruthy();
-  const rel = link.getAttribute('rel');
-  expect(rel).toBe('stylesheet');
-});
-
-// Test 29: link href is "styles.css"
-test('Your link element should have an href attribute with the value styles.css', () => {
-  const link = document.querySelector('link[rel="stylesheet"]');
-  expect(link).toBeTruthy();
-  const href = link.getAttribute('href');
-  expect(href).toMatch(/styles\.css/);
-});
-
-// Test 30: body background-color is rosybrown
+// Test 27: body background-color is rosybrown
 test('You should set the page background color in the body selector to rosybrown', () => {
   const body = document.querySelector('body');
   const styles = window.getComputedStyle(body);
@@ -251,7 +227,7 @@ test('You should set the page background color in the body selector to rosybrown
   expect(bgColor).toMatch(/rgb\(188,\s*143,\s*143\)|rosybrown/);
 });
 
-// Test 31: body font-family includes Arial
+// Test 28: body font-family includes Arial
 test('You should set the page font to Arial in the body element with a fallback of sans-serif', () => {
   const body = document.querySelector('body');
   const styles = window.getComputedStyle(body);
@@ -259,7 +235,7 @@ test('You should set the page font to Arial in the body element with a fallback 
   expect(fontFamily).toMatch(/arial/);
 });
 
-// Test 32: .business-card width is 300px
+// Test 29: .business-card width is 300px
 test('Your .business-card selector should have a width property with a value of 300px', () => {
   const businessCard = document.querySelector('.business-card');
   expect(businessCard).toBeTruthy();
@@ -267,7 +243,7 @@ test('Your .business-card selector should have a width property with a value of 
   expect(styles.width).toBe('300px');
 });
 
-// Test 33: .business-card has background-color
+// Test 30: .business-card has background-color
 test('Your .business-card selector should have a background-color property with a valid color value', () => {
   const businessCard = document.querySelector('.business-card');
   expect(businessCard).toBeTruthy();
@@ -278,7 +254,7 @@ test('Your .business-card selector should have a background-color property with 
   expect(bgColor).not.toMatch(/rgba\(0,\s*0,\s*0,\s*0\)|transparent/);
 });
 
-// Test 34: .business-card padding is 20px
+// Test 31: .business-card padding is 20px
 test('Your .business-card selector should have a padding property with a value of 20px', () => {
   const businessCard = document.querySelector('.business-card');
   expect(businessCard).toBeTruthy();
@@ -289,7 +265,7 @@ test('Your .business-card selector should have a padding property with a value o
   expect(styles.paddingLeft).toBe('20px');
 });
 
-// Test 35: .business-card margin-top is 100px
+// Test 32: .business-card margin-top is 100px
 test('Your .business-card selector should have a top margin of 100px', () => {
   const businessCard = document.querySelector('.business-card');
   expect(businessCard).toBeTruthy();
@@ -297,7 +273,7 @@ test('Your .business-card selector should have a top margin of 100px', () => {
   expect(styles.marginTop).toBe('100px');
 });
 
-// Test 36: .business-card text-align is center
+// Test 33: .business-card text-align is center
 test('The text inside the .business-card element should be center-aligned', () => {
   const businessCard = document.querySelector('.business-card');
   expect(businessCard).toBeTruthy();
@@ -305,7 +281,7 @@ test('The text inside the .business-card element should be center-aligned', () =
   expect(styles.textAlign).toBe('center');
 });
 
-// Test 37: .business-card font-size is 16px
+// Test 34: .business-card font-size is 16px
 test('The font size of the text inside the .business-card element should be 16px', () => {
   const businessCard = document.querySelector('.business-card');
   expect(businessCard).toBeTruthy();
@@ -313,7 +289,7 @@ test('The font size of the text inside the .business-card element should be 16px
   expect(styles.fontSize).toBe('16px');
 });
 
-// Test 38: .business-card margin-left and margin-right are auto
+// Test 35: .business-card margin-left and margin-right are auto
 test('The left and right margins of the .business-card element should be set to auto', () => {
   const businessCard = document.querySelector('.business-card');
   expect(businessCard).toBeTruthy();
@@ -348,7 +324,7 @@ test('The left and right margins of the .business-card element should be set to 
   }
 });
 
-// Test 39: .profile-image max-width is 100%
+// Test 36: .profile-image max-width is 100%
 test('Your .profile-image selector should have a max-width property with a value of 100%', () => {
   const profileImage = document.querySelector('.profile-image');
   expect(profileImage).toBeTruthy();
@@ -373,7 +349,7 @@ test('Your .profile-image selector should have a max-width property with a value
   expect(foundMaxWidth).toBe(true);
 });
 
-// Test 40: p elements have margin-top and margin-bottom of 5px
+// Test 37: p elements have margin-top and margin-bottom of 5px
 test('Your p elements should have a top and bottom margin of 5px', () => {
   const pElements = document.querySelectorAll('p');
   expect(pElements.length).toBeGreaterThan(0);
@@ -400,7 +376,7 @@ test('Your p elements should have a top and bottom margin of 5px', () => {
   expect(foundMargin).toBe(true);
 });
 
-// Test 41: Links have no underline
+// Test 38: Links have no underline
 test('The links of the page should have no underline', () => {
   const links = document.querySelectorAll('a');
   expect(links.length).toBeGreaterThan(0);

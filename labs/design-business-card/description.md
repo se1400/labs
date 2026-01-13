@@ -30,14 +30,12 @@ You will build a digital business card.
 
 12. Inside the <code>.social-media</code> elements, there should be three <code>a</code> elements. The <code>a</code> elements should have the text <code>Twitter</code>, <code>LinkedIn</code> and <code>GitHub</code> respectively with links to valid websites.
 
-13. You should link the style sheet <code>styles.css</code> using the <code>link</code> tag in the <code>head</code> section of the HTML file.
+13. Your page background should be <code>rosybrown</code>. The overall font should be <code>Arial</code>, with a fallback of <code>sans-serif</code>.
 
-14. Your page background should be <code>rosybrown</code>. The overall font should be <code>Arial</code>, with a fallback of <code>sans-serif</code>.
+14. The <code>.business-card</code> selector should have properties to set the element as <code>300px</code> wide and a background color of your choice. Also you should set a <code>padding</code> of <code>20px</code> all around and a top margin of <code>100px</code>. The text should be center aligned and the font size should be <code>16px</code>. The left and right margins should be set to <code>auto</code>.
 
-15. The <code>.business-card</code> selector should have properties to set the element as <code>300px</code> wide and a background color of your choice. Also you should set a <code>padding</code> of <code>20px</code> all around and a top margin of <code>100px</code>. The text should be center aligned and the font size should be <code>16px</code>. The left and right margins should be set to <code>auto</code>.
+15. The <code>.profile-image</code> selector should have a <code>max-width</code> property with a value of <code>100%</code>.
 
-16. The <code>.profile-image</code> selector should have a <code>max-width</code> property with a value of <code>100%</code>.
+16. All of the <code>p</code> elements should have a top and bottom margin of <code>5px</code>.
 
-17. All of the <code>p</code> elements should have a top and bottom margin of <code>5px</code>.
-
-18. All links on the page should not be underlined.
+17. All links on the page should not be underlined.
