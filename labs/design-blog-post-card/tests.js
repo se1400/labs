@@ -324,16 +324,21 @@ test('Your .post-img element should fill the card\'s width', () => {
   expect(foundWidth).toBe(true);
 });
 
-// Test 22: post-img has border-bottom
+// Test 22: post-img has border-bottom only
 test('Your .post-img element should have a border-bottom value', () => {
-  let foundBorderBottom = false;
+  let foundBorderBottomOnly = false;
   for (let sheet of document.styleSheets) {
     try {
       for (let rule of sheet.cssRules) {
         if (rule.selectorText && rule.selectorText.includes('post-img')) {
-          if ((rule.style.borderBottom && rule.style.borderBottom.length > 0) ||
-              (rule.style.borderBottomWidth && rule.style.borderBottomWidth.length > 0)) {
-            foundBorderBottom = true;
+          const hasBorderBottom = (rule.style.borderBottom && rule.style.borderBottom.length > 0) ||
+                                  (rule.style.borderBottomWidth && rule.style.borderBottomWidth.length > 0);
+          const hasOtherBorders = (rule.style.border && rule.style.border.length > 0) ||
+                                  (rule.style.borderTop && rule.style.borderTop.length > 0) ||
+                                  (rule.style.borderLeft && rule.style.borderLeft.length > 0) ||
+                                  (rule.style.borderRight && rule.style.borderRight.length > 0);
+          if (hasBorderBottom && !hasOtherBorders) {
+            foundBorderBottomOnly = true;
             break;
           }
         }
@@ -341,9 +346,9 @@ test('Your .post-img element should have a border-bottom value', () => {
     } catch (e) {
       // Cross-origin stylesheet, skip
     }
-    if (foundBorderBottom) break;
+    if (foundBorderBottomOnly) break;
   }
-  expect(foundBorderBottom).toBe(true);
+  expect(foundBorderBottomOnly).toBe(true);
 });
 
 // Test 23: post-title and post-excerpt have margins and non-default text colors
