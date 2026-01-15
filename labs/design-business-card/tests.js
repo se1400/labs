@@ -26,7 +26,7 @@ test('The alt attribute of the image should be set to a meaningful description',
   const img = document.querySelector('.profile-image');
   expect(img).toBeTruthy();
   const alt = img.getAttribute('alt');
-  expect(alt).toBeTruthy();
+  expect(alt).not.toBeNull();
   expect(alt.trim().length).toBeGreaterThan(0);
 });
 
