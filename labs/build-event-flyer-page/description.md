@@ -8,7 +8,7 @@ You will build an online event flyer.
 
 1. You should have a <code>header</code> element within the <code>body</code>.
 
-2. Your <code>header</code> element should have an image in it for your event, and an <code>h1</code> in it with your event title, in that order. You can use this image if you would like: <code>https://cdn.freecodecamp.org/curriculum/labs/event.jpg</code>
+2. Your <code>header</code> element should have an image in it for your event, and an <code>h1</code> in it with your event title, in that order. You can use this image if you would like: <code>https://se1400.github.io/labs/assets/event.jpg</code>
 
 3. You should have a <code>main</code> element within the <code>body</code>.
 
