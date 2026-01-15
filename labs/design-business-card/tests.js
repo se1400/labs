@@ -227,12 +227,27 @@ test('You should set the page background color in the body selector to rosybrown
   expect(bgColor).toMatch(/rgb\(188,\s*143,\s*143\)|rosybrown/);
 });
 
-// Test 28: body font-family includes Arial
+// Test 28: body font-family includes Arial with sans-serif fallback
 test('You should set the page font to Arial in the body element with a fallback of sans-serif', () => {
-  const body = document.querySelector('body');
-  const styles = window.getComputedStyle(body);
-  const fontFamily = styles.fontFamily.toLowerCase();
-  expect(fontFamily).toMatch(/arial/);
+  // Check the CSS rules directly to ensure both Arial and sans-serif are specified
+  let foundArialWithFallback = false;
+  for (let sheet of document.styleSheets) {
+    try {
+      for (let rule of sheet.cssRules) {
+        if (rule.selectorText === 'body') {
+          const fontFamily = rule.style.fontFamily.toLowerCase();
+          if (fontFamily.includes('arial') && fontFamily.includes('sans-serif')) {
+            foundArialWithFallback = true;
+            break;
+          }
+        }
+      }
+    } catch (e) {
+      // Cross-origin stylesheet, skip
+    }
+    if (foundArialWithFallback) break;
+  }
+  expect(foundArialWithFallback).toBe(true);
 });
 
 // Test 29: .business-card width is 300px
