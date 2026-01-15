@@ -8,7 +8,7 @@ In this lab, you'll practice how to style backgrounds and borders by creating a 
 
 1. You should have a <code>div</code> element with a class of <code>blog-post-card</code> to hold all of your card elements.
 
-2. Within the <code>.blog-post-card</code> element, you should have an image element with a valid <code>alt</code> attribute and text, and a class of <code>post-img</code>. You can use <code>https://cdn.freecodecamp.org/curriculum/labs/cover-photo.jpg</code> for the <code>src</code> attribute of the image.
+2. Within the <code>.blog-post-card</code> element, you should have an image element with a valid <code>alt</code> attribute and text, and a class of <code>post-img</code>. You can use <code>https://se1400.github.io/labs/assets/cover-photo.jpg</code> for the <code>src</code> attribute of the image.
 
 3. You should have a <code>div</code> with a class of <code>post-content</code> within the <code>.blog-post-card</code> element with the following:
    - An <code>h2</code> element with a class of <code>post-title</code> and text for the title of your blog post.
