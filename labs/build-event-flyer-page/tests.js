@@ -215,7 +215,8 @@ test('The width of your section elements should be set using a percent value', (
     try {
       for (let rule of sheet.cssRules) {
         if (rule.selectorText && rule.selectorText === 'section') {
-          if (rule.style.width && rule.style.width.includes('%')) {
+          const width = rule.style.getPropertyValue('width');
+          if (width && width.includes('%')) {
             foundPercentWidth = true;
             break;
           }
