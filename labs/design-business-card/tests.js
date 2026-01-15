@@ -285,15 +285,31 @@ test('The text inside the .business-card element should be center-aligned', () =
 test('The font size of the text inside the .business-card element should be 16px', () => {
   const businessCard = document.querySelector('.business-card');
   expect(businessCard).toBeTruthy();
-  const styles = window.getComputedStyle(businessCard);
-  expect(styles.fontSize).toBe('16px');
+
+  // Check if .business-card selector has font-size: 16px in CSS
+  let foundFontSize = false;
+  for (let sheet of document.styleSheets) {
+    try {
+      for (let rule of sheet.cssRules) {
+        if (rule.selectorText && rule.selectorText.includes('business-card')) {
+          if (rule.style.fontSize === '16px') {
+            foundFontSize = true;
+            break;
+          }
+        }
+      }
+    } catch (e) {
+      // Cross-origin stylesheet, skip
+    }
+    if (foundFontSize) break;
+  }
+  expect(foundFontSize).toBe(true);
 });
 
 // Test 35: .business-card margin-left and margin-right are auto
 test('The left and right margins of the .business-card element should be set to auto', () => {
   const businessCard = document.querySelector('.business-card');
   expect(businessCard).toBeTruthy();
-  const styles = window.getComputedStyle(businessCard);
   // Computed styles for auto margins will show as pixel values,
   // so we need to check the stylesheet or inline styles
   const inlineStyle = businessCard.style;
@@ -328,7 +344,6 @@ test('The left and right margins of the .business-card element should be set to 
 test('Your .profile-image selector should have a max-width property with a value of 100%', () => {
   const profileImage = document.querySelector('.profile-image');
   expect(profileImage).toBeTruthy();
-  const styles = window.getComputedStyle(profileImage);
   // max-width: 100% may compute differently, check CSS rules
   let foundMaxWidth = false;
   for (let sheet of document.styleSheets) {
