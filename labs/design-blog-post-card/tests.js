@@ -240,14 +240,14 @@ test('You should target .read-more and set its margin property', () => {
   expect(foundMargin).toBe(true);
 });
 
-// Test 18: read-more has display property
-test('You should target .read-more and set its display property', () => {
+// Test 18: read-more has display property set to inline-block
+test('You should target .read-more and set its display property to inline-block', () => {
   let foundDisplay = false;
   for (let sheet of document.styleSheets) {
     try {
       for (let rule of sheet.cssRules) {
         if (rule.selectorText && rule.selectorText.includes('read-more') && !rule.selectorText.includes(':')) {
-          if (rule.style.display && rule.style.display.length > 0) {
+          if (rule.style.display === 'inline-block') {
             foundDisplay = true;
             break;
           }
