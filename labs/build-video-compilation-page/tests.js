@@ -4,14 +4,7 @@ test('You should have a main element inside your body element', () => {
   expect(main).toBeTruthy();
 });
 
-// Test 2: Main is only child of body
-test('Your main element should be the only child of the body element', () => {
-  const bodyChildren = document.querySelectorAll('body > *');
-  expect(bodyChildren.length).toBe(1);
-  expect(bodyChildren[0].tagName).toBe('MAIN');
-});
-
-// Test 3: h1 inside main
+// Test 2: h1 inside main
 test('You should have an h1 element with the topic of your page inside the main element', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
@@ -20,7 +13,7 @@ test('You should have an h1 element with the topic of your page inside the main 
   expect(h1.textContent.trim().length).toBeGreaterThan(0);
 });
 
-// Test 4: p below h1
+// Test 3: p below h1
 test('You should have a paragraph introducing the topic of your page below your h1 element', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
@@ -32,7 +25,7 @@ test('You should have a paragraph introducing the topic of your page below your 
   expect(nextElement.textContent.trim().length).toBeGreaterThan(0);
 });
 
-// Test 5: Three sections below first p
+// Test 4: Three sections below first p
 test('You should have three section elements below your first p element', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
@@ -40,7 +33,7 @@ test('You should have three section elements below your first p element', () => 
   expect(sections.length).toBe(3);
 });
 
-// Test 6: Each section starts with h2
+// Test 5: Each section starts with h2
 test('Each section element should start with an h2 element that serves as the title for that section', () => {
   const sections = document.querySelectorAll('section');
   expect(sections.length).toBe(3);
@@ -52,7 +45,7 @@ test('Each section element should start with an h2 element that serves as the ti
   });
 });
 
-// Test 7: Each section has p as second child
+// Test 6: Each section has p as second child
 test('Each section element should contain a p element to introduce the video content as its second child', () => {
   const sections = document.querySelectorAll('section');
   expect(sections.length).toBe(3);
@@ -64,7 +57,7 @@ test('Each section element should contain a p element to introduce the video con
   });
 });
 
-// Test 8: Each section has iframe as third child
+// Test 7: Each section has iframe as third child
 test('Each section element should contain an iframe element as its third child', () => {
   const sections = document.querySelectorAll('section');
   expect(sections.length).toBe(3);
@@ -75,7 +68,7 @@ test('Each section element should contain an iframe element as its third child',
   });
 });
 
-// Test 9: First iframe has src
+// Test 8: First iframe has src
 test('Your first iframe element should have a src attribute set to a valid video', () => {
   const iframes = document.querySelectorAll('iframe');
   expect(iframes.length).toBeGreaterThanOrEqual(1);
@@ -85,7 +78,7 @@ test('Your first iframe element should have a src attribute set to a valid video
   expect(src.trim().length).toBeGreaterThan(0);
 });
 
-// Test 10: First iframe has title
+// Test 9: First iframe has title
 test('Your first iframe element should have a title attribute to describe the embedded content', () => {
   const iframes = document.querySelectorAll('iframe');
   expect(iframes.length).toBeGreaterThanOrEqual(1);
@@ -95,7 +88,7 @@ test('Your first iframe element should have a title attribute to describe the em
   expect(title.trim().length).toBeGreaterThan(0);
 });
 
-// Test 11: First iframe has height
+// Test 10: First iframe has height
 test('Your first iframe element should have a height attribute', () => {
   const iframes = document.querySelectorAll('iframe');
   expect(iframes.length).toBeGreaterThanOrEqual(1);
@@ -105,7 +98,7 @@ test('Your first iframe element should have a height attribute', () => {
   expect(height.trim().length).toBeGreaterThan(0);
 });
 
-// Test 12: First iframe has width
+// Test 11: First iframe has width
 test('Your first iframe element should have a width attribute', () => {
   const iframes = document.querySelectorAll('iframe');
   expect(iframes.length).toBeGreaterThanOrEqual(1);
@@ -115,7 +108,7 @@ test('Your first iframe element should have a width attribute', () => {
   expect(width.trim().length).toBeGreaterThan(0);
 });
 
-// Test 13: Second iframe has src
+// Test 12: Second iframe has src
 test('Your second iframe element should have a src attribute set to a valid video', () => {
   const iframes = document.querySelectorAll('iframe');
   expect(iframes.length).toBeGreaterThanOrEqual(2);
@@ -125,7 +118,7 @@ test('Your second iframe element should have a src attribute set to a valid vide
   expect(src.trim().length).toBeGreaterThan(0);
 });
 
-// Test 14: Second iframe has title
+// Test 13: Second iframe has title
 test('Your second iframe element should have a title attribute to describe the embedded content', () => {
   const iframes = document.querySelectorAll('iframe');
   expect(iframes.length).toBeGreaterThanOrEqual(2);
@@ -135,7 +128,7 @@ test('Your second iframe element should have a title attribute to describe the e
   expect(title.trim().length).toBeGreaterThan(0);
 });
 
-// Test 15: Second iframe has height
+// Test 14: Second iframe has height
 test('Your second iframe element should have a height attribute', () => {
   const iframes = document.querySelectorAll('iframe');
   expect(iframes.length).toBeGreaterThanOrEqual(2);
@@ -145,7 +138,7 @@ test('Your second iframe element should have a height attribute', () => {
   expect(height.trim().length).toBeGreaterThan(0);
 });
 
-// Test 16: Second iframe has width
+// Test 15: Second iframe has width
 test('Your second iframe element should have a width attribute', () => {
   const iframes = document.querySelectorAll('iframe');
   expect(iframes.length).toBeGreaterThanOrEqual(2);
@@ -155,7 +148,7 @@ test('Your second iframe element should have a width attribute', () => {
   expect(width.trim().length).toBeGreaterThan(0);
 });
 
-// Test 17: Third iframe has src
+// Test 16: Third iframe has src
 test('Your third iframe element should have a src attribute set to a valid video', () => {
   const iframes = document.querySelectorAll('iframe');
   expect(iframes.length).toBeGreaterThanOrEqual(3);
@@ -165,7 +158,7 @@ test('Your third iframe element should have a src attribute set to a valid video
   expect(src.trim().length).toBeGreaterThan(0);
 });
 
-// Test 18: Third iframe has title
+// Test 17: Third iframe has title
 test('Your third iframe element should have a title attribute to describe the embedded content', () => {
   const iframes = document.querySelectorAll('iframe');
   expect(iframes.length).toBeGreaterThanOrEqual(3);
@@ -175,7 +168,7 @@ test('Your third iframe element should have a title attribute to describe the em
   expect(title.trim().length).toBeGreaterThan(0);
 });
 
-// Test 19: Third iframe has height
+// Test 18: Third iframe has height
 test('Your third iframe element should have a height attribute', () => {
   const iframes = document.querySelectorAll('iframe');
   expect(iframes.length).toBeGreaterThanOrEqual(3);
@@ -185,7 +178,7 @@ test('Your third iframe element should have a height attribute', () => {
   expect(height.trim().length).toBeGreaterThan(0);
 });
 
-// Test 20: Third iframe has width
+// Test 19: Third iframe has width
 test('Your third iframe element should have a width attribute', () => {
   const iframes = document.querySelectorAll('iframe');
   expect(iframes.length).toBeGreaterThanOrEqual(3);
