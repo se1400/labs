@@ -68,7 +68,7 @@ In this lab, you'll practice structuring an HTML document using semantic element
 
 25. Inside your <code>&lt;footer&gt;</code>, add an <code>&lt;hr&gt;</code> element. This creates a horizontal line and is self-closing (no closing tag needed).
 
-26. After the <code>&lt;hr&gt;</code> but still inside the <code>&lt;footer&gt;</code>, add a <code>&lt;p&gt;</code> element with the text <code>Copyright 2027 Utah Tech University</code> between the opening and closing tags.
+26. After the <code>&lt;hr&gt;</code> but still inside the <code>&lt;footer&gt;</code>, add a <code>&lt;p&gt;</code> element with the text <code>Copyright</code> followed by the current year and <code>Utah Tech University</code> between the opening and closing tags. For example: <code>Copyright 2025 Utah Tech University</code>.
 
 27. After that <code>&lt;p&gt;</code> element but still inside the <code>&lt;footer&gt;</code>, add an <code>&lt;address&gt;</code> element. Inside this element, add the text <code>225 S 700 E</code>, then add a <code>&lt;br&gt;</code> element, then add the text <code>St. George, UT 84770</code>. Close with <code>&lt;/address&gt;</code>.
 
