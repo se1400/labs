@@ -25,17 +25,40 @@ test('Your html element should contain a head element followed by a body element
   expect(headIndex).toBeLessThan(bodyIndex);
 });
 
+// Helper: Detect if running in LiveCodes (where head content gets moved to body)
+const isLiveCodes = () => {
+  return document.querySelector('head > script#message-script') !== null ||
+         document.querySelector('head > title')?.textContent === 'Untitled Project';
+};
+
 // Test 4: Meta charset inside head
+// Note: In LiveCodes, student's head content ends up in body, so we check there
+// to verify the student actually wrote it (not just LiveCodes's injected meta)
 test('Your head element should contain a meta element with charset attribute set to "utf-8"', () => {
-  const meta = document.querySelector('head > meta[charset]');
-  expect(meta).toBeTruthy();
-  expect(meta.getAttribute('charset').toLowerCase()).toBe('utf-8');
+  if (isLiveCodes()) {
+    // In LiveCodes, student's meta must be in body (proves they wrote it)
+    const metaInBody = document.querySelector('body > meta[charset]');
+    expect(metaInBody).toBeTruthy();
+    expect(metaInBody.getAttribute('charset').toLowerCase()).toBe('utf-8');
+  } else {
+    // Non-LiveCodes: check head normally
+    const metaInHead = document.querySelector('head > meta[charset]');
+    expect(metaInHead).toBeTruthy();
+    expect(metaInHead.getAttribute('charset').toLowerCase()).toBe('utf-8');
+  }
 });
 
 // Test 5: Meta viewport inside head
 // Accept both initial-scale=1 and initial-scale=1.0, and any order
 test('Your head element should contain a meta element with name="viewport" and correct content', () => {
-  const meta = document.querySelector('head > meta[name="viewport"]');
+  let meta;
+  if (isLiveCodes()) {
+    // In LiveCodes, student's meta must be in body (proves they wrote it)
+    meta = document.querySelector('body > meta[name="viewport"]');
+  } else {
+    // Non-LiveCodes: check head normally
+    meta = document.querySelector('head > meta[name="viewport"]');
+  }
   expect(meta).toBeTruthy();
   const content = meta.getAttribute('content');
   expect(content).toBeTruthy();
