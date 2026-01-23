@@ -48,19 +48,30 @@ test('Your head element should contain a meta element with name="viewport" and c
 });
 
 // Test 6: Title element with correct text
+// Note: In LiveCodes, title may end up in body, so we search anywhere
 test('Your head element should contain a title element with the text "Utah Tech University"', () => {
-  const title = document.querySelector('head > title');
-  expect(title).toBeTruthy();
-  expect(title.textContent.trim()).toBe('Utah Tech University');
+  const titles = document.querySelectorAll('title');
+  let found = false;
+  for (const title of titles) {
+    if (title.textContent.trim() === 'Utah Tech University') {
+      found = true;
+      break;
+    }
+  }
+  expect(found).toBe(true);
 });
+
+// Helper: Filter out elements that don't belong in body (injected by LiveCodes or moved from head)
+const HEAD_ELEMENTS = ['SCRIPT', 'STYLE', 'META', 'TITLE', 'LINK', 'BASE'];
+const filterBodyChildren = (body) => {
+  return Array.from(body.children).filter(el => !HEAD_ELEMENTS.includes(el.tagName));
+};
 
 // Test 7: Header element as first element in body
 test('Your body element should have a header element as its first child', () => {
   const body = document.querySelector('body');
   expect(body).toBeTruthy();
-  const children = Array.from(body.children).filter(el =>
-    el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE'
-  );
+  const children = filterBodyChildren(body);
   expect(children.length).toBeGreaterThan(0);
   expect(children[0].tagName).toBe('HEADER');
 });
@@ -101,9 +112,7 @@ test('Your body should have a nav element after the header with the text "Home |
   const text = nav.textContent.replace(/\s+/g, ' ').trim();
   expect(text).toBe('Home | Admissions | Academics | Campus Life');
   // Verify nav comes after header
-  const children = Array.from(body.children).filter(el =>
-    el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE'
-  );
+  const children = filterBodyChildren(body);
   const headerIndex = children.indexOf(header);
   const navIndex = children.indexOf(nav);
   expect(navIndex).toBeGreaterThan(headerIndex);
@@ -118,9 +127,7 @@ test('Your body should have a main element after the nav', () => {
   expect(nav).toBeTruthy();
   expect(main).toBeTruthy();
   // Verify main comes after nav
-  const children = Array.from(body.children).filter(el =>
-    el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE'
-  );
+  const children = filterBodyChildren(body);
   const navIndex = children.indexOf(nav);
   const mainIndex = children.indexOf(main);
   expect(mainIndex).toBeGreaterThan(navIndex);
@@ -283,9 +290,7 @@ test('Your body should have a footer element after the main', () => {
   expect(main).toBeTruthy();
   expect(footer).toBeTruthy();
   // Verify footer comes after main
-  const children = Array.from(body.children).filter(el =>
-    el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE'
-  );
+  const children = filterBodyChildren(body);
   const mainIndex = children.indexOf(main);
   const footerIndex = children.indexOf(footer);
   expect(footerIndex).toBeGreaterThan(mainIndex);
