@@ -12,12 +12,17 @@ test('Your html element should have a lang attribute set to "en"', () => {
   expect(html.getAttribute('lang')).toBe('en');
 });
 
-// Test 3: Head and body elements inside html
-test('Your html element should contain a head element and a body element', () => {
+// Test 3: Head and body elements inside html (head before body)
+test('Your html element should contain a head element followed by a body element', () => {
   const head = document.querySelector('html > head');
   const body = document.querySelector('html > body');
   expect(head).toBeTruthy();
   expect(body).toBeTruthy();
+  // Verify head comes before body
+  const htmlChildren = Array.from(document.documentElement.children);
+  const headIndex = htmlChildren.indexOf(head);
+  const bodyIndex = htmlChildren.indexOf(body);
+  expect(headIndex).toBeLessThan(bodyIndex);
 });
 
 // Test 4: Meta charset inside head
@@ -28,7 +33,7 @@ test('Your head element should contain a meta element with charset attribute set
 });
 
 // Test 5: Meta viewport inside head
-// Fixed: Accept both initial-scale=1 and initial-scale=1.0, and any order
+// Accept both initial-scale=1 and initial-scale=1.0, and any order
 test('Your head element should contain a meta element with name="viewport" and correct content', () => {
   const meta = document.querySelector('head > meta[name="viewport"]');
   expect(meta).toBeTruthy();
@@ -43,7 +48,6 @@ test('Your head element should contain a meta element with name="viewport" and c
 });
 
 // Test 6: Title element with correct text
-// Fixed: Trim whitespace
 test('Your head element should contain a title element with the text "Utah Tech University"', () => {
   const title = document.querySelector('head > title');
   expect(title).toBeTruthy();
@@ -62,7 +66,6 @@ test('Your body element should have a header element as its first child', () => 
 });
 
 // Test 8: H1 inside header with correct text
-// Fixed: Trim whitespace
 test('Your header element should contain an h1 element with the text "Utah Tech University"', () => {
   const header = document.querySelector('body > header');
   expect(header).toBeTruthy();
@@ -71,8 +74,7 @@ test('Your header element should contain an h1 element with the text "Utah Tech 
   expect(h1.textContent.trim()).toBe('Utah Tech University');
 });
 
-// Test 9: Paragraph inside header with tagline
-// Fixed: Trim whitespace and verify p comes after h1
+// Test 9: Paragraph inside header with tagline, after h1
 test('Your header element should contain a p element with the text "Active Learning. Active Life." after the h1', () => {
   const header = document.querySelector('body > header');
   expect(header).toBeTruthy();
@@ -89,18 +91,39 @@ test('Your header element should contain a p element with the text "Active Learn
 });
 
 // Test 10: Nav element after header with correct text
-// Fixed: Normalize multiple spaces
-test('Your body should have a nav element with the text "Home | Admissions | Academics | Campus Life"', () => {
-  const nav = document.querySelector('body > nav');
+test('Your body should have a nav element after the header with the text "Home | Admissions | Academics | Campus Life"', () => {
+  const body = document.querySelector('body');
+  expect(body).toBeTruthy();
+  const header = body.querySelector('header');
+  const nav = body.querySelector('nav');
+  expect(header).toBeTruthy();
   expect(nav).toBeTruthy();
   const text = nav.textContent.replace(/\s+/g, ' ').trim();
   expect(text).toBe('Home | Admissions | Academics | Campus Life');
+  // Verify nav comes after header
+  const children = Array.from(body.children).filter(el =>
+    el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE'
+  );
+  const headerIndex = children.indexOf(header);
+  const navIndex = children.indexOf(nav);
+  expect(navIndex).toBeGreaterThan(headerIndex);
 });
 
 // Test 11: Main element after nav
-test('Your body should have a main element', () => {
-  const main = document.querySelector('body > main');
+test('Your body should have a main element after the nav', () => {
+  const body = document.querySelector('body');
+  expect(body).toBeTruthy();
+  const nav = body.querySelector('nav');
+  const main = body.querySelector('main');
+  expect(nav).toBeTruthy();
   expect(main).toBeTruthy();
+  // Verify main comes after nav
+  const children = Array.from(body.children).filter(el =>
+    el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE'
+  );
+  const navIndex = children.indexOf(nav);
+  const mainIndex = children.indexOf(main);
+  expect(mainIndex).toBeGreaterThan(navIndex);
 });
 
 // Test 12: First section inside main
@@ -112,7 +135,6 @@ test('Your main element should contain at least one section element', () => {
 });
 
 // Test 13: H2 inside first section with correct text
-// Fixed: Trim whitespace
 test('Your first section should contain an h2 element with the text "Welcome to Utah Tech"', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
@@ -123,20 +145,25 @@ test('Your first section should contain an h2 element with the text "Welcome to 
   expect(h2.textContent.trim()).toBe('Welcome to Utah Tech');
 });
 
-// Test 14: First paragraph in first section
-// Fixed: Trim whitespace
-test('Your first section should contain a paragraph about Utah Tech being located in St. George', () => {
+// Test 14: First paragraph in first section, after h2
+test('Your first section should contain a paragraph about Utah Tech being located in St. George, after the h2', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
   const firstSection = main.querySelector('section');
   expect(firstSection).toBeTruthy();
+  const h2 = firstSection.querySelector('h2');
+  expect(h2).toBeTruthy();
   const paragraphs = firstSection.querySelectorAll('p');
   expect(paragraphs.length).toBeGreaterThanOrEqual(1);
   expect(paragraphs[0].textContent.trim()).toBe('Utah Tech University is located in St. George, Utah. Our campus sits at the base of beautiful red rock cliffs in Southern Utah.');
+  // Verify first paragraph comes after h2
+  const children = Array.from(firstSection.children);
+  const h2Index = children.indexOf(h2);
+  const pIndex = children.indexOf(paragraphs[0]);
+  expect(pIndex).toBeGreaterThan(h2Index);
 });
 
 // Test 15: Second paragraph in first section
-// Fixed: Trim whitespace
 test('Your first section should contain a second paragraph about active learning', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
@@ -156,7 +183,6 @@ test('Your main element should contain two section elements', () => {
 });
 
 // Test 17: H3 inside second section
-// Fixed: Trim whitespace
 test('Your second section should contain an h3 element with the text "Why Choose Utah Tech?"', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
@@ -168,7 +194,6 @@ test('Your second section should contain an h3 element with the text "Why Choose
 });
 
 // Test 18: First paragraph in second section
-// Fixed: Trim whitespace
 test('Your second section should have a paragraph with "Small class sizes with hands-on learning."', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
@@ -180,7 +205,6 @@ test('Your second section should have a paragraph with "Small class sizes with h
 });
 
 // Test 19: Second paragraph in second section
-// Fixed: Trim whitespace
 test('Your second section should have a paragraph with "Over 200 programs to choose from."', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
@@ -192,7 +216,6 @@ test('Your second section should have a paragraph with "Over 200 programs to cho
 });
 
 // Test 20: Third paragraph in second section
-// Fixed: Trim whitespace
 test('Your second section should have a paragraph with "Beautiful weather and outdoor adventures."', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
@@ -203,16 +226,22 @@ test('Your second section should have a paragraph with "Beautiful weather and ou
   expect(paragraphs[2].textContent.trim()).toBe('Beautiful weather and outdoor adventures.');
 });
 
-// Test 21: Aside element inside main
-test('Your main element should contain an aside element', () => {
+// Test 21: Aside element inside main, after sections
+test('Your main element should contain an aside element after the sections', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
+  const sections = main.querySelectorAll('section');
   const aside = main.querySelector('aside');
+  expect(sections.length).toBeGreaterThanOrEqual(2);
   expect(aside).toBeTruthy();
+  // Verify aside comes after the last section
+  const children = Array.from(main.children);
+  const lastSectionIndex = children.indexOf(sections[sections.length - 1]);
+  const asideIndex = children.indexOf(aside);
+  expect(asideIndex).toBeGreaterThan(lastSectionIndex);
 });
 
 // Test 22: H4 inside aside
-// Fixed: Trim whitespace
 test('Your aside element should contain an h4 element with the text "Visit Campus"', () => {
   const aside = document.querySelector('main > aside');
   expect(aside).toBeTruthy();
@@ -221,12 +250,13 @@ test('Your aside element should contain an h4 element with the text "Visit Campu
   expect(h4.textContent.trim()).toBe('Visit Campus');
 });
 
-// Test 23: Paragraph with br inside aside
-// Fixed: Verify text order (Schedule before Call us)
-test('Your aside should have a paragraph with "Schedule a tour today!", a br element, and "Call us at (435) 652-7500"', () => {
+// Test 23: Paragraph with br inside aside, after h4
+test('Your aside should have a paragraph after the h4 with "Schedule a tour today!", a br element, and "Call us at (435) 652-7500"', () => {
   const aside = document.querySelector('main > aside');
   expect(aside).toBeTruthy();
+  const h4 = aside.querySelector('h4');
   const p = aside.querySelector('p');
+  expect(h4).toBeTruthy();
   expect(p).toBeTruthy();
   const br = p.querySelector('br');
   expect(br).toBeTruthy();
@@ -237,28 +267,48 @@ test('Your aside should have a paragraph with "Schedule a tour today!", a br ele
   const scheduleIndex = text.indexOf('Schedule a tour today!');
   const callIndex = text.indexOf('Call us at (435) 652-7500');
   expect(scheduleIndex).toBeLessThan(callIndex);
+  // Verify p comes after h4
+  const children = Array.from(aside.children);
+  const h4Index = children.indexOf(h4);
+  const pIndex = children.indexOf(p);
+  expect(pIndex).toBeGreaterThan(h4Index);
 });
 
-// Test 24: Footer element in body
-test('Your body should have a footer element', () => {
-  const footer = document.querySelector('body > footer');
+// Test 24: Footer element in body, after main
+test('Your body should have a footer element after the main', () => {
+  const body = document.querySelector('body');
+  expect(body).toBeTruthy();
+  const main = body.querySelector('main');
+  const footer = body.querySelector('footer');
+  expect(main).toBeTruthy();
   expect(footer).toBeTruthy();
+  // Verify footer comes after main
+  const children = Array.from(body.children).filter(el =>
+    el.tagName !== 'SCRIPT' && el.tagName !== 'STYLE'
+  );
+  const mainIndex = children.indexOf(main);
+  const footerIndex = children.indexOf(footer);
+  expect(footerIndex).toBeGreaterThan(mainIndex);
 });
 
-// Test 25: Hr element inside footer
-test('Your footer element should contain an hr element', () => {
+// Test 25: Hr element inside footer (first element)
+test('Your footer element should start with an hr element', () => {
   const footer = document.querySelector('body > footer');
   expect(footer).toBeTruthy();
   const hr = footer.querySelector('hr');
   expect(hr).toBeTruthy();
+  // Verify hr is first element in footer
+  const firstChild = footer.children[0];
+  expect(firstChild.tagName).toBe('HR');
 });
 
-// Test 26: Copyright paragraph in footer
-// Fixed: Validate year is reasonable (2020-2099), verify order
-test('Your footer should contain a paragraph with "Copyright", the current year, and "Utah Tech University"', () => {
+// Test 26: Copyright paragraph in footer, after hr
+test('Your footer should contain a paragraph after the hr with "Copyright", the current year, and "Utah Tech University"', () => {
   const footer = document.querySelector('body > footer');
   expect(footer).toBeTruthy();
+  const hr = footer.querySelector('hr');
   const paragraphs = footer.querySelectorAll('p');
+  expect(hr).toBeTruthy();
   expect(paragraphs.length).toBeGreaterThanOrEqual(1);
   const copyrightP = paragraphs[0];
   const text = copyrightP.textContent;
@@ -273,14 +323,20 @@ test('Your footer should contain a paragraph with "Copyright", the current year,
   const utahTechIndex = text.indexOf('Utah Tech University');
   expect(copyrightIndex).toBeLessThan(yearIndex);
   expect(yearIndex).toBeLessThan(utahTechIndex);
+  // Verify p comes after hr
+  const children = Array.from(footer.children);
+  const hrIndex = children.indexOf(hr);
+  const pIndex = children.indexOf(copyrightP);
+  expect(pIndex).toBeGreaterThan(hrIndex);
 });
 
-// Test 27: Address element in footer with br
-// Fixed: Verify text order
-test('Your footer should contain an address element with "225 S 700 E", a br element, and "St. George, UT 84770"', () => {
+// Test 27: Address element in footer with br, after copyright p
+test('Your footer should contain an address element after the copyright paragraph with "225 S 700 E", a br element, and "St. George, UT 84770"', () => {
   const footer = document.querySelector('body > footer');
   expect(footer).toBeTruthy();
+  const paragraphs = footer.querySelectorAll('p');
   const address = footer.querySelector('address');
+  expect(paragraphs.length).toBeGreaterThanOrEqual(1);
   expect(address).toBeTruthy();
   const br = address.querySelector('br');
   expect(br).toBeTruthy();
@@ -291,4 +347,9 @@ test('Your footer should contain an address element with "225 S 700 E", a br ele
   const streetIndex = text.indexOf('225 S 700 E');
   const cityIndex = text.indexOf('St. George, UT 84770');
   expect(streetIndex).toBeLessThan(cityIndex);
+  // Verify address comes after the copyright paragraph
+  const children = Array.from(footer.children);
+  const pIndex = children.indexOf(paragraphs[0]);
+  const addressIndex = children.indexOf(address);
+  expect(addressIndex).toBeGreaterThan(pIndex);
 });
