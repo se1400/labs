@@ -63,10 +63,12 @@ const filterBodyChildren = (body) => {
   return Array.from(body.children).filter(el => !HEAD_ELEMENTS.includes(el.tagName));
 };
 
-// Test 4: Header element as first element in body
+// Test 4: Header element as first element in body (direct child)
 test('Your <code>&lt;body&gt;</code> should have a <code>&lt;header&gt;</code> element as its first child', () => {
   const body = document.querySelector('body');
   expect(body).toBeTruthy();
+  const header = document.querySelector('body > header');
+  expect(header).toBeTruthy();
   const children = filterBodyChildren(body);
   expect(children.length).toBeGreaterThan(0);
   expect(children[0].tagName).toBe('HEADER');
@@ -97,51 +99,53 @@ test('Your <code>&lt;header&gt;</code> element should contain a <code>&lt;p&gt;<
   expect(pIndex).toBeGreaterThan(h1Index);
 });
 
-// Test 7: Nav element after header with correct text
+// Test 7: Nav element after header with correct text (direct child of body)
 test('Your <code>&lt;body&gt;</code> should have a <code>&lt;nav&gt;</code> element after the <code>&lt;header&gt;</code> with the text <code>Home | Admissions | Academics | Campus Life</code>', () => {
   const body = document.querySelector('body');
   expect(body).toBeTruthy();
-  const header = body.querySelector('header');
-  const nav = body.querySelector('nav');
+  const header = document.querySelector('body > header');
+  const nav = document.querySelector('body > nav');
   expect(header).toBeTruthy();
   expect(nav).toBeTruthy();
   const text = nav.textContent.replace(/\s+/g, ' ').trim();
   expect(text).toBe('Home | Admissions | Academics | Campus Life');
-  // Verify nav comes after header
+  // Verify nav comes after header (both are siblings in body)
   const children = filterBodyChildren(body);
   const headerIndex = children.indexOf(header);
   const navIndex = children.indexOf(nav);
+  expect(headerIndex).toBeGreaterThanOrEqual(0);
   expect(navIndex).toBeGreaterThan(headerIndex);
 });
 
-// Test 8: Main element after nav
+// Test 8: Main element after nav (direct child of body)
 test('Your <code>&lt;body&gt;</code> should have a <code>&lt;main&gt;</code> element after the <code>&lt;nav&gt;</code>', () => {
   const body = document.querySelector('body');
   expect(body).toBeTruthy();
-  const nav = body.querySelector('nav');
-  const main = body.querySelector('main');
+  const nav = document.querySelector('body > nav');
+  const main = document.querySelector('body > main');
   expect(nav).toBeTruthy();
   expect(main).toBeTruthy();
-  // Verify main comes after nav
+  // Verify main comes after nav (both are siblings in body)
   const children = filterBodyChildren(body);
   const navIndex = children.indexOf(nav);
   const mainIndex = children.indexOf(main);
+  expect(navIndex).toBeGreaterThanOrEqual(0);
   expect(mainIndex).toBeGreaterThan(navIndex);
 });
 
-// Test 9: First section inside main
-test('Your <code>&lt;main&gt;</code> element should contain at least one <code>&lt;section&gt;</code> element', () => {
+// Test 9: Two sections inside main
+test('Your <code>&lt;main&gt;</code> element should contain two <code>&lt;section&gt;</code> elements', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
-  const sections = main.querySelectorAll('section');
-  expect(sections.length).toBeGreaterThanOrEqual(1);
+  const sections = main.querySelectorAll('main > section');
+  expect(sections.length).toBeGreaterThanOrEqual(2);
 });
 
 // Test 10: H2 inside first section with correct text
 test('Your first <code>&lt;section&gt;</code> should contain an <code>&lt;h2&gt;</code> element with the text <code>Welcome to Utah Tech</code>', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
-  const firstSection = main.querySelector('section');
+  const firstSection = document.querySelector('main > section');
   expect(firstSection).toBeTruthy();
   const h2 = firstSection.querySelector('h2');
   expect(h2).toBeTruthy();
@@ -152,7 +156,7 @@ test('Your first <code>&lt;section&gt;</code> should contain an <code>&lt;h2&gt;
 test('Your first <code>&lt;section&gt;</code> should contain at least one <code>&lt;p&gt;</code> element describing Utah Tech', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
-  const firstSection = main.querySelector('section');
+  const firstSection = document.querySelector('main > section');
   expect(firstSection).toBeTruthy();
   const paragraphs = firstSection.querySelectorAll('p');
   expect(paragraphs.length).toBeGreaterThanOrEqual(1);
@@ -167,30 +171,22 @@ test('Your first <code>&lt;section&gt;</code> should contain at least one <code>
   expect(hasContent).toBe(true);
 });
 
-// Test 12: Second section inside main
-test('Your <code>&lt;main&gt;</code> element should contain two <code>&lt;section&gt;</code> elements', () => {
-  const main = document.querySelector('main');
-  expect(main).toBeTruthy();
-  const sections = main.querySelectorAll('section');
-  expect(sections.length).toBeGreaterThanOrEqual(2);
-});
-
-// Test 13: H3 inside second section
+// Test 12: H3 inside second section
 test('Your second <code>&lt;section&gt;</code> should contain an <code>&lt;h3&gt;</code> element with the text <code>Why Choose Utah Tech?</code>', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
-  const sections = main.querySelectorAll('section');
+  const sections = main.querySelectorAll('main > section');
   expect(sections.length).toBeGreaterThanOrEqual(2);
   const h3 = sections[1].querySelector('h3');
   expect(h3).toBeTruthy();
   expect(h3.textContent.trim()).toBe('Why Choose Utah Tech?');
 });
 
-// Test 14: At least one paragraph in second section with content
+// Test 13: At least one paragraph in second section with content
 test('Your second <code>&lt;section&gt;</code> should contain at least one <code>&lt;p&gt;</code> element about reasons to choose Utah Tech', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
-  const sections = main.querySelectorAll('section');
+  const sections = main.querySelectorAll('main > section');
   expect(sections.length).toBeGreaterThanOrEqual(2);
   const paragraphs = sections[1].querySelectorAll('p');
   expect(paragraphs.length).toBeGreaterThanOrEqual(1);
@@ -205,12 +201,12 @@ test('Your second <code>&lt;section&gt;</code> should contain at least one <code
   expect(hasContent).toBe(true);
 });
 
-// Test 15: Aside element inside main, after sections
+// Test 14: Aside element inside main, after sections (direct child)
 test('Your <code>&lt;main&gt;</code> element should contain an <code>&lt;aside&gt;</code> element after the <code>&lt;section&gt;</code> elements', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
-  const sections = main.querySelectorAll('section');
-  const aside = main.querySelector('aside');
+  const sections = main.querySelectorAll('main > section');
+  const aside = document.querySelector('main > aside');
   expect(sections.length).toBeGreaterThanOrEqual(2);
   expect(aside).toBeTruthy();
   // Verify aside comes after the last section
@@ -220,18 +216,18 @@ test('Your <code>&lt;main&gt;</code> element should contain an <code>&lt;aside&g
   expect(asideIndex).toBeGreaterThan(lastSectionIndex);
 });
 
-// Test 16: H4 inside aside
+// Test 15: H4 inside aside
 test('Your <code>&lt;aside&gt;</code> element should contain an <code>&lt;h4&gt;</code> element with the text <code>Visit Campus</code>', () => {
-  const aside = document.querySelector('main aside');
+  const aside = document.querySelector('main > aside');
   expect(aside).toBeTruthy();
   const h4 = aside.querySelector('h4');
   expect(h4).toBeTruthy();
   expect(h4.textContent.trim()).toBe('Visit Campus');
 });
 
-// Test 17: Paragraph with br inside aside, after h4
+// Test 16: Paragraph with br inside aside, after h4
 test('Your <code>&lt;aside&gt;</code> should have a <code>&lt;p&gt;</code> element with a call to action and a <code>&lt;br&gt;</code> element after the <code>&lt;h4&gt;</code>', () => {
-  const aside = document.querySelector('main aside');
+  const aside = document.querySelector('main > aside');
   expect(aside).toBeTruthy();
   const h4 = aside.querySelector('h4');
   const p = aside.querySelector('p');
@@ -249,24 +245,25 @@ test('Your <code>&lt;aside&gt;</code> should have a <code>&lt;p&gt;</code> eleme
   expect(pIndex).toBeGreaterThan(h4Index);
 });
 
-// Test 18: Footer element in body, after main
+// Test 17: Footer element in body, after main (direct child of body)
 test('Your <code>&lt;body&gt;</code> should have a <code>&lt;footer&gt;</code> element after the <code>&lt;main&gt;</code>', () => {
   const body = document.querySelector('body');
   expect(body).toBeTruthy();
-  const main = body.querySelector('main');
-  const footer = body.querySelector('footer');
+  const main = document.querySelector('body > main');
+  const footer = document.querySelector('body > footer');
   expect(main).toBeTruthy();
   expect(footer).toBeTruthy();
-  // Verify footer comes after main
+  // Verify footer comes after main (both are siblings in body)
   const children = filterBodyChildren(body);
   const mainIndex = children.indexOf(main);
   const footerIndex = children.indexOf(footer);
+  expect(mainIndex).toBeGreaterThanOrEqual(0);
   expect(footerIndex).toBeGreaterThan(mainIndex);
 });
 
-// Test 19: Hr element inside footer (first element)
+// Test 18: Hr element inside footer (first element)
 test('Your <code>&lt;footer&gt;</code> element should start with an <code>&lt;hr&gt;</code> element', () => {
-  const footer = document.querySelector('body footer');
+  const footer = document.querySelector('body > footer');
   expect(footer).toBeTruthy();
   const hr = footer.querySelector('hr');
   expect(hr).toBeTruthy();
@@ -275,9 +272,9 @@ test('Your <code>&lt;footer&gt;</code> element should start with an <code>&lt;hr
   expect(firstChild.tagName).toBe('HR');
 });
 
-// Test 20: Copyright paragraph in footer, after hr
+// Test 19: Copyright paragraph in footer, after hr
 test('Your <code>&lt;footer&gt;</code> should contain a <code>&lt;p&gt;</code> element with copyright information after the <code>&lt;hr&gt;</code>', () => {
-  const footer = document.querySelector('body footer');
+  const footer = document.querySelector('body > footer');
   expect(footer).toBeTruthy();
   const hr = footer.querySelector('hr');
   const paragraphs = footer.querySelectorAll('p');
@@ -294,9 +291,9 @@ test('Your <code>&lt;footer&gt;</code> should contain a <code>&lt;p&gt;</code> e
   expect(pIndex).toBeGreaterThan(hrIndex);
 });
 
-// Test 21: Address element in footer with br, after copyright p
+// Test 20: Address element in footer with br, after copyright p
 test('Your <code>&lt;footer&gt;</code> should contain an <code>&lt;address&gt;</code> element with the school address and a <code>&lt;br&gt;</code> element after the copyright <code>&lt;p&gt;</code>', () => {
-  const footer = document.querySelector('body footer');
+  const footer = document.querySelector('body > footer');
   expect(footer).toBeTruthy();
   const paragraphs = footer.querySelectorAll('p');
   const address = footer.querySelector('address');
