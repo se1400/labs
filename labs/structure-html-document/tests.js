@@ -7,7 +7,7 @@ const isLiveCodes = () => {
 // Test 1: Meta charset inside head
 // Note: In LiveCodes, student's head content ends up in body, so we check there
 // to verify the student actually wrote it (not just LiveCodes's injected meta)
-test('Your <code>&lt;head&gt;</code> element should contain a <code>&lt;meta&gt;</code> element with a <code>charset</code> attribute set to <code>utf-8</code>', () => {
+test('Your head element should contain a meta element with a charset attribute set to utf-8', () => {
   if (isLiveCodes()) {
     // In LiveCodes, student's meta must be in body (proves they wrote it)
     const metaInBody = document.querySelector('body > meta[charset]');
@@ -23,7 +23,7 @@ test('Your <code>&lt;head&gt;</code> element should contain a <code>&lt;meta&gt;
 
 // Test 2: Meta viewport inside head
 // Accept both initial-scale=1 and initial-scale=1.0, and any order
-test('Your <code>&lt;head&gt;</code> element should contain a <code>&lt;meta&gt;</code> element with <code>name="viewport"</code> and correct <code>content</code>', () => {
+test('Your head element should contain a meta element with name="viewport" and correct content', () => {
   let meta;
   if (isLiveCodes()) {
     // In LiveCodes, student's meta must be in body (proves they wrote it)
@@ -45,7 +45,7 @@ test('Your <code>&lt;head&gt;</code> element should contain a <code>&lt;meta&gt;
 
 // Test 3: Title element with correct text
 // Note: In LiveCodes, title may end up in body, so we search anywhere
-test('Your <code>&lt;head&gt;</code> element should contain a <code>&lt;title&gt;</code> element with the text <code>Utah Tech University</code>', () => {
+test('Your head element should contain a title element with the text "Utah Tech University"', () => {
   const titles = document.querySelectorAll('title');
   let found = false;
   for (const title of titles) {
@@ -64,7 +64,7 @@ const filterBodyChildren = (body) => {
 };
 
 // Test 4: Header element as first element in body (direct child)
-test('Your <code>&lt;body&gt;</code> should have a <code>&lt;header&gt;</code> element as its first child', () => {
+test('Your body should have a header element as its first child', () => {
   const body = document.querySelector('body');
   expect(body).toBeTruthy();
   const header = document.querySelector('body > header');
@@ -75,7 +75,7 @@ test('Your <code>&lt;body&gt;</code> should have a <code>&lt;header&gt;</code> e
 });
 
 // Test 5: H1 inside header with correct text
-test('Your <code>&lt;header&gt;</code> element should contain an <code>&lt;h1&gt;</code> element with the text <code>Utah Tech University</code>', () => {
+test('Your header element should contain an h1 element with the text "Utah Tech University"', () => {
   const header = document.querySelector('body header');
   expect(header).toBeTruthy();
   const h1 = header.querySelector('h1');
@@ -84,7 +84,7 @@ test('Your <code>&lt;header&gt;</code> element should contain an <code>&lt;h1&gt
 });
 
 // Test 6: Paragraph inside header with tagline, after h1
-test('Your <code>&lt;header&gt;</code> element should contain a <code>&lt;p&gt;</code> element with the text <code>Active Learning. Active Life.</code> after the <code>&lt;h1&gt;</code>', () => {
+test('Your header element should contain a p element with the text "Active Learning. Active Life." after the h1', () => {
   const header = document.querySelector('body header');
   expect(header).toBeTruthy();
   const h1 = header.querySelector('h1');
@@ -100,7 +100,7 @@ test('Your <code>&lt;header&gt;</code> element should contain a <code>&lt;p&gt;<
 });
 
 // Test 7: Nav element after header with correct text (direct child of body)
-test('Your <code>&lt;body&gt;</code> should have a <code>&lt;nav&gt;</code> element after the <code>&lt;header&gt;</code> with the text <code>Home | Admissions | Academics | Campus Life</code>', () => {
+test('Your body should have a nav element after the header with the text "Home | Admissions | Academics | Campus Life"', () => {
   const body = document.querySelector('body');
   expect(body).toBeTruthy();
   const header = document.querySelector('body > header');
@@ -118,7 +118,7 @@ test('Your <code>&lt;body&gt;</code> should have a <code>&lt;nav&gt;</code> elem
 });
 
 // Test 8: Main element after nav (direct child of body)
-test('Your <code>&lt;body&gt;</code> should have a <code>&lt;main&gt;</code> element after the <code>&lt;nav&gt;</code>', () => {
+test('Your body should have a main element after the nav', () => {
   const body = document.querySelector('body');
   expect(body).toBeTruthy();
   const nav = document.querySelector('body > nav');
@@ -134,7 +134,7 @@ test('Your <code>&lt;body&gt;</code> should have a <code>&lt;main&gt;</code> ele
 });
 
 // Test 9: Two sections inside main
-test('Your <code>&lt;main&gt;</code> element should contain two <code>&lt;section&gt;</code> elements', () => {
+test('Your main element should contain two section elements', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
   const sections = main.querySelectorAll('main > section');
@@ -142,7 +142,7 @@ test('Your <code>&lt;main&gt;</code> element should contain two <code>&lt;sectio
 });
 
 // Test 10: H2 inside first section with correct text
-test('Your first <code>&lt;section&gt;</code> should contain an <code>&lt;h2&gt;</code> element with the text <code>Welcome to Utah Tech</code>', () => {
+test('Your first section should contain an h2 element with the text "Welcome to Utah Tech"', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
   const firstSection = document.querySelector('main > section');
@@ -153,7 +153,7 @@ test('Your first <code>&lt;section&gt;</code> should contain an <code>&lt;h2&gt;
 });
 
 // Test 11: At least one paragraph in first section with content
-test('Your first <code>&lt;section&gt;</code> should contain at least one <code>&lt;p&gt;</code> element describing Utah Tech', () => {
+test('Your first section should contain at least one p element describing Utah Tech', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
   const firstSection = document.querySelector('main > section');
@@ -172,7 +172,7 @@ test('Your first <code>&lt;section&gt;</code> should contain at least one <code>
 });
 
 // Test 12: H3 inside second section
-test('Your second <code>&lt;section&gt;</code> should contain an <code>&lt;h3&gt;</code> element with the text <code>Why Choose Utah Tech?</code>', () => {
+test('Your second section should contain an h3 element with the text "Why Choose Utah Tech?"', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
   const sections = main.querySelectorAll('main > section');
@@ -183,7 +183,7 @@ test('Your second <code>&lt;section&gt;</code> should contain an <code>&lt;h3&gt
 });
 
 // Test 13: At least one paragraph in second section with content
-test('Your second <code>&lt;section&gt;</code> should contain at least one <code>&lt;p&gt;</code> element about reasons to choose Utah Tech', () => {
+test('Your second section should contain at least one p element about reasons to choose Utah Tech', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
   const sections = main.querySelectorAll('main > section');
@@ -202,7 +202,7 @@ test('Your second <code>&lt;section&gt;</code> should contain at least one <code
 });
 
 // Test 14: Aside element inside main, after sections (direct child)
-test('Your <code>&lt;main&gt;</code> element should contain an <code>&lt;aside&gt;</code> element after the <code>&lt;section&gt;</code> elements', () => {
+test('Your main element should contain an aside element after the section elements', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
   const sections = main.querySelectorAll('main > section');
@@ -217,7 +217,7 @@ test('Your <code>&lt;main&gt;</code> element should contain an <code>&lt;aside&g
 });
 
 // Test 15: H4 inside aside
-test('Your <code>&lt;aside&gt;</code> element should contain an <code>&lt;h4&gt;</code> element with the text <code>Visit Campus</code>', () => {
+test('Your aside element should contain an h4 element with the text "Visit Campus"', () => {
   const aside = document.querySelector('main > aside');
   expect(aside).toBeTruthy();
   const h4 = aside.querySelector('h4');
@@ -226,7 +226,7 @@ test('Your <code>&lt;aside&gt;</code> element should contain an <code>&lt;h4&gt;
 });
 
 // Test 16: Paragraph with br inside aside, after h4
-test('Your <code>&lt;aside&gt;</code> should have a <code>&lt;p&gt;</code> element with a call to action and a <code>&lt;br&gt;</code> element after the <code>&lt;h4&gt;</code>', () => {
+test('Your aside should have a p element with a call to action and a br element after the h4', () => {
   const aside = document.querySelector('main > aside');
   expect(aside).toBeTruthy();
   const h4 = aside.querySelector('h4');
@@ -246,7 +246,7 @@ test('Your <code>&lt;aside&gt;</code> should have a <code>&lt;p&gt;</code> eleme
 });
 
 // Test 17: Footer element in body, after main (direct child of body)
-test('Your <code>&lt;body&gt;</code> should have a <code>&lt;footer&gt;</code> element after the <code>&lt;main&gt;</code>', () => {
+test('Your body should have a footer element after the main', () => {
   const body = document.querySelector('body');
   expect(body).toBeTruthy();
   const main = document.querySelector('body > main');
@@ -262,7 +262,7 @@ test('Your <code>&lt;body&gt;</code> should have a <code>&lt;footer&gt;</code> e
 });
 
 // Test 18: Hr element inside footer (first element)
-test('Your <code>&lt;footer&gt;</code> element should start with an <code>&lt;hr&gt;</code> element', () => {
+test('Your footer element should start with an hr element', () => {
   const footer = document.querySelector('body > footer');
   expect(footer).toBeTruthy();
   const hr = footer.querySelector('hr');
@@ -273,7 +273,7 @@ test('Your <code>&lt;footer&gt;</code> element should start with an <code>&lt;hr
 });
 
 // Test 19: Copyright paragraph in footer, after hr
-test('Your <code>&lt;footer&gt;</code> should contain a <code>&lt;p&gt;</code> element with copyright information after the <code>&lt;hr&gt;</code>', () => {
+test('Your footer should contain a p element with copyright information after the hr', () => {
   const footer = document.querySelector('body > footer');
   expect(footer).toBeTruthy();
   const hr = footer.querySelector('hr');
@@ -292,7 +292,7 @@ test('Your <code>&lt;footer&gt;</code> should contain a <code>&lt;p&gt;</code> e
 });
 
 // Test 20: Address element in footer with br, after copyright p
-test('Your <code>&lt;footer&gt;</code> should contain an <code>&lt;address&gt;</code> element with the school address and a <code>&lt;br&gt;</code> element after the copyright <code>&lt;p&gt;</code>', () => {
+test('Your footer should contain an address element with the school address and a br element after the copyright paragraph', () => {
   const footer = document.querySelector('body > footer');
   expect(footer).toBeTruthy();
   const paragraphs = footer.querySelectorAll('p');
