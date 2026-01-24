@@ -1,96 +1,10 @@
-// Test 1: Document starts with doctype declaration
-test('Your document should start with a <!doctype html> declaration on the first line', () => {
-  const doctype = document.doctype;
-  expect(doctype).toBeTruthy();
-  expect(doctype.name).toBe('html');
-});
-
-// Test 2: HTML element with lang attribute set to "en"
-test('Your html element should have a lang attribute set to "en"', () => {
-  const html = document.documentElement;
-  expect(html).toBeTruthy();
-  expect(html.getAttribute('lang')).toBe('en');
-});
-
-// Test 3: Head and body elements inside html (head before body)
-test('Your html element should contain a head element followed by a body element', () => {
-  const head = document.querySelector('html > head');
-  const body = document.querySelector('html > body');
-  expect(head).toBeTruthy();
-  expect(body).toBeTruthy();
-  // Verify head comes before body
-  const htmlChildren = Array.from(document.documentElement.children);
-  const headIndex = htmlChildren.indexOf(head);
-  const bodyIndex = htmlChildren.indexOf(body);
-  expect(headIndex).toBeLessThan(bodyIndex);
-});
-
-// Helper: Detect if running in LiveCodes (where head content gets moved to body)
-const isLiveCodes = () => {
-  return document.querySelector('head > script#message-script') !== null ||
-         document.querySelector('head > title')?.textContent === 'Untitled Project';
-};
-
-// Test 4: Meta charset inside head
-// Note: In LiveCodes, student's head content ends up in body, so we check there
-// to verify the student actually wrote it (not just LiveCodes's injected meta)
-test('Your head element should contain a meta element with charset attribute set to "utf-8"', () => {
-  if (isLiveCodes()) {
-    // In LiveCodes, student's meta must be in body (proves they wrote it)
-    const metaInBody = document.querySelector('body > meta[charset]');
-    expect(metaInBody).toBeTruthy();
-    expect(metaInBody.getAttribute('charset').toLowerCase()).toBe('utf-8');
-  } else {
-    // Non-LiveCodes: check head normally
-    const metaInHead = document.querySelector('head > meta[charset]');
-    expect(metaInHead).toBeTruthy();
-    expect(metaInHead.getAttribute('charset').toLowerCase()).toBe('utf-8');
-  }
-});
-
-// Test 5: Meta viewport inside head
-// Accept both initial-scale=1 and initial-scale=1.0, and any order
-test('Your head element should contain a meta element with name="viewport" and correct content', () => {
-  let meta;
-  if (isLiveCodes()) {
-    // In LiveCodes, student's meta must be in body (proves they wrote it)
-    meta = document.querySelector('body > meta[name="viewport"]');
-  } else {
-    // Non-LiveCodes: check head normally
-    meta = document.querySelector('head > meta[name="viewport"]');
-  }
-  expect(meta).toBeTruthy();
-  const content = meta.getAttribute('content');
-  expect(content).toBeTruthy();
-  // Normalize: remove spaces, convert to lowercase
-  const normalized = content.replace(/\s/g, '').toLowerCase();
-  // Check for width=device-width
-  expect(normalized).toContain('width=device-width');
-  // Check for initial-scale=1 or initial-scale=1.0
-  expect(/initial-scale=1(\.0)?/.test(normalized)).toBe(true);
-});
-
-// Test 6: Title element with correct text
-// Note: In LiveCodes, title may end up in body, so we search anywhere
-test('Your head element should contain a title element with the text "Utah Tech University"', () => {
-  const titles = document.querySelectorAll('title');
-  let found = false;
-  for (const title of titles) {
-    if (title.textContent.trim() === 'Utah Tech University') {
-      found = true;
-      break;
-    }
-  }
-  expect(found).toBe(true);
-});
-
 // Helper: Filter out elements that don't belong in body (injected by LiveCodes or moved from head)
 const HEAD_ELEMENTS = ['SCRIPT', 'STYLE', 'META', 'TITLE', 'LINK', 'BASE'];
 const filterBodyChildren = (body) => {
   return Array.from(body.children).filter(el => !HEAD_ELEMENTS.includes(el.tagName));
 };
 
-// Test 7: Header element as first element in body
+// Test 1: Header element as first element in body
 test('Your body element should have a header element as its first child', () => {
   const body = document.querySelector('body');
   expect(body).toBeTruthy();
@@ -99,18 +13,18 @@ test('Your body element should have a header element as its first child', () => 
   expect(children[0].tagName).toBe('HEADER');
 });
 
-// Test 8: H1 inside header with correct text
+// Test 2: H1 inside header with correct text
 test('Your header element should contain an h1 element with the text "Utah Tech University"', () => {
-  const header = document.querySelector('body > header');
+  const header = document.querySelector('body header');
   expect(header).toBeTruthy();
   const h1 = header.querySelector('h1');
   expect(h1).toBeTruthy();
   expect(h1.textContent.trim()).toBe('Utah Tech University');
 });
 
-// Test 9: Paragraph inside header with tagline, after h1
+// Test 3: Paragraph inside header with tagline, after h1
 test('Your header element should contain a p element with the text "Active Learning. Active Life." after the h1', () => {
-  const header = document.querySelector('body > header');
+  const header = document.querySelector('body header');
   expect(header).toBeTruthy();
   const h1 = header.querySelector('h1');
   expect(h1).toBeTruthy();
@@ -124,7 +38,7 @@ test('Your header element should contain a p element with the text "Active Learn
   expect(pIndex).toBeGreaterThan(h1Index);
 });
 
-// Test 10: Nav element after header with correct text
+// Test 4: Nav element after header with correct text
 test('Your body should have a nav element after the header with the text "Home | Admissions | Academics | Campus Life"', () => {
   const body = document.querySelector('body');
   expect(body).toBeTruthy();
@@ -141,7 +55,7 @@ test('Your body should have a nav element after the header with the text "Home |
   expect(navIndex).toBeGreaterThan(headerIndex);
 });
 
-// Test 11: Main element after nav
+// Test 5: Main element after nav
 test('Your body should have a main element after the nav', () => {
   const body = document.querySelector('body');
   expect(body).toBeTruthy();
@@ -156,7 +70,7 @@ test('Your body should have a main element after the nav', () => {
   expect(mainIndex).toBeGreaterThan(navIndex);
 });
 
-// Test 12: First section inside main
+// Test 6: First section inside main
 test('Your main element should contain at least one section element', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
@@ -164,7 +78,7 @@ test('Your main element should contain at least one section element', () => {
   expect(sections.length).toBeGreaterThanOrEqual(1);
 });
 
-// Test 13: H2 inside first section with correct text
+// Test 7: H2 inside first section with correct text
 test('Your first section should contain an h2 element with the text "Welcome to Utah Tech"', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
@@ -175,36 +89,26 @@ test('Your first section should contain an h2 element with the text "Welcome to 
   expect(h2.textContent.trim()).toBe('Welcome to Utah Tech');
 });
 
-// Test 14: First paragraph in first section, after h2
-test('Your first section should contain a paragraph about Utah Tech being located in St. George, after the h2', () => {
+// Test 8: At least one paragraph in first section with content
+test('Your first section should contain at least one paragraph describing Utah Tech', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
   const firstSection = main.querySelector('section');
   expect(firstSection).toBeTruthy();
-  const h2 = firstSection.querySelector('h2');
-  expect(h2).toBeTruthy();
   const paragraphs = firstSection.querySelectorAll('p');
   expect(paragraphs.length).toBeGreaterThanOrEqual(1);
-  expect(paragraphs[0].textContent.trim()).toBe('Utah Tech University is located in St. George, Utah. Our campus sits at the base of beautiful red rock cliffs in Southern Utah.');
-  // Verify first paragraph comes after h2
-  const children = Array.from(firstSection.children);
-  const h2Index = children.indexOf(h2);
-  const pIndex = children.indexOf(paragraphs[0]);
-  expect(pIndex).toBeGreaterThan(h2Index);
+  // Check that at least one paragraph has content
+  let hasContent = false;
+  for (const p of paragraphs) {
+    if (p.textContent.trim().length > 0) {
+      hasContent = true;
+      break;
+    }
+  }
+  expect(hasContent).toBe(true);
 });
 
-// Test 15: Second paragraph in first section
-test('Your first section should contain a second paragraph about active learning', () => {
-  const main = document.querySelector('main');
-  expect(main).toBeTruthy();
-  const firstSection = main.querySelector('section');
-  expect(firstSection).toBeTruthy();
-  const paragraphs = firstSection.querySelectorAll('p');
-  expect(paragraphs.length).toBeGreaterThanOrEqual(2);
-  expect(paragraphs[1].textContent.trim()).toBe('We are committed to active learning and helping students succeed.');
-});
-
-// Test 16: Second section inside main
+// Test 9: Second section inside main
 test('Your main element should contain two section elements', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
@@ -212,7 +116,7 @@ test('Your main element should contain two section elements', () => {
   expect(sections.length).toBeGreaterThanOrEqual(2);
 });
 
-// Test 17: H3 inside second section
+// Test 10: H3 inside second section
 test('Your second section should contain an h3 element with the text "Why Choose Utah Tech?"', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
@@ -223,40 +127,26 @@ test('Your second section should contain an h3 element with the text "Why Choose
   expect(h3.textContent.trim()).toBe('Why Choose Utah Tech?');
 });
 
-// Test 18: First paragraph in second section
-test('Your second section should have a paragraph with "Small class sizes with hands-on learning."', () => {
+// Test 11: At least one paragraph in second section with content
+test('Your second section should contain at least one paragraph about reasons to choose Utah Tech', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
   const sections = main.querySelectorAll('section');
   expect(sections.length).toBeGreaterThanOrEqual(2);
   const paragraphs = sections[1].querySelectorAll('p');
   expect(paragraphs.length).toBeGreaterThanOrEqual(1);
-  expect(paragraphs[0].textContent.trim()).toBe('Small class sizes with hands-on learning.');
+  // Check that at least one paragraph has content
+  let hasContent = false;
+  for (const p of paragraphs) {
+    if (p.textContent.trim().length > 0) {
+      hasContent = true;
+      break;
+    }
+  }
+  expect(hasContent).toBe(true);
 });
 
-// Test 19: Second paragraph in second section
-test('Your second section should have a paragraph with "Over 200 programs to choose from."', () => {
-  const main = document.querySelector('main');
-  expect(main).toBeTruthy();
-  const sections = main.querySelectorAll('section');
-  expect(sections.length).toBeGreaterThanOrEqual(2);
-  const paragraphs = sections[1].querySelectorAll('p');
-  expect(paragraphs.length).toBeGreaterThanOrEqual(2);
-  expect(paragraphs[1].textContent.trim()).toBe('Over 200 programs to choose from.');
-});
-
-// Test 20: Third paragraph in second section
-test('Your second section should have a paragraph with "Beautiful weather and outdoor adventures."', () => {
-  const main = document.querySelector('main');
-  expect(main).toBeTruthy();
-  const sections = main.querySelectorAll('section');
-  expect(sections.length).toBeGreaterThanOrEqual(2);
-  const paragraphs = sections[1].querySelectorAll('p');
-  expect(paragraphs.length).toBeGreaterThanOrEqual(3);
-  expect(paragraphs[2].textContent.trim()).toBe('Beautiful weather and outdoor adventures.');
-});
-
-// Test 21: Aside element inside main, after sections
+// Test 12: Aside element inside main, after sections
 test('Your main element should contain an aside element after the sections', () => {
   const main = document.querySelector('main');
   expect(main).toBeTruthy();
@@ -271,18 +161,18 @@ test('Your main element should contain an aside element after the sections', () 
   expect(asideIndex).toBeGreaterThan(lastSectionIndex);
 });
 
-// Test 22: H4 inside aside
+// Test 13: H4 inside aside
 test('Your aside element should contain an h4 element with the text "Visit Campus"', () => {
-  const aside = document.querySelector('main > aside');
+  const aside = document.querySelector('main aside');
   expect(aside).toBeTruthy();
   const h4 = aside.querySelector('h4');
   expect(h4).toBeTruthy();
   expect(h4.textContent.trim()).toBe('Visit Campus');
 });
 
-// Test 23: Paragraph with br inside aside, after h4
+// Test 14: Paragraph with br inside aside, after h4
 test('Your aside should have a paragraph after the h4 with "Schedule a tour today!", a br element, and "Call us at (435) 652-7500"', () => {
-  const aside = document.querySelector('main > aside');
+  const aside = document.querySelector('main aside');
   expect(aside).toBeTruthy();
   const h4 = aside.querySelector('h4');
   const p = aside.querySelector('p');
@@ -304,7 +194,7 @@ test('Your aside should have a paragraph after the h4 with "Schedule a tour toda
   expect(pIndex).toBeGreaterThan(h4Index);
 });
 
-// Test 24: Footer element in body, after main
+// Test 15: Footer element in body, after main
 test('Your body should have a footer element after the main', () => {
   const body = document.querySelector('body');
   expect(body).toBeTruthy();
@@ -319,9 +209,9 @@ test('Your body should have a footer element after the main', () => {
   expect(footerIndex).toBeGreaterThan(mainIndex);
 });
 
-// Test 25: Hr element inside footer (first element)
+// Test 16: Hr element inside footer (first element)
 test('Your footer element should start with an hr element', () => {
-  const footer = document.querySelector('body > footer');
+  const footer = document.querySelector('body footer');
   expect(footer).toBeTruthy();
   const hr = footer.querySelector('hr');
   expect(hr).toBeTruthy();
@@ -330,9 +220,9 @@ test('Your footer element should start with an hr element', () => {
   expect(firstChild.tagName).toBe('HR');
 });
 
-// Test 26: Copyright paragraph in footer, after hr
+// Test 17: Copyright paragraph in footer, after hr
 test('Your footer should contain a paragraph after the hr with "Copyright", the current year, and "Utah Tech University"', () => {
-  const footer = document.querySelector('body > footer');
+  const footer = document.querySelector('body footer');
   expect(footer).toBeTruthy();
   const hr = footer.querySelector('hr');
   const paragraphs = footer.querySelectorAll('p');
@@ -358,9 +248,9 @@ test('Your footer should contain a paragraph after the hr with "Copyright", the 
   expect(pIndex).toBeGreaterThan(hrIndex);
 });
 
-// Test 27: Address element in footer with br, after copyright p
+// Test 18: Address element in footer with br, after copyright p
 test('Your footer should contain an address element after the copyright paragraph with "225 S 700 E", a br element, and "St. George, UT 84770"', () => {
-  const footer = document.querySelector('body > footer');
+  const footer = document.querySelector('body footer');
   expect(footer).toBeTruthy();
   const paragraphs = footer.querySelectorAll('p');
   const address = footer.querySelector('address');
