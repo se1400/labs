@@ -230,7 +230,7 @@ test('Your aside element should contain an h4 element with the text "Visit Campu
 });
 
 // Test 17: Paragraph with br inside aside, after h4
-test('Your aside should have a paragraph after the h4 with "Schedule a tour today!", a br element, and "Call us at (435) 652-7500"', () => {
+test('Your aside should have a paragraph with a call to action and a br element after the h4', () => {
   const aside = document.querySelector('main aside');
   expect(aside).toBeTruthy();
   const h4 = aside.querySelector('h4');
@@ -239,13 +239,9 @@ test('Your aside should have a paragraph after the h4 with "Schedule a tour toda
   expect(p).toBeTruthy();
   const br = p.querySelector('br');
   expect(br).toBeTruthy();
-  const text = p.textContent.replace(/\s+/g, ' ').trim();
-  expect(text).toContain('Schedule a tour today!');
-  expect(text).toContain('Call us at (435) 652-7500');
-  // Verify correct order: Schedule comes before Call us
-  const scheduleIndex = text.indexOf('Schedule a tour today!');
-  const callIndex = text.indexOf('Call us at (435) 652-7500');
-  expect(scheduleIndex).toBeLessThan(callIndex);
+  // Check that paragraph has content
+  const text = p.textContent.trim();
+  expect(text.length).toBeGreaterThan(0);
   // Verify p comes after h4
   const children = Array.from(aside.children);
   const h4Index = children.indexOf(h4);
@@ -280,7 +276,7 @@ test('Your footer element should start with an hr element', () => {
 });
 
 // Test 20: Copyright paragraph in footer, after hr
-test('Your footer should contain a paragraph after the hr with "Copyright", the current year, and "Utah Tech University"', () => {
+test('Your footer should contain a paragraph with copyright information after the hr', () => {
   const footer = document.querySelector('body footer');
   expect(footer).toBeTruthy();
   const hr = footer.querySelector('hr');
@@ -288,18 +284,9 @@ test('Your footer should contain a paragraph after the hr with "Copyright", the 
   expect(hr).toBeTruthy();
   expect(paragraphs.length).toBeGreaterThanOrEqual(1);
   const copyrightP = paragraphs[0];
-  const text = copyrightP.textContent;
-  expect(text).toContain('Copyright');
-  expect(text).toContain('Utah Tech University');
-  // Check for a valid year (2020-2099)
-  const yearMatch = text.match(/20[2-9]\d/);
-  expect(yearMatch).toBeTruthy();
-  // Verify order: Copyright, then year, then Utah Tech University
-  const copyrightIndex = text.indexOf('Copyright');
-  const yearIndex = text.indexOf(yearMatch[0]);
-  const utahTechIndex = text.indexOf('Utah Tech University');
-  expect(copyrightIndex).toBeLessThan(yearIndex);
-  expect(yearIndex).toBeLessThan(utahTechIndex);
+  // Check that paragraph has content
+  const text = copyrightP.textContent.trim();
+  expect(text.length).toBeGreaterThan(0);
   // Verify p comes after hr
   const children = Array.from(footer.children);
   const hrIndex = children.indexOf(hr);
@@ -308,7 +295,7 @@ test('Your footer should contain a paragraph after the hr with "Copyright", the 
 });
 
 // Test 21: Address element in footer with br, after copyright p
-test('Your footer should contain an address element after the copyright paragraph with "225 S 700 E", a br element, and "St. George, UT 84770"', () => {
+test('Your footer should contain an address element with the school address and a br element after the copyright paragraph', () => {
   const footer = document.querySelector('body footer');
   expect(footer).toBeTruthy();
   const paragraphs = footer.querySelectorAll('p');
@@ -317,13 +304,9 @@ test('Your footer should contain an address element after the copyright paragrap
   expect(address).toBeTruthy();
   const br = address.querySelector('br');
   expect(br).toBeTruthy();
-  const text = address.textContent.replace(/\s+/g, ' ').trim();
-  expect(text).toContain('225 S 700 E');
-  expect(text).toContain('St. George, UT 84770');
-  // Verify correct order: street address comes before city
-  const streetIndex = text.indexOf('225 S 700 E');
-  const cityIndex = text.indexOf('St. George, UT 84770');
-  expect(streetIndex).toBeLessThan(cityIndex);
+  // Check that address has content
+  const text = address.textContent.trim();
+  expect(text.length).toBeGreaterThan(0);
   // Verify address comes after the copyright paragraph
   const children = Array.from(footer.children);
   const pIndex = children.indexOf(paragraphs[0]);

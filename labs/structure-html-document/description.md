@@ -54,7 +54,7 @@ In this lab, you'll practice structuring an HTML document using semantic element
 
 19. Inside your <code>&lt;aside&gt;</code>, add an <code>&lt;h4&gt;</code> element with the text <code>Visit Campus</code> between the opening and closing tags.
 
-20. After the closing <code>&lt;/h4&gt;</code> tag but still inside the <code>&lt;aside&gt;</code>, add a <code>&lt;p&gt;</code> element. Inside this paragraph, add the text <code>Schedule a tour today!</code>, then add a <code>&lt;br&gt;</code> element (which is self-closing), then add the text <code>Call us at (435) 652-7500</code>. Close the paragraph with <code>&lt;/p&gt;</code>.
+20. After the closing <code>&lt;/h4&gt;</code> tag but still inside the <code>&lt;aside&gt;</code>, add a <code>&lt;p&gt;</code> element with a call to action. Include a <code>&lt;br&gt;</code> element (which is self-closing) somewhere in the paragraph to create a line break. For example, you might write something like "Schedule a tour today!" followed by a phone number.
 
 ### Footer Section
 
@@ -62,8 +62,8 @@ In this lab, you'll practice structuring an HTML document using semantic element
 
 22. Inside your <code>&lt;footer&gt;</code>, add an <code>&lt;hr&gt;</code> element. This creates a horizontal line and is self-closing (no closing tag needed).
 
-23. After the <code>&lt;hr&gt;</code> but still inside the <code>&lt;footer&gt;</code>, add a <code>&lt;p&gt;</code> element with the text <code>Copyright</code> followed by the current year and <code>Utah Tech University</code> between the opening and closing tags. For example: <code>Copyright 2025 Utah Tech University</code>.
+23. After the <code>&lt;hr&gt;</code> but still inside the <code>&lt;footer&gt;</code>, add a <code>&lt;p&gt;</code> element with copyright information. Include the word "Copyright", the current year, and the university name.
 
-24. After that <code>&lt;p&gt;</code> element but still inside the <code>&lt;footer&gt;</code>, add an <code>&lt;address&gt;</code> element. Inside this element, add the text <code>225 S 700 E</code>, then add a <code>&lt;br&gt;</code> element, then add the text <code>St. George, UT 84770</code>. Close with <code>&lt;/address&gt;</code>.
+24. After that <code>&lt;p&gt;</code> element but still inside the <code>&lt;footer&gt;</code>, add an <code>&lt;address&gt;</code> element with the school's address. Include a <code>&lt;br&gt;</code> element to separate the street address from the city, state, and zip code.
 
 **Note:** This lab focuses on HTML structure only. No CSS is required.
