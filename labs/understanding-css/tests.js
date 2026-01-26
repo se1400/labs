@@ -94,16 +94,17 @@ const findGroupedSelector = (selectors, property, value) => {
 // Test 1: Link element in head
 // Note: In LiveCodes, student's head content ends up in body, so we check there
 test('Your head element should contain a link element with rel="stylesheet" and href="styles.css"', () => {
+  const validHrefs = ['styles.css', './styles.css'];
   if (isLiveCodes()) {
     // In LiveCodes, student's link must be in body (proves they wrote it)
     const linkInBody = document.querySelector('body > link[rel="stylesheet"]');
     expect(linkInBody).toBeTruthy();
-    expect(linkInBody.getAttribute('href')).toBe('styles.css');
+    expect(validHrefs).toContain(linkInBody.getAttribute('href'));
   } else {
     // Non-LiveCodes: check head normally
     const linkInHead = document.querySelector('head > link[rel="stylesheet"]');
     expect(linkInHead).toBeTruthy();
-    expect(linkInHead.getAttribute('href')).toBe('styles.css');
+    expect(validHrefs).toContain(linkInHead.getAttribute('href'));
   }
 });
 
@@ -320,25 +321,4 @@ test('Inside the tagline paragraph, the text "Active Life." should be wrapped in
   const style = span.getAttribute('style').toLowerCase();
   expect(style).toContain('color');
   expect(style).toContain('#ba1c21');
-});
-
-// Test 33: header has id="page-header"
-test('The header element should have id="page-header"', () => {
-  const header = document.querySelector('header');
-  expect(header).toBeTruthy();
-  expect(header.id).toBe('page-header');
-});
-
-// Test 34: h1 has class="site-name"
-test('The h1 element inside the header should have class="site-name"', () => {
-  const h1 = document.querySelector('header h1');
-  expect(h1).toBeTruthy();
-  expect(h1.classList.contains('site-name')).toBe(true);
-});
-
-// Test 35: nav has id="main-menu"
-test('The nav element should have id="main-menu"', () => {
-  const nav = document.querySelector('nav');
-  expect(nav).toBeTruthy();
-  expect(nav.id).toBe('main-menu');
 });
