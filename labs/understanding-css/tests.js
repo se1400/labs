@@ -4,6 +4,15 @@ const isLiveCodes = () => {
          document.querySelector('head > title')?.textContent === 'Untitled Project';
 };
 
+// Helper: Convert hex color to rgb format for comparison
+const hexToRgb = (hex) => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (result) {
+    return `rgb(${parseInt(result[1], 16)},${parseInt(result[2], 16)},${parseInt(result[3], 16)})`;
+  }
+  return hex.toLowerCase();
+};
+
 // Helper: Check if a CSS rule exists with specific selector and property/value
 const findCSSRule = (selector, property, value) => {
   for (let sheet of document.styleSheets) {
@@ -14,11 +23,18 @@ const findCSSRule = (selector, property, value) => {
           if (value === undefined) {
             return propValue !== '';
           }
-          // Normalize values for comparison
+          // Normalize values for comparison (remove spaces)
           const normalizedPropValue = propValue.replace(/\s/g, '').toLowerCase();
           const normalizedValue = String(value).replace(/\s/g, '').toLowerCase();
           if (normalizedPropValue === normalizedValue) {
             return true;
+          }
+          // Handle hex colors (browser converts to rgb)
+          if (normalizedValue.startsWith('#')) {
+            const rgbValue = hexToRgb(normalizedValue);
+            if (normalizedPropValue === rgbValue) {
+              return true;
+            }
           }
           // Handle 0 vs 0px
           if ((normalizedValue === '0' || normalizedValue === '0px') &&
@@ -53,6 +69,13 @@ const findGroupedSelector = (selectors, property, value) => {
             const normalizedValue = String(value).replace(/\s/g, '').toLowerCase();
             if (normalizedPropValue === normalizedValue) {
               return true;
+            }
+            // Handle hex colors (browser converts to rgb)
+            if (normalizedValue.startsWith('#')) {
+              const rgbValue = hexToRgb(normalizedValue);
+              if (normalizedPropValue === rgbValue) {
+                return true;
+              }
             }
             if ((normalizedValue === '0' || normalizedValue === '0px') &&
                 (normalizedPropValue === '0' || normalizedPropValue === '0px')) {
