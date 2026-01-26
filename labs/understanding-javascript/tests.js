@@ -94,8 +94,18 @@ test('The alert should display the phone number (435) 652-7500', () => {
 // Part 3: Functional Tests (Toggle Behavior)
 // ============================================
 
+// Helper: Ensure the click listener is attached
+// In LiveCodes, DOMContentLoaded may fire before JS panel code runs,
+// so we re-dispatch the event to trigger the student's setup code
+const ensureClickListenerAttached = () => {
+  // Dispatch a new DOMContentLoaded event to trigger student's setup
+  document.dispatchEvent(new Event('DOMContentLoaded'));
+};
+
 // Test 11: Clicking button shows the office hours
 test('Clicking the toggle button should show the office hours paragraph', () => {
+  ensureClickListenerAttached();
+
   const button = document.getElementById('toggle-hours');
   const paragraph = document.getElementById('office-hours');
 
@@ -114,6 +124,8 @@ test('Clicking the toggle button should show the office hours paragraph', () => 
 
 // Test 12: Clicking button changes button text when showing
 test('Clicking the toggle button should change its text when showing office hours', () => {
+  ensureClickListenerAttached();
+
   const button = document.getElementById('toggle-hours');
   const paragraph = document.getElementById('office-hours');
 
@@ -134,6 +146,8 @@ test('Clicking the toggle button should change its text when showing office hour
 
 // Test 13: Clicking button again hides the office hours
 test('Clicking the toggle button again should hide the office hours paragraph', () => {
+  ensureClickListenerAttached();
+
   const button = document.getElementById('toggle-hours');
   const paragraph = document.getElementById('office-hours');
 
@@ -153,6 +167,8 @@ test('Clicking the toggle button again should hide the office hours paragraph', 
 
 // Test 14: Toggle works multiple times
 test('The toggle should work correctly through multiple clicks', () => {
+  ensureClickListenerAttached();
+
   const button = document.getElementById('toggle-hours');
   const paragraph = document.getElementById('office-hours');
 
