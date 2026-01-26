@@ -1,6 +1,6 @@
 # Understanding JavaScript
 
-In this lab, you'll learn the fundamentals of JavaScript by adding interactive functionality to your Utah Tech University page. JavaScript is a scripting language that lets you make web pages interactive—responding to user clicks, showing and hiding content, validating forms, and much more.
+In this lab, you'll learn the fundamentals of JavaScript by adding interactive functionality to your Utah Tech University page. You'll create a button that shows and hides tour hours information.
 
 **Objective:** Follow the instructions below and get all the tests to pass to complete the lab.
 
@@ -8,17 +8,7 @@ In this lab, you'll learn the fundamentals of JavaScript by adding interactive f
 
 ## Instructions:
 
-### Part 1: Understanding How JavaScript Connects to HTML
-
-JavaScript can be added to web pages in three ways:
-
-1. **Inline** - Inside an HTML attribute like `onclick="..."`
-2. **Internal** - Inside `<script>` tags in your HTML file
-3. **External** - In a separate `.js` file linked to your HTML
-
-External JavaScript files are the preferred method because they keep your code organized and can be reused across multiple pages. In this lab, you'll create an external JavaScript file.
-
-### Part 2: Add Interactive HTML Elements
+### Part 1: Add Interactive HTML Elements
 
 Before writing JavaScript, you need HTML elements for JavaScript to interact with. You'll add a button that users can click and a paragraph that will show/hide tour hours.
 
@@ -47,34 +37,27 @@ Before writing JavaScript, you need HTML elements for JavaScript to interact wit
    </p>
    ```
 
-**Note:** The `hidden` attribute is a boolean attribute—just including it (without a value) hides the element. The `id` attributes are crucial because JavaScript will use them to find these specific elements.
+**Note:** The `id` attributes are important because JavaScript will use them to find these specific elements.
 
-### Part 3: Link an External JavaScript File
+### Part 2: Link an External JavaScript File
 
-Now you'll connect an external JavaScript file to your HTML. The `<script>` tag tells the browser to load and run JavaScript code.
+External JavaScript files (`.js` files) keep your code organized and separate from your HTML. The `<script>` tag tells the browser to load and run JavaScript code.
 
 3. Just before the closing `</body>` tag at the bottom of your HTML file, add a `<script>` element with a `src` attribute set to `"script.js"`:
 
    ```html
-       <!-- External JavaScript file -->
        <script src="script.js"></script>
    </body>
    </html>
    ```
 
-**Note:** We place the `<script>` tag at the bottom of `<body>` (not in `<head>`) so the HTML content loads first. This way, when the JavaScript runs, all the HTML elements already exist on the page.
+**Note:** We place the `<script>` tag at the bottom of `<body>` so the HTML content loads first before the JavaScript runs.
 
-### Part 4: Create the JavaScript File
-
-Now you'll create the JavaScript file that makes the button work. This script will:
-- Wait for the page to fully load
-- Find the button and paragraph elements
-- Listen for clicks on the button
-- Toggle the paragraph between visible and hidden
+### Part 3: Create the JavaScript File
 
 4. Create a new file called `script.js` in the same folder as your HTML file.
 
-5. Copy the following JavaScript code into your `script.js` file:
+5. Copy the following JavaScript code into your `script.js` file. This code waits for the page to load, finds your button and paragraph by their IDs, and listens for clicks. When clicked, it toggles the paragraph between hidden and visible and updates the button text.
 
 ```javascript
 document.addEventListener("DOMContentLoaded", function () {
@@ -101,73 +84,15 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 ```
 
-### Part 5: Understanding the JavaScript Code
+6. Save both your HTML file and your `script.js` file, then test your page in a browser. Click the "Tour Hours" button—the tour hours should appear and the button text should change. Click again to hide them.
 
-Let's break down what each part of the code does:
-
-**`document.addEventListener("DOMContentLoaded", function () { ... });`**
-
-This wraps all our code and tells the browser: "Wait until the HTML page is fully loaded before running this code." Without this, JavaScript might try to find elements that haven't been created yet.
-
-**`const toggleButton = document.getElementById("toggle-hours");`**
-
-This creates a variable called `toggleButton` that stores a reference to the button element. The `const` keyword means this variable won't change. The `document.getElementById()` method searches the page for an element with the specified `id`.
-
-**`const hoursParagraph = document.getElementById("office-hours");`**
-
-Same as above, but finds and stores the paragraph element.
-
-**`if (!toggleButton || !hoursParagraph) { ... return; }`**
-
-This is a safety check. If either element isn't found (perhaps due to a typo in the id), it logs an error message and stops the script. The `!` means "not" and `||` means "or".
-
-**`toggleButton.addEventListener("click", function () { ... });`**
-
-This tells the browser: "When someone clicks on `toggleButton`, run this function." An event listener waits for something to happen (like a click) and then responds.
-
-**`if (hoursParagraph.hidden) { ... } else { ... }`**
-
-This checks if the paragraph is currently hidden. If it is hidden, we show it and change the button text. If it's visible, we hide it and change the button text back.
-
-**`hoursParagraph.hidden = false;`** and **`hoursParagraph.hidden = true;`**
-
-These lines change the `hidden` property of the paragraph, making it visible (`false`) or hidden (`true`).
-
-**`toggleButton.textContent = "Hide office hours";`**
-
-This changes the text displayed on the button.
-
-### Part 6: Test Your Work
-
-6. Save both your HTML file and your `script.js` file.
-
-7. Open your HTML file in a web browser (or refresh if already open).
-
-8. Find the "Visit Campus" section and click the "Tour Hours" button:
-   - The tour hours should appear
-   - The button text should change to "Hide office hours"
-
-9. Click the button again:
-   - The tour hours should disappear
-   - The button text should change back to "Show office hours"
-
-**Note:** If the button doesn't work, check that:
-- Your `script.js` file is in the same folder as your HTML file
-- The `id` values match exactly (they are case-sensitive)
-- You saved both files after making changes
-- There are no typos in the JavaScript code
+**Note:** If the button doesn't work, check that your `script.js` file is in the same folder as your HTML file and that the `id` values match exactly (they are case-sensitive).
 
 ## Summary
 
-In this lab, you learned:
+In this lab, you learned how to:
 
-- **External JavaScript files** - Using `<script src="...">` to link a `.js` file
-- **Script placement** - Why scripts go at the bottom of `<body>`
-- **DOMContentLoaded** - Waiting for the page to load before running code
-- **Variables with const** - Storing values that won't change
-- **getElementById()** - Finding HTML elements by their `id` attribute
-- **Event listeners** - Responding to user actions like clicks
-- **Conditionals (if/else)** - Making decisions in code
-- **DOM manipulation** - Changing element properties like `hidden` and `textContent`
-
-These are fundamental JavaScript concepts that you'll use throughout your web development journey.
+- Add HTML elements that JavaScript can interact with
+- Link an external JavaScript file using `<script src="...">`
+- Place scripts at the bottom of `<body>` so HTML loads first
+- Create interactive functionality that responds to user clicks
