@@ -1,18 +1,3 @@
-// Helper: Detect if running in LiveCodes (where head content gets moved to body)
-const isLiveCodes = () => {
-  return document.querySelector('head > script#message-script') !== null ||
-         document.querySelector('head > title')?.textContent === 'Untitled Project';
-};
-
-// Helper: Get script element (checks both head and body for LiveCodes compatibility)
-const getScriptElement = (src) => {
-  if (isLiveCodes()) {
-    return document.querySelector(`body > script[src="${src}"]`) ||
-           document.querySelector(`script[src="${src}"]`);
-  }
-  return document.querySelector(`script[src="${src}"]`);
-};
-
 // ============================================
 // Part 1: HTML Element Tests (Button & Paragraph)
 // ============================================
@@ -106,31 +91,10 @@ test('The alert should display the phone number (435) 652-7500', () => {
 });
 
 // ============================================
-// Part 3: External JavaScript Tests
+// Part 3: Functional Tests (Toggle Behavior)
 // ============================================
 
-// Test 11: Script tag exists linking to script.js
-test('A script tag with src="script.js" should exist', () => {
-  const script = getScriptElement('script.js');
-  expect(script).toBeTruthy();
-});
-
-// Test 12: Script tag is in the body
-test('The script tag should be placed in the body element', () => {
-  if (isLiveCodes()) {
-    const script = getScriptElement('script.js');
-    expect(script).toBeTruthy();
-  } else {
-    const scriptInBody = document.querySelector('body script[src="script.js"]');
-    expect(scriptInBody).toBeTruthy();
-  }
-});
-
-// ============================================
-// Part 4: Functional Tests (Toggle Behavior)
-// ============================================
-
-// Test 13: Clicking button shows the office hours
+// Test 11: Clicking button shows the office hours
 test('Clicking the toggle button should show the office hours paragraph', () => {
   const button = document.getElementById('toggle-hours');
   const paragraph = document.getElementById('office-hours');
@@ -148,7 +112,7 @@ test('Clicking the toggle button should show the office hours paragraph', () => 
   expect(paragraph.hidden).toBe(false);
 });
 
-// Test 14: Clicking button changes button text when showing
+// Test 12: Clicking button changes button text when showing
 test('Clicking the toggle button should change its text when showing office hours', () => {
   const button = document.getElementById('toggle-hours');
   const paragraph = document.getElementById('office-hours');
@@ -168,7 +132,7 @@ test('Clicking the toggle button should change its text when showing office hour
   expect(newText).toContain('hide');
 });
 
-// Test 15: Clicking button again hides the office hours
+// Test 13: Clicking button again hides the office hours
 test('Clicking the toggle button again should hide the office hours paragraph', () => {
   const button = document.getElementById('toggle-hours');
   const paragraph = document.getElementById('office-hours');
@@ -187,7 +151,7 @@ test('Clicking the toggle button again should hide the office hours paragraph', 
   expect(paragraph.hidden).toBe(true);
 });
 
-// Test 16: Toggle works multiple times
+// Test 14: Toggle works multiple times
 test('The toggle should work correctly through multiple clicks', () => {
   const button = document.getElementById('toggle-hours');
   const paragraph = document.getElementById('office-hours');

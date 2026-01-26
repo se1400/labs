@@ -43,11 +43,11 @@ Inline JavaScript is written directly inside an HTML attribute. This is useful f
    Call us at <a href="#" onclick="alert('Call us at (435) 652-7500');">(435) 652-7500</a></p>
    ```
 
-### Part 3: Create an External JavaScript File
+### Part 3: Create the External JavaScript
 
-External JavaScript files keep your code organized and separate from your HTML. This is the preferred method for larger scripts.
+External JavaScript files keep your code organized and separate from your HTML. In LiveCodes, the JS panel on the right represents your external JavaScript file.
 
-4. In your `script.js` file, copy the following code:
+4. In the JS panel, copy the following code. This code waits for the page to load, finds your button and paragraph by their IDs, and adds a click listener. When clicked, it toggles the paragraph between hidden and visible and updates the button text.
 
    ```javascript
    document.addEventListener("DOMContentLoaded", function () {
@@ -74,14 +74,7 @@ External JavaScript files keep your code organized and separate from your HTML. 
    });
    ```
 
-5. At the bottom of your HTML file, just before the closing `</body>` tag, link your external JavaScript file:
-
-   ```html
-       <script src="script.js"></script>
-   </body>
-   ```
-
-6. Test your page:
+5. Test your page:
    - Click the phone number link—an alert should appear
    - Click the "Tour Hours" button—the hours should appear and the button text should change
 
@@ -90,4 +83,4 @@ External JavaScript files keep your code organized and separate from your HTML. 
 In this lab, you learned two ways to add JavaScript:
 
 - **Inline JavaScript** - Written in HTML attributes like `onclick`, good for simple actions
-- **External JavaScript** - Written in a separate `.js` file and linked with `<script src="...">`, better for organized code
+- **External JavaScript** - Written in a separate `.js` file (the JS panel in LiveCodes), better for organized code
