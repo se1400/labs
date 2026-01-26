@@ -267,14 +267,30 @@ test('Your #visit-campus selector should have a background-color property set to
 });
 
 // Test 29: style element exists
+// Note: In LiveCodes, student's head content ends up in body, so we check there
 test('Your HTML head element should contain a style element', () => {
-  const style = document.querySelector('style');
-  expect(style).toBeTruthy();
+  if (isLiveCodes()) {
+    // In LiveCodes, student's style must be in body (proves they wrote it)
+    const styleInBody = document.querySelector('body > style');
+    expect(styleInBody).toBeTruthy();
+  } else {
+    // Non-LiveCodes: check head normally
+    const styleInHead = document.querySelector('head > style');
+    expect(styleInHead).toBeTruthy();
+  }
 });
 
 // Test 30: .tagline selector in style element
+// Note: In LiveCodes, student's style element ends up in body
 test('Inside your style element, you should have a .tagline selector with font-style set to italic', () => {
-  const styles = document.querySelectorAll('style');
+  let styles;
+  if (isLiveCodes()) {
+    // In LiveCodes, student's style must be in body
+    styles = document.querySelectorAll('body > style');
+  } else {
+    // Non-LiveCodes: check head normally
+    styles = document.querySelectorAll('head > style');
+  }
   let found = false;
   for (const style of styles) {
     const content = style.textContent || '';
