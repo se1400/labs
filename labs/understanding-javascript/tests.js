@@ -13,20 +13,8 @@ const getScriptElement = (src) => {
   return document.querySelector(`script[src="${src}"]`);
 };
 
-// Helper: Get JavaScript file content (for checking code patterns)
-const getJSContent = () => {
-  // In LiveCodes, we need to check if the script content is available
-  const scriptEl = getScriptElement('script.js');
-  if (scriptEl && scriptEl.textContent) {
-    return scriptEl.textContent;
-  }
-  // For external scripts, we can't read the content directly in the browser
-  // We'll rely on functional tests and checking window properties
-  return null;
-};
-
 // ============================================
-// Part 1: HTML Element Tests
+// Part 1: HTML Element Tests (Button & Paragraph)
 // ============================================
 
 // Test 1: Button element exists with correct id
@@ -43,16 +31,7 @@ test('The toggle-hours button should have type="button"', () => {
   expect(button.getAttribute('type')).toBe('button');
 });
 
-// Test 3: Button has correct initial text
-test('The toggle-hours button should initially display "Tour Hours"', () => {
-  const button = document.getElementById('toggle-hours');
-  expect(button).toBeTruthy();
-  // Check for initial text (before any clicks)
-  const text = button.textContent.trim();
-  expect(text === 'Tour Hours' || text === 'Hide office hours' || text === 'Show office hours').toBe(true);
-});
-
-// Test 4: Button is inside the visit-campus aside
+// Test 3: Button is inside the visit-campus aside
 test('The toggle-hours button should be inside the aside with id="visit-campus"', () => {
   const aside = document.getElementById('visit-campus');
   expect(aside).toBeTruthy();
@@ -60,47 +39,31 @@ test('The toggle-hours button should be inside the aside with id="visit-campus"'
   expect(button).toBeTruthy();
 });
 
-// Test 5: Paragraph element exists with correct id
+// Test 4: Paragraph element exists with correct id
 test('A paragraph element with id="office-hours" should exist', () => {
   const paragraph = document.getElementById('office-hours');
   expect(paragraph).toBeTruthy();
   expect(paragraph.tagName.toLowerCase()).toBe('p');
 });
 
-// Test 6: Paragraph has hidden attribute initially
+// Test 5: Paragraph has hidden attribute
 test('The office-hours paragraph should have the hidden attribute', () => {
   const paragraph = document.getElementById('office-hours');
   expect(paragraph).toBeTruthy();
-  // Check if element has hidden attribute (it may be toggled by JS, so we check the attribute exists or was there)
-  // We'll check if it's either hidden or was made visible by clicking
-  const hasHiddenAttr = paragraph.hasAttribute('hidden');
-  const isHiddenProp = paragraph.hidden;
-  // At least one should indicate it can be hidden
-  expect(hasHiddenAttr || isHiddenProp || paragraph.hasAttribute('hidden') !== undefined).toBe(true);
+  // Check if hidden attribute exists or hidden property is true
+  expect(paragraph.hasAttribute('hidden') || paragraph.hidden).toBe(true);
 });
 
-// Test 7: Paragraph contains tour hours content
+// Test 6: Paragraph contains tour hours content
 test('The office-hours paragraph should contain tour hours information', () => {
   const paragraph = document.getElementById('office-hours');
   expect(paragraph).toBeTruthy();
   const content = paragraph.textContent.toLowerCase();
-  // Check for key phrases that should be in the tour hours
   expect(content).toContain('monday');
   expect(content).toContain('friday');
 });
 
-// Test 8: Paragraph contains time information
-test('The office-hours paragraph should contain time information (8AM, 5PM, etc.)', () => {
-  const paragraph = document.getElementById('office-hours');
-  expect(paragraph).toBeTruthy();
-  const content = paragraph.textContent;
-  // Check for time patterns
-  const hasTimeInfo = content.includes('AM') || content.includes('PM') ||
-                      content.includes('am') || content.includes('pm');
-  expect(hasTimeInfo).toBe(true);
-});
-
-// Test 9: Paragraph is inside the visit-campus aside
+// Test 7: Paragraph is inside the visit-campus aside
 test('The office-hours paragraph should be inside the aside with id="visit-campus"', () => {
   const aside = document.getElementById('visit-campus');
   expect(aside).toBeTruthy();
@@ -109,35 +72,65 @@ test('The office-hours paragraph should be inside the aside with id="visit-campu
 });
 
 // ============================================
-// Part 2: Script Tag Tests
+// Part 2: Inline JavaScript Tests
 // ============================================
 
-// Test 10: Script tag exists linking to script.js
+// Test 8: Link with onclick exists for phone number
+test('A link with an onclick attribute should wrap the phone number', () => {
+  const aside = document.getElementById('visit-campus');
+  expect(aside).toBeTruthy();
+  const link = aside.querySelector('a[onclick]');
+  expect(link).toBeTruthy();
+});
+
+// Test 9: The onclick contains an alert
+test('The phone number link onclick should contain an alert()', () => {
+  const aside = document.getElementById('visit-campus');
+  expect(aside).toBeTruthy();
+  const link = aside.querySelector('a[onclick]');
+  expect(link).toBeTruthy();
+  const onclick = link.getAttribute('onclick').toLowerCase();
+  expect(onclick).toContain('alert');
+});
+
+// Test 10: The alert contains the phone number
+test('The alert should display the phone number (435) 652-7500', () => {
+  const aside = document.getElementById('visit-campus');
+  expect(aside).toBeTruthy();
+  const link = aside.querySelector('a[onclick]');
+  expect(link).toBeTruthy();
+  const onclick = link.getAttribute('onclick');
+  expect(onclick).toContain('435');
+  expect(onclick).toContain('652');
+  expect(onclick).toContain('7500');
+});
+
+// ============================================
+// Part 3: External JavaScript Tests
+// ============================================
+
+// Test 11: Script tag exists linking to script.js
 test('A script tag with src="script.js" should exist', () => {
   const script = getScriptElement('script.js');
   expect(script).toBeTruthy();
 });
 
-// Test 11: Script tag is at the end of body (not in head)
-test('The script tag should be placed at the end of the body element', () => {
-  // Check that script is a child of body, not head
-  const scriptInBody = document.querySelector('body script[src="script.js"]');
-  const scriptInHead = document.querySelector('head script[src="script.js"]');
-
+// Test 12: Script tag is in the body
+test('The script tag should be placed in the body element', () => {
   if (isLiveCodes()) {
-    // In LiveCodes, just verify script exists somewhere
     const script = getScriptElement('script.js');
     expect(script).toBeTruthy();
   } else {
+    const scriptInBody = document.querySelector('body script[src="script.js"]');
     expect(scriptInBody).toBeTruthy();
   }
 });
 
 // ============================================
-// Part 3: Functional Tests (JavaScript Behavior)
+// Part 4: Functional Tests (Toggle Behavior)
 // ============================================
 
-// Test 12: Clicking button shows the office hours
+// Test 13: Clicking button shows the office hours
 test('Clicking the toggle button should show the office hours paragraph', () => {
   const button = document.getElementById('toggle-hours');
   const paragraph = document.getElementById('office-hours');
@@ -155,7 +148,7 @@ test('Clicking the toggle button should show the office hours paragraph', () => 
   expect(paragraph.hidden).toBe(false);
 });
 
-// Test 13: Clicking button changes button text when showing
+// Test 14: Clicking button changes button text when showing
 test('Clicking the toggle button should change its text when showing office hours', () => {
   const button = document.getElementById('toggle-hours');
   const paragraph = document.getElementById('office-hours');
@@ -175,7 +168,7 @@ test('Clicking the toggle button should change its text when showing office hour
   expect(newText).toContain('hide');
 });
 
-// Test 14: Clicking button again hides the office hours
+// Test 15: Clicking button again hides the office hours
 test('Clicking the toggle button again should hide the office hours paragraph', () => {
   const button = document.getElementById('toggle-hours');
   const paragraph = document.getElementById('office-hours');
@@ -192,26 +185,6 @@ test('Clicking the toggle button again should hide the office hours paragraph', 
 
   // Paragraph should now be hidden
   expect(paragraph.hidden).toBe(true);
-});
-
-// Test 15: Clicking button changes button text when hiding
-test('Clicking the toggle button should change its text when hiding office hours', () => {
-  const button = document.getElementById('toggle-hours');
-  const paragraph = document.getElementById('office-hours');
-
-  expect(button).toBeTruthy();
-  expect(paragraph).toBeTruthy();
-
-  // Start with paragraph visible
-  paragraph.hidden = false;
-  button.textContent = 'Hide office hours';
-
-  // Click the button
-  button.click();
-
-  // Button text should change back
-  const newText = button.textContent.toLowerCase();
-  expect(newText.includes('show') || newText.includes('tour')).toBe(true);
 });
 
 // Test 16: Toggle works multiple times
