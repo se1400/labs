@@ -10,10 +10,9 @@
 
     <!-- Embedded CSS example, small on purpose -->
     <style>
-          .tagline {
+        .tagline {
             font-style: italic;
-        }/* This overrides the external stylesheet for the same selector */
-      
+        } /* This overrides the external stylesheet for the same selector */
     </style>
 </head>
 <body>
@@ -45,18 +44,29 @@
 
         <aside class="panel" id="visit-campus">
             <h4>Visit Campus</h4>
-            <p>Schedule a tour today!<br>
-            Call us at (435) 652-7500</p>
+            <p>
+                Schedule a tour today!<br>
+                Call us at (435) 652-7500
+            </p>
+
+            <button type="button" id="toggle-hours">Show office hours</button>
+
+            <p id="office-hours" hidden>
+                Office hours: Monday through Friday, 8:00 AM to 5:00 PM
+            </p>
         </aside>
     </main>
 
     <footer>
         <hr>
-        <p>Copyright 2027 Utah Tech University</p>
+        <p>Copyright <span id="copyright-year">20XX</span> Utah Tech University</p>
         <address>
             225 S 700 E<br>
             St. George, UT 84770
         </address>
     </footer>
+
+    <!-- External JavaScript file -->
+    <script src="script.js"></script>
 </body>
 </html>
