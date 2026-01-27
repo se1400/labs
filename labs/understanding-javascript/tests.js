@@ -94,12 +94,16 @@ test('The alert should display the phone number (435) 652-7500', () => {
 // Part 3: Functional Tests (Toggle Behavior)
 // ============================================
 
-// Helper: Ensure the click listener is attached
+// Helper: Ensure the click listener is attached (only once)
 // In LiveCodes, DOMContentLoaded may fire before JS panel code runs,
 // so we re-dispatch the event to trigger the student's setup code
+let listenerInitialized = false;
 const ensureClickListenerAttached = () => {
-  // Dispatch a new DOMContentLoaded event to trigger student's setup
-  document.dispatchEvent(new Event('DOMContentLoaded'));
+  if (!listenerInitialized) {
+    // Dispatch a new DOMContentLoaded event to trigger student's setup
+    document.dispatchEvent(new Event('DOMContentLoaded'));
+    listenerInitialized = true;
+  }
 };
 
 // Test 11: Clicking button shows the office hours
