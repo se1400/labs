@@ -10,13 +10,23 @@ In this lab, you'll add interactive functionality to your Utah Tech University p
 
 ### Part 1: Add HTML Elements for the Toggle Feature
 
-1. In your HTML file, find the `<aside>` element with `id="visit-campus"`. After the existing `<p>` element that contains "Schedule a tour today!", add a `<button>` element:
+1. In your HTML, find the `<aside>` element with `id="visit-campus"`. Look for this section:
+
+   ```html
+   <aside class="panel" id="visit-campus">
+       <h4>Visit Campus</h4>
+       <p>Schedule a tour today!<br>
+       Call us at (435) 652-7500</p>
+   </aside>
+   ```
+
+   Add a `<button>` element right after the closing `</p>` tag (but still inside the `<aside>`):
 
    ```html
    <button type="button" id="toggle-hours">Tour Hours</button>
    ```
 
-2. After your new button, add a hidden paragraph with the tour hours:
+2. Right after your new button, add a hidden paragraph with the tour hours:
 
    ```html
    <p id="office-hours" hidden>
@@ -27,27 +37,48 @@ In this lab, you'll add interactive functionality to your Utah Tech University p
    </p>
    ```
 
+   Your `<aside>` should now look like this:
+
+   ```html
+   <aside class="panel" id="visit-campus">
+       <h4>Visit Campus</h4>
+       <p>Schedule a tour today!<br>
+       Call us at (435) 652-7500</p>
+
+       <button type="button" id="toggle-hours">Tour Hours</button>
+
+       <p id="office-hours" hidden>
+           Tour hours:<br>
+           Monday through Friday, 8AM - 5PM<br>
+           Saturday, 9AM - 2PM<br>
+           Sunday, Closed<br>
+       </p>
+   </aside>
+   ```
+
 ### Part 2: Add Inline JavaScript
 
 Inline JavaScript is written directly inside an HTML attribute. This is useful for simple, one-line actions.
 
-3. Find the paragraph that contains "Call us at (435) 652-7500". Wrap the phone number in an `<a>` element with an `onclick` attribute that displays an alert:
+3. In the same `<aside>`, find the line that says `Call us at (435) 652-7500`. You need to turn the phone number into a clickable link that shows an alert.
 
+   **Change this:**
    ```html
-   <a href="#" onclick="alert('Call us at (435) 652-7500');">(435) 652-7500</a>
+   Call us at (435) 652-7500
    ```
 
-   The full paragraph should now look like:
+   **To this:**
    ```html
-   <p>Schedule a tour today!<br>
-   Call us at <a href="#" onclick="alert('Call us at (435) 652-7500');">(435) 652-7500</a></p>
+   Call us at <a href="#" onclick="alert('Call us at (435) 652-7500');">(435) 652-7500</a>
    ```
+
+   The `onclick` attribute runs JavaScript when the link is clicked. In this case, it shows an alert box with the phone number.
 
 ### Part 3: Create the External JavaScript
 
-External JavaScript files keep your code organized and separate from your HTML. In LiveCodes, the JS panel on the right represents your external JavaScript file.
+External JavaScript files keep your code organized and separate from your HTML. In LiveCodes, the **JS panel on the right side of the screen** represents your external JavaScript file.
 
-4. In the JS panel, copy the following code. Read through the comments to understand what each part does.
+4. Click on the **JS panel** (the rightmost panel in LiveCodes). Copy and paste the following code. Read through the comments to understand what each part does.
 
    ```javascript
    // Wait for the HTML page to fully load before running our code
@@ -87,9 +118,10 @@ External JavaScript files keep your code organized and separate from your HTML. 
    });
    ```
 
-5. Test your page:
-   - Click the phone number link—an alert should appear
-   - Click the "Tour Hours" button—the hours should appear and the button text should change
+5. Test your page in the preview panel at the bottom:
+   - Click the phone number link — an alert box should appear
+   - Click the "Tour Hours" button — the hours should appear and the button text should change to "Hide office hours"
+   - Click the button again — the hours should hide and the button text should change back
 
 ## Summary
 
