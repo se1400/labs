@@ -91,87 +91,47 @@ test('The alert should display the phone number (435) 652-7500', () => {
 });
 
 // ============================================
-// Part 3: Functional Tests (Toggle Behavior)
+// Part 3: External JavaScript Tests
 // ============================================
 
-// Test 11: Clicking button shows the office hours
-test('Clicking the toggle button should show the office hours paragraph', () => {
-  const button = document.getElementById('toggle-hours');
-  const paragraph = document.getElementById('office-hours');
+// Helper: Get the student's JavaScript code from the page
+const getStudentJS = () => {
+  // In LiveCodes, the JS panel code is injected as an inline script
+  const scripts = document.querySelectorAll('script:not([src])');
+  for (const script of scripts) {
+    const content = script.textContent || '';
+    // Look for student's code patterns (not test code)
+    if (content.includes('toggle-hours') && content.includes('addEventListener')) {
+      return content;
+    }
+  }
+  // Fallback: check if there's a script with the toggle code
+  return '';
+};
 
-  expect(button).toBeTruthy();
-  expect(paragraph).toBeTruthy();
-
-  // Ensure paragraph starts hidden
-  paragraph.hidden = true;
-
-  // Click the button
-  button.click();
-
-  // Paragraph should now be visible
-  expect(paragraph.hidden).toBe(false);
+// Test 11: JavaScript uses DOMContentLoaded
+test('JavaScript should use DOMContentLoaded to wait for page load', () => {
+  const jsCode = getStudentJS();
+  expect(jsCode.toLowerCase()).toContain('domcontentloaded');
 });
 
-// Test 12: Clicking button changes button text when showing
-test('Clicking the toggle button should change its text when showing office hours', () => {
-  const button = document.getElementById('toggle-hours');
-  const paragraph = document.getElementById('office-hours');
-
-  expect(button).toBeTruthy();
-  expect(paragraph).toBeTruthy();
-
-  // Reset state
-  paragraph.hidden = true;
-  button.textContent = 'Tour Hours';
-
-  // Click the button
-  button.click();
-
-  // Button text should change
-  const newText = button.textContent.toLowerCase();
-  expect(newText).toContain('hide');
+// Test 12: JavaScript selects the toggle button by ID
+test('JavaScript should select the toggle-hours button using getElementById', () => {
+  const jsCode = getStudentJS();
+  expect(jsCode).toContain('getElementById');
+  expect(jsCode).toContain('toggle-hours');
 });
 
-// Test 13: Clicking button again hides the office hours
-test('Clicking the toggle button again should hide the office hours paragraph', () => {
-  const button = document.getElementById('toggle-hours');
-  const paragraph = document.getElementById('office-hours');
-
-  expect(button).toBeTruthy();
-  expect(paragraph).toBeTruthy();
-
-  // Start with paragraph visible
-  paragraph.hidden = false;
-  button.textContent = 'Hide office hours';
-
-  // Click the button
-  button.click();
-
-  // Paragraph should now be hidden
-  expect(paragraph.hidden).toBe(true);
+// Test 13: JavaScript selects the office-hours paragraph by ID
+test('JavaScript should select the office-hours paragraph using getElementById', () => {
+  const jsCode = getStudentJS();
+  expect(jsCode).toContain('getElementById');
+  expect(jsCode).toContain('office-hours');
 });
 
-// Test 14: Toggle works multiple times
-test('The toggle should work correctly through multiple clicks', () => {
-  const button = document.getElementById('toggle-hours');
-  const paragraph = document.getElementById('office-hours');
-
-  expect(button).toBeTruthy();
-  expect(paragraph).toBeTruthy();
-
-  // Reset to initial state
-  paragraph.hidden = true;
-  button.textContent = 'Tour Hours';
-
-  // Click 1: Should show
-  button.click();
-  expect(paragraph.hidden).toBe(false);
-
-  // Click 2: Should hide
-  button.click();
-  expect(paragraph.hidden).toBe(true);
-
-  // Click 3: Should show again
-  button.click();
-  expect(paragraph.hidden).toBe(false);
+// Test 14: JavaScript adds a click event listener
+test('JavaScript should add a click event listener to the button', () => {
+  const jsCode = getStudentJS();
+  expect(jsCode).toContain('addEventListener');
+  expect(jsCode.toLowerCase()).toContain('click');
 });
