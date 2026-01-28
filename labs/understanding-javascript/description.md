@@ -2,6 +2,8 @@
 
 In this lab, you'll add interactive functionality to your Utah Tech University page using JavaScript. You'll learn two ways to add JavaScript: inline (directly in HTML attributes) and external (in a separate `.js` file).
 
+**[View completed example](example.jpg)** — This is what your page should look like when you're done.
+
 **Objective:** Follow the instructions below and get all the tests to pass to complete the lab.
 
 **Important:** JavaScript is case-sensitive. `getElementById` is different from `getElementByID`. Pay close attention to capitalization and spelling.
