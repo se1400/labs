@@ -2,7 +2,7 @@
 
 In this lab, you'll add interactive functionality to your Utah Tech University page using JavaScript. You'll learn two ways to add JavaScript: inline (directly in HTML attributes) and external (in a separate `.js` file).
 
-**<a href="https://se1400.github.io/labs/understanding-javascript/example.jpg" target="_blank">View completed example</a>** — This is what your page should look like when you're done.
+**<a href="https://se1400.github.io/labs/labs/understanding-javascript/example.jpg" target="_blank">View completed example</a>** — This is what your page should look like when you're done.
 
 **Objective:** Follow the instructions below and get all the tests to pass to complete the lab.
 
