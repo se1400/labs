@@ -72,3 +72,9 @@ th {
 tbody tr:nth-child(even) {
     background-color: #f2f2f2;
 }
+
+/* Pre tag styling */
+pre {
+    margin: 0;
+    font-family: inherit;
+}
