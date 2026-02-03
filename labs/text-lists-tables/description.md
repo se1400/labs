@@ -97,7 +97,7 @@ Use `colspan` to make a cell span multiple columns and `rowspan` to span multipl
 
 13. Add a new header row at the top of your table's `<thead>` with a single `<th>` cell that spans all three columns using `colspan="3"`. This cell should contain "Tuition Per Credit Hour".
 
-14. Modify your table body to group the Undergraduate and Graduate rows together. Change the first cell of the Undergraduate row to say "Campus" and add `rowspan="2"` so it spans both the Undergraduate and Graduate rows. Then remove the first cell from the Graduate row since it's now covered by the rowspan.
+14. Modify your table body to group the Undergraduate and Graduate rows together. Change the first cell of the Undergraduate row to say "Campus" and add `rowspan="2"` so it spans both the Undergraduate and Graduate rows. Then remove the first cell from the Graduate row since it's now covered by the rowspan. To keep the labels visible, include "Undergraduate:" and "Graduate:" before the resident prices in those cells.
 
 ## Summary
 
