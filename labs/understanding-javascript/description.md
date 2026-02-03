@@ -6,7 +6,7 @@ In this lab, you'll add interactive functionality to your Utah Tech University p
 
 **Objective:** Follow the instructions below and get all the tests to pass to complete the lab.
 
-**Important:** JavaScript is case-sensitive. `getElementById` is different from `getElementByID`. Pay close attention to capitalization and spelling.
+**Important:** JavaScript is case-sensitive. `querySelector` is different from `queryselector`. Pay close attention to capitalization and spelling.
 
 ## Instructions:
 
@@ -87,17 +87,18 @@ External JavaScript files keep your code organized and separate from your HTML. 
    // This ensures all elements exist before we try to find them
    document.addEventListener("DOMContentLoaded", function () {
 
-       // Find elements by their ID using getElementById()
+       // Find elements using querySelector() with a CSS selector
+       // The '#' means "find by id" — same selector syntax as CSS
        // We store them in variables using 'const' (constant - won't change)
-       const toggleButton = document.getElementById("toggle-hours");
-       const hoursParagraph = document.getElementById("office-hours");
+       const toggleButton = document.querySelector("#toggle-hours");
+       const hoursParagraph = document.querySelector("#office-hours");
 
        // Safety check: make sure both elements were found
        // The '!' means "not" - so !toggleButton means "toggleButton was not found"
        if (!toggleButton || !hoursParagraph) {
            console.error(
                "Visit Campus toggle elements not found. " +
-               'Expected ids: "toggle-hours" and "office-hours".'
+               'Expected selectors: "#toggle-hours" and "#office-hours".'
            );
            return; // Stop here if elements weren't found
        }

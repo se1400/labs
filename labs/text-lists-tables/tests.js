@@ -164,7 +164,7 @@ test('Step 5: The year span should display the current year (JavaScript working)
       'The year span is empty. The JavaScript is not working.\n\n' +
       'Add this script just before the closing </body> tag:\n' +
       '<script>\n' +
-      "    document.getElementById('year').textContent = new Date().getFullYear();\n" +
+      "    document.querySelector('#year').textContent = new Date().getFullYear();\n" +
       '</script>'
     );
   }

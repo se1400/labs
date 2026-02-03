@@ -43,7 +43,7 @@ You'll use a character entity for the copyright symbol and JavaScript to automat
 
    ```html
    <script>
-       document.getElementById('year').textContent = new Date().getFullYear();
+       document.querySelector('#year').textContent = new Date().getFullYear();
    </script>
    ```
 

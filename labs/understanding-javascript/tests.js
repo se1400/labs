@@ -4,21 +4,21 @@
 
 // Test 1: Button element exists with correct id
 test('A button element with id="toggle-hours" should exist', () => {
-  const button = document.getElementById('toggle-hours');
+  const button = document.querySelector('#toggle-hours');
   expect(button).toBeTruthy();
   expect(button.tagName.toLowerCase()).toBe('button');
 });
 
 // Test 2: Button has correct type attribute
 test('The toggle-hours button should have type="button"', () => {
-  const button = document.getElementById('toggle-hours');
+  const button = document.querySelector('#toggle-hours');
   expect(button).toBeTruthy();
   expect(button.getAttribute('type')).toBe('button');
 });
 
 // Test 3: Button is inside the visit-campus aside
 test('The toggle-hours button should be inside the aside with id="visit-campus"', () => {
-  const aside = document.getElementById('visit-campus');
+  const aside = document.querySelector('#visit-campus');
   expect(aside).toBeTruthy();
   const button = aside.querySelector('#toggle-hours');
   expect(button).toBeTruthy();
@@ -26,14 +26,14 @@ test('The toggle-hours button should be inside the aside with id="visit-campus"'
 
 // Test 4: Paragraph element exists with correct id
 test('A paragraph element with id="office-hours" should exist', () => {
-  const paragraph = document.getElementById('office-hours');
+  const paragraph = document.querySelector('#office-hours');
   expect(paragraph).toBeTruthy();
   expect(paragraph.tagName.toLowerCase()).toBe('p');
 });
 
 // Test 5: Paragraph has hidden attribute
 test('The office-hours paragraph should have the hidden attribute', () => {
-  const paragraph = document.getElementById('office-hours');
+  const paragraph = document.querySelector('#office-hours');
   expect(paragraph).toBeTruthy();
   // Check if hidden attribute exists or hidden property is true
   expect(paragraph.hasAttribute('hidden') || paragraph.hidden).toBe(true);
@@ -41,7 +41,7 @@ test('The office-hours paragraph should have the hidden attribute', () => {
 
 // Test 6: Paragraph contains tour hours content
 test('The office-hours paragraph should contain tour hours information', () => {
-  const paragraph = document.getElementById('office-hours');
+  const paragraph = document.querySelector('#office-hours');
   expect(paragraph).toBeTruthy();
   const content = paragraph.textContent.toLowerCase();
   expect(content).toContain('monday');
@@ -50,7 +50,7 @@ test('The office-hours paragraph should contain tour hours information', () => {
 
 // Test 7: Paragraph is inside the visit-campus aside
 test('The office-hours paragraph should be inside the aside with id="visit-campus"', () => {
-  const aside = document.getElementById('visit-campus');
+  const aside = document.querySelector('#visit-campus');
   expect(aside).toBeTruthy();
   const paragraph = aside.querySelector('#office-hours');
   expect(paragraph).toBeTruthy();
@@ -62,7 +62,7 @@ test('The office-hours paragraph should be inside the aside with id="visit-campu
 
 // Test 8: Link with onclick exists for phone number
 test('A link with an onclick attribute should wrap the phone number', () => {
-  const aside = document.getElementById('visit-campus');
+  const aside = document.querySelector('#visit-campus');
   expect(aside).toBeTruthy();
   const link = aside.querySelector('a[onclick]');
   expect(link).toBeTruthy();
@@ -70,7 +70,7 @@ test('A link with an onclick attribute should wrap the phone number', () => {
 
 // Test 9: The onclick contains an alert
 test('The phone number link onclick should contain an alert()', () => {
-  const aside = document.getElementById('visit-campus');
+  const aside = document.querySelector('#visit-campus');
   expect(aside).toBeTruthy();
   const link = aside.querySelector('a[onclick]');
   expect(link).toBeTruthy();
@@ -80,7 +80,7 @@ test('The phone number link onclick should contain an alert()', () => {
 
 // Test 10: The alert contains the phone number
 test('The alert should display the phone number (435) 652-7500', () => {
-  const aside = document.getElementById('visit-campus');
+  const aside = document.querySelector('#visit-campus');
   expect(aside).toBeTruthy();
   const link = aside.querySelector('a[onclick]');
   expect(link).toBeTruthy();
@@ -116,16 +116,16 @@ test('JavaScript should use DOMContentLoaded to wait for page load', () => {
 });
 
 // Test 12: JavaScript selects the toggle button by ID
-test('JavaScript should select the toggle-hours button using getElementById', () => {
+test('JavaScript should select the toggle-hours button using querySelector', () => {
   const jsCode = getStudentJS();
-  expect(jsCode).toContain('getElementById');
+  expect(jsCode).toContain('querySelector');
   expect(jsCode).toContain('toggle-hours');
 });
 
 // Test 13: JavaScript selects the office-hours paragraph by ID
-test('JavaScript should select the office-hours paragraph using getElementById', () => {
+test('JavaScript should select the office-hours paragraph using querySelector', () => {
   const jsCode = getStudentJS();
-  expect(jsCode).toContain('getElementById');
+  expect(jsCode).toContain('querySelector');
   expect(jsCode).toContain('office-hours');
 });
 
