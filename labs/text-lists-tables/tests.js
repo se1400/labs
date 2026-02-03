@@ -347,7 +347,7 @@ test('Step 11: A nested list should exist (ul inside an li)', () => {
   expect(nestedUl).toBeTruthy();
 });
 
-test('Step 11: The nested list should have 3 programs', () => {
+test('Step 11: The nested list should have at least 3 programs', () => {
   const nestedUl = document.querySelector('li > ul');
   if (!nestedUl) {
     throw new Error('First create a nested list (see previous test).');
@@ -357,8 +357,8 @@ test('Step 11: The nested list should have 3 programs', () => {
 
   if (items.length < 3) {
     throw new Error(
-      `Found ${items.length} items in the nested list, but need 3 programs.\n\n` +
-      'Add these three programs:\n' +
+      `Found ${items.length} items in the nested list, but need at least 3 programs.\n\n` +
+      'Add at least these three programs:\n' +
       '- Computer Science\n' +
       '- Software Engineering\n' +
       '- Biology'
@@ -390,7 +390,7 @@ test('Step 12: An ordered list <ol> should exist', () => {
   expect(ol).toBeTruthy();
 });
 
-test('Step 12: The ordered list should have 3 steps', () => {
+test('Step 12: The ordered list should have at least 3 steps', () => {
   const ol = document.querySelector('ol');
   if (!ol) {
     throw new Error('First create an <ol> element (see previous test).');
@@ -400,8 +400,8 @@ test('Step 12: The ordered list should have 3 steps', () => {
 
   if (items.length < 3) {
     throw new Error(
-      `Found ${items.length} list items, but need 3 steps.\n\n` +
-      'Add all three steps:\n' +
+      `Found ${items.length} list items, but need at least 3 steps.\n\n` +
+      'Add at least these three steps:\n' +
       '1. Submit your application online\n' +
       '2. Send official transcripts\n' +
       '3. Complete the FAFSA for financial aid'
@@ -616,8 +616,8 @@ test('Step 16: A table data cell should have rowspan="2"', () => {
       'In your first data row, change the "Undergraduate" cell to "Campus" with rowspan="2":\n' +
       '<tr>\n' +
       '    <td rowspan="2">Campus</td>\n' +
-      '    <td>Undergraduate: $227</td>\n' +
-      '    <td>$725</td>\n' +
+      '    <td>Undergraduate: $___</td>\n' +
+      '    <td>$___</td>\n' +
       '</tr>\n\n' +
       'Then remove the first <td> from the Graduate row since it\'s covered by the rowspan.'
     );

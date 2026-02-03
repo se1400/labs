@@ -85,7 +85,7 @@ Unordered lists display items with bullet points. They use <code>&lt;ul&gt;</cod
 
 You can nest lists inside list items to show hierarchy. This is useful for showing subcategories or details.
 
-11. Under the first college (College of Science, Engineering & Technology), add a nested unordered list. Place a new <code>&lt;ul&gt;</code> inside that <code>&lt;li&gt;</code>, after the college name, containing three programs: Computer Science, Software Engineering, and Biology.
+11. Under the first college (College of Science, Engineering & Technology), add a nested unordered list. Place a new <code>&lt;ul&gt;</code> inside that <code>&lt;li&gt;</code>, after the college name, containing at least three programs: Computer Science, Software Engineering, and Biology.
 
     ```html
     <li>College of Science, Engineering &amp; Technology
@@ -101,7 +101,7 @@ You can nest lists inside list items to show hierarchy. This is useful for showi
 
 Ordered lists display numbered items automatically. They use <code>&lt;ol&gt;</code> to wrap the entire list and <code>&lt;li&gt;</code> to wrap each list item.
 
-12. After the "Our Colleges" section, add a new section with the class <code>panel</code>, the heading "How to Apply", and an ordered list containing these three steps:
+12. After the "Our Colleges" section, add a new section with the class <code>panel</code>, the heading "How to Apply", and an ordered list containing at least these three steps:
     - Submit your application online
     - Send official transcripts
     - Complete the FAFSA for financial aid
