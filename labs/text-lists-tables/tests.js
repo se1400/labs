@@ -508,6 +508,19 @@ test('Step 14: The table should have <td> (data) cells with tuition information'
     throw new Error('First create a <table> element.');
   }
 
+  const tbody = table.querySelector('tbody');
+  if (!tbody) {
+    throw new Error('First add a <tbody> element to your table.');
+  }
+
+  const rows = tbody.querySelectorAll('tr');
+  if (rows.length < 3) {
+    throw new Error(
+      `Found ${rows.length} data rows, but need at least 3.\n\n` +
+      'Add rows for Undergraduate, Graduate, and Online tuition.'
+    );
+  }
+
   const td = table.querySelector('td');
   if (!td) {
     throw new Error(
@@ -516,28 +529,28 @@ test('Step 14: The table should have <td> (data) cells with tuition information'
       '<tbody>\n' +
       '    <tr>\n' +
       '        <td>Undergraduate</td>\n' +
-      '        <td>$227</td>\n' +
-      '        <td>$725</td>\n' +
+      '        <td>$???</td>\n' +
+      '        <td>$???</td>\n' +
       '    </tr>\n' +
       '    <!-- more rows -->\n' +
       '</tbody>'
     );
   }
 
-  // Check for tuition-related content
-  const tableText = table.textContent.toLowerCase();
-  const hasTuitionContent = tableText.includes('$') ||
-                            tableText.includes('undergraduate') ||
-                            tableText.includes('graduate');
+  // Check for dollar amounts (tuition prices)
+  const tableText = table.textContent;
+  const dollarAmounts = tableText.match(/\$\d+/g);
 
-  if (!hasTuitionContent) {
+  if (!dollarAmounts || dollarAmounts.length < 5) {
     throw new Error(
-      'The table exists but doesn\'t seem to contain tuition data.\n\n' +
-      'Make sure your table includes the tuition rates with $ amounts.'
+      'The table needs tuition prices with dollar amounts.\n\n' +
+      'Look up current tuition rates at:\n' +
+      'https://financialaid.utahtech.edu/tuition-fees/\n\n' +
+      'Make sure each price starts with $ (e.g., $227, $725)'
     );
   }
 
-  expect(td).toBeTruthy();
+  expect(dollarAmounts.length).toBeGreaterThanOrEqual(5);
 });
 
 // ============================================
