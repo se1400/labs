@@ -24,13 +24,13 @@
             <h2>Welcome to Utah Tech</h2>
             <p>Utah Tech University is located in St. George, Utah. Our campus sits at the base of beautiful red rock cliffs in Southern Utah.</p>
             <p>We are committed to <strong>active learning</strong> and helping students <em>succeed</em>.</p>
-            <p>With 300&deg;+ days of sunshine per year and a 20:1 student-faculty ratio<sup>1</sup>, Utah Tech offers an ideal learning environment.</p>
+            <p>With 300+ degrees of sunshine per year and a 20:1 student-faculty ratio<sup>1</sup>, Utah Tech offers an ideal learning environment.</p>
         </section>
 
         <section class="panel">
             <h3>Our Colleges</h3>
             <ul>
-                <li>College of Science, Engineering & Technology
+                <li>College of Science, Engineering &amp; Technology
                     <ul>
                         <li>Computer Science</li>
                         <li>Software Engineering</li>
@@ -38,7 +38,7 @@
                     </ul>
                 </li>
                 <li>College of Health Sciences</li>
-                <li>College of Humanities & Social Sciences</li>
+                <li>College of Humanities &amp; Social Sciences</li>
                 <li>College of Education</li>
                 <li>College of the Arts</li>
             </ul>
@@ -54,21 +54,7 @@
         </section>
 
         <section class="panel">
-            <h3>Degree Types</h3>
-            <dl>
-                <dt>BS</dt>
-                <dd>Bachelor of Science</dd>
-                <dt>BA</dt>
-                <dd>Bachelor of Arts</dd>
-                <dt>AS</dt>
-                <dd>Associate of Science</dd>
-                <dt>AAS</dt>
-                <dd>Associate of Applied Science</dd>
-            </dl>
-        </section>
-
-        <section class="panel">
-            <h3>Tuition & Fees</h3>
+            <h3>Tuition &amp; Fees</h3>
             <table>
                 <thead>
                     <tr>
@@ -108,11 +94,15 @@
 
     <footer>
         <hr>
-        <p>&copy; Utah Tech University</p>
+        <p>&copy; <span id="year"></span> Utah Tech University</p>
         <address>
 <pre>225 S 700 E
 St. George, UT 84770</pre>
         </address>
     </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
 </body>
 </html>

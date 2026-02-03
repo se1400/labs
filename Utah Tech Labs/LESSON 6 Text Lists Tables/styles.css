@@ -12,6 +12,7 @@ body {
 header {
     padding: 12px;
     background-color: #f2f2f2;
+    text-align: center;
 }
 
 nav {
@@ -25,7 +26,6 @@ nav {
 h1 {
     margin: 0;
     font-family: 'Montserrat', sans-serif;
-    text-align: center;
 }
 
 h2, h3, h4 {
@@ -73,17 +73,6 @@ th {
 
 tbody tr:nth-child(even) {
     background-color: #f2f2f2;
-}
-
-/* Definition list styling */
-dt {
-    font-weight: bold;
-    color: #BA1C21;
-}
-
-dd {
-    margin-left: 20px;
-    margin-bottom: 10px;
 }
 
 /* Pre tag styling */

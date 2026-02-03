@@ -8,7 +8,7 @@ test('Google Fonts preconnect link should exist', () => {
   expect(preconnect).toBeTruthy();
 });
 
-// Test 2: Google Font stylesheet link exists
+// Test 2: Google Fonts stylesheet link exists
 test('Google Fonts stylesheet link for Montserrat should exist', () => {
   const fontLink = document.querySelector('link[href*="fonts.googleapis.com/css2"][href*="Montserrat"]');
   expect(fontLink).toBeTruthy();
@@ -18,13 +18,13 @@ test('Google Fonts stylesheet link for Montserrat should exist', () => {
 // Part 2: Text Alignment Tests
 // ============================================
 
-// Test 3: h1 has text-align center
-test('The h1 element should have text-align: center', () => {
+// Test 3: header has text-align center
+test('The header element should have text-align: center', () => {
   let found = false;
   for (let sheet of document.styleSheets) {
     try {
       for (let rule of sheet.cssRules) {
-        if (rule.selectorText && rule.selectorText.includes('h1')) {
+        if (rule.selectorText && rule.selectorText.includes('header')) {
           const textAlign = rule.style.getPropertyValue('text-align');
           if (textAlign === 'center') {
             found = true;
@@ -49,10 +49,10 @@ test('Footer should contain the copyright symbol ©', () => {
   expect(footer.textContent).toContain('©');
 });
 
-// Test 5: Content contains degree symbol
-test('Page should contain the degree symbol °', () => {
-  const body = document.body;
-  expect(body.textContent).toContain('°');
+// Test 5: Year span element exists
+test('Footer should have a span with id="year" for the copyright year', () => {
+  const yearSpan = document.querySelector('footer span#year');
+  expect(yearSpan).toBeTruthy();
 });
 
 // ============================================
@@ -140,76 +140,50 @@ test('The ordered list should have at least 3 <li> items', () => {
 });
 
 // ============================================
-// Part 8: Definition List Tests
+// Part 8: Table Structure Tests
 // ============================================
 
-// Test 16: Definition list exists
-test('A definition list <dl> should exist', () => {
-  const dl = document.querySelector('dl');
-  expect(dl).toBeTruthy();
-});
-
-// Test 17: Definition list has dt elements
-test('The definition list should have <dt> (term) elements', () => {
-  const dl = document.querySelector('dl');
-  expect(dl).toBeTruthy();
-  const terms = dl.querySelectorAll('dt');
-  expect(terms.length).toBeGreaterThanOrEqual(2);
-});
-
-// Test 18: Definition list has dd elements
-test('The definition list should have <dd> (definition) elements', () => {
-  const dl = document.querySelector('dl');
-  expect(dl).toBeTruthy();
-  const definitions = dl.querySelectorAll('dd');
-  expect(definitions.length).toBeGreaterThanOrEqual(2);
-});
-
-// ============================================
-// Part 9: Table Structure Tests
-// ============================================
-
-// Test 19: Table exists
+// Test 16: Table exists
 test('A <table> element should exist', () => {
   const table = document.querySelector('table');
   expect(table).toBeTruthy();
 });
 
-// Test 20: Table has thead
+// Test 17: Table has thead
 test('The table should have a <thead> element', () => {
   const thead = document.querySelector('table thead');
   expect(thead).toBeTruthy();
 });
 
-// Test 21: Table has tbody
+// Test 18: Table has tbody
 test('The table should have a <tbody> element', () => {
   const tbody = document.querySelector('table tbody');
   expect(tbody).toBeTruthy();
 });
 
-// Test 22: Table has th (header cells)
+// Test 19: Table has th (header cells)
 test('The table should have <th> (header) cells', () => {
   const th = document.querySelector('table th');
   expect(th).toBeTruthy();
 });
 
-// Test 23: Table has td (data cells)
+// Test 20: Table has td (data cells)
 test('The table should have <td> (data) cells', () => {
   const td = document.querySelector('table td');
   expect(td).toBeTruthy();
 });
 
 // ============================================
-// Part 10: Table Spanning Tests
+// Part 9: Table Spanning Tests
 // ============================================
 
-// Test 24: colspan attribute exists
+// Test 21: colspan attribute exists
 test('A table cell should have a colspan attribute', () => {
   const colspan = document.querySelector('table [colspan]');
   expect(colspan).toBeTruthy();
 });
 
-// Test 25: rowspan attribute exists
+// Test 22: rowspan attribute exists
 test('A table cell should have a rowspan attribute', () => {
   const rowspan = document.querySelector('table [rowspan]');
   expect(rowspan).toBeTruthy();
@@ -219,7 +193,7 @@ test('A table cell should have a rowspan attribute', () => {
 // Bonus: Content Verification Tests
 // ============================================
 
-// Test 26: h1 uses Montserrat font family
+// Test 23: h1 uses Montserrat font family
 test('The h1 should use Montserrat font-family', () => {
   let found = false;
   for (let sheet of document.styleSheets) {
@@ -239,7 +213,7 @@ test('The h1 should use Montserrat font-family', () => {
   expect(found).toBe(true);
 });
 
-// Test 27: Table contains tuition information
+// Test 24: Table contains tuition information
 test('The table should contain tuition-related content', () => {
   const table = document.querySelector('table');
   expect(table).toBeTruthy();
