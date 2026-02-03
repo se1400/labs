@@ -133,7 +133,7 @@ Tables organize data in rows and columns using these tags:
     </table>
     ```
 
-14. Inside the <code>&lt;tbody&gt;</code>, add three rows with tuition data. Each row needs three cells (<code>&lt;td&gt;</code>). Look up the current tuition rates at Utah Tech's official tuition page: https://financialaid.utahtech.edu/tuition-fees/
+14. Inside the <code>&lt;tbody&gt;</code>, add three rows with tuition data. Each row needs three cells (<code>&lt;td&gt;</code>). Look up the current tuition rates at Utah Tech's official tuition page: <a href="https://catalog.utahtech.edu/tuitionfees/" target="_blank">https://catalog.utahtech.edu/tuitionfees/</a>
 
     Find the per-credit-hour rates for Undergraduate (resident and non-resident), Graduate (resident and non-resident), and Online. Make sure to include the dollar sign ($) before each amount.
 

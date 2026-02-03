@@ -545,7 +545,7 @@ test('Step 14: The table should have <td> (data) cells with tuition information'
     throw new Error(
       'The table needs tuition prices with dollar amounts.\n\n' +
       'Look up current tuition rates at:\n' +
-      'https://financialaid.utahtech.edu/tuition-fees/\n\n' +
+      'https://catalog.utahtech.edu/tuitionfees/\n\n' +
       'Make sure each price starts with $ (e.g., $227, $725)'
     );
   }
