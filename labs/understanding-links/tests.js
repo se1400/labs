@@ -28,6 +28,11 @@ const findCSSRule = (selector, property, value) => {
               return true;
             }
           }
+          // Handle transparent keyword
+          if (normalizedValue === 'transparent' &&
+              (normalizedPropValue === 'transparent' || normalizedPropValue === 'rgba(0,0,0,0)')) {
+            return true;
+          }
           // Handle 0 vs 0px
           if ((normalizedValue === '0' || normalizedValue === '0px') &&
               (normalizedPropValue === '0' || normalizedPropValue === '0px')) {
@@ -392,47 +397,65 @@ test('Step 8: CSS should have an a:link rule with color #BA1C21', () => {
     throw new Error(
       'Missing CSS rule for a:link.\n\n' +
       'This is the first rule in the LoVe HAte order.\n' +
-      'Add a:link { color: #BA1C21; } to your CSS file.'
+      'Set the color to the Utah Tech red value specified in the instructions.'
     );
   }
 
   expect(findCSSRule('a:link', 'color', '#BA1C21')).toBe(true);
 });
 
-test('Step 8: CSS should have an a:visited rule with color #8B1518', () => {
-  if (!findCSSRule('a:visited', 'color', '#8B1518')) {
+test('Step 8: CSS should have an a:visited rule with color #6A1039', () => {
+  if (!findCSSRule('a:visited', 'color', '#6A1039')) {
     throw new Error(
       'Missing CSS rule for a:visited.\n\n' +
       'This is the second rule in the LoVe HAte order (after a:link).\n' +
-      'Add a:visited { color: #8B1518; } to your CSS file.'
+      'Set the color to the plum tone specified in the instructions.'
     );
   }
 
-  expect(findCSSRule('a:visited', 'color', '#8B1518')).toBe(true);
+  expect(findCSSRule('a:visited', 'color', '#6A1039')).toBe(true);
 });
 
-test('Step 8: CSS should have an a:hover rule with color #D32F2F', () => {
-  if (!findCSSRule('a:hover', 'color', '#D32F2F')) {
+test('Step 8: CSS should have an a:hover rule with white text on a red background', () => {
+  if (!findCSSRule('a:hover', 'color', '#ffffff')) {
     throw new Error(
-      'Missing CSS rule for a:hover.\n\n' +
-      'This is the third rule in the LoVe HAte order (after a:visited).\n' +
-      'Add a:hover { color: #D32F2F; } to your CSS file.'
+      'Missing or incorrect a:hover color.\n\n' +
+      'The a:hover rule should set color to #ffffff (white text).\n' +
+      'This creates a highlighted effect when combined with a red background.'
     );
   }
 
-  expect(findCSSRule('a:hover', 'color', '#D32F2F')).toBe(true);
+  if (!findCSSRule('a:hover', 'background-color', '#BA1C21')) {
+    throw new Error(
+      'Missing background-color on a:hover.\n\n' +
+      'The a:hover rule should set background-color to #BA1C21 (Utah Tech red).\n' +
+      'This creates a red "pill" highlight effect behind the white text.'
+    );
+  }
+
+  expect(findCSSRule('a:hover', 'color', '#ffffff')).toBe(true);
+  expect(findCSSRule('a:hover', 'background-color', '#BA1C21')).toBe(true);
 });
 
-test('Step 8: CSS should have an a:active rule with color #003058', () => {
-  if (!findCSSRule('a:active', 'color', '#003058')) {
+test('Step 8: CSS should have an a:active rule with white text on a dark blue background', () => {
+  if (!findCSSRule('a:active', 'color', '#ffffff')) {
     throw new Error(
-      'Missing CSS rule for a:active.\n\n' +
-      'This is the fourth and last rule in the LoVe HAte order (after a:hover).\n' +
-      'Add a:active { color: #003058; } to your CSS file.'
+      'Missing or incorrect a:active color.\n\n' +
+      'The a:active rule should set color to #ffffff (white text).\n' +
+      'This creates a brief flash of color when a link is clicked.'
     );
   }
 
-  expect(findCSSRule('a:active', 'color', '#003058')).toBe(true);
+  if (!findCSSRule('a:active', 'background-color', '#003058')) {
+    throw new Error(
+      'Missing background-color on a:active.\n\n' +
+      'The a:active rule should set background-color to #003058 (dark blue).\n' +
+      'This creates a dark blue flash behind white text when clicking a link.'
+    );
+  }
+
+  expect(findCSSRule('a:active', 'color', '#ffffff')).toBe(true);
+  expect(findCSSRule('a:active', 'background-color', '#003058')).toBe(true);
 });
 
 // ============================================
@@ -472,6 +495,18 @@ test('Step 10: CSS should have a "nav a:hover" rule with text-decoration underli
   }
 
   expect(findCSSRule('nav a:hover', 'text-decoration', 'underline')).toBe(true);
+});
+
+test('Step 10: The "nav a:hover" rule should have background-color transparent', () => {
+  if (!findCSSRule('nav a:hover', 'background-color', 'transparent')) {
+    throw new Error(
+      'The nav a:hover rule is missing background-color: transparent.\n\n' +
+      'Without this, the red hover background from Part 6 will show on the dark nav bar.\n' +
+      'Add background-color: transparent to your nav a:hover rule to prevent this.'
+    );
+  }
+
+  expect(findCSSRule('nav a:hover', 'background-color', 'transparent')).toBe(true);
 });
 
 // ============================================

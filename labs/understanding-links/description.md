@@ -67,14 +67,14 @@ Links have four visual states that you can style with CSS pseudo-classes. A pseu
 - <code>a:hover</code> — when the mouse cursor is over the link (the **H** in **H****A**te)
 - <code>a:active</code> — the moment a link is being clicked (the **A** in H**A**te)
 
-8. In your CSS file, add four rules in LoVe HAte order. Each rule uses the <code>color</code> property to set the link color for that state. Use these colors:
+8. In your CSS file, add four rules in LoVe HAte order. The first two use just the <code>color</code> property. The last two are more creative — they change both the text color and background color, creating a highlighted "pill" effect when the user interacts with a link.
 
-   - <code>a:link</code> — <code>#BA1C21</code> (Utah Tech red — stands out from the dark blue body text)
-   - <code>a:visited</code> — <code>#8B1518</code> (darker red — shows the link has been clicked)
-   - <code>a:hover</code> — <code>#D32F2F</code> (brighter red — gives clear hover feedback)
-   - <code>a:active</code> — <code>#003058</code> (dark blue flash when clicked)
+   - <code>a:link</code> — set <code>color</code> to <code>#BA1C21</code> (Utah Tech red — stands out from the dark blue body text)
+   - <code>a:visited</code> — set <code>color</code> to <code>#6A1039</code> (a plum tone — clearly different from both the red and the dark blue body text, so users can tell which links they've already clicked)
+   - <code>a:hover</code> — set <code>color</code> to <code>#ffffff</code>, <code>background-color</code> to <code>#BA1C21</code>, and <code>border-radius</code> to <code>3px</code> (white text on a red background — gives strong visual feedback when hovering)
+   - <code>a:active</code> — set <code>color</code> to <code>#ffffff</code>, <code>background-color</code> to <code>#003058</code>, and <code>border-radius</code> to <code>3px</code> (white text on dark blue — a quick flash of color when clicking)
 
-   After saving, notice how the links on your page change color. Try clicking a link, then look at how its color changes to the visited color.
+   After saving, hover over the links on your page to see the red highlight effect. Click a link and watch for the brief dark blue flash, then notice how the visited color changes to plum.
 
 ### Part 7: Nav Link Styling
 
@@ -84,7 +84,7 @@ You can target links inside a specific parent using a **descendant selector**. F
 
 9. In your CSS file, add a <code>nav a</code> rule that sets <code>color</code> to <code>#ffffff</code> (white, so the links are visible on the dark nav background) and <code>text-decoration</code> to <code>none</code> (this removes the default underline).
 
-10. Add a <code>nav a:hover</code> rule that sets <code>text-decoration</code> to <code>underline</code>. This gives users a visual hint when they hover over a nav link.
+10. Add a <code>nav a:hover</code> rule that sets <code>text-decoration</code> to <code>underline</code> and <code>background-color</code> to <code>transparent</code>. The underline gives users a visual hint when they hover, and the transparent background prevents the red hover highlight from Part 6 from appearing on the dark nav bar.
 
 ### Part 8: Skip Link (Accessibility)
 

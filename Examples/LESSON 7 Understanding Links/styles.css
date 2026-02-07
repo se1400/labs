@@ -89,13 +89,13 @@ pre {
 
 /* Link styling - LoVe HAte order */
 a:link { color: #BA1C21; }
-a:visited { color: #8B1518; }
-a:hover { color: #D32F2F; }
-a:active { color: #003058; }
+a:visited { color: #6A1039; }
+a:hover { color: #ffffff; background-color: #BA1C21; border-radius: 3px; }
+a:active { color: #ffffff; background-color: #003058; border-radius: 3px; }
 
 /* Nav link styling */
 nav a { color: #ffffff; text-decoration: none; }
-nav a:hover { text-decoration: underline; }
+nav a:hover { text-decoration: underline; background-color: transparent; }
 
 /* Skip link (accessibility) */
 .skip-link {
