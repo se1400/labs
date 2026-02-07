@@ -1,0 +1,113 @@
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Utah Tech inspired colors */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #003058;
+    background-color: #ffffff;
+    line-height: 1.6;
+    margin: 0;
+    padding: 16px;
+}
+
+/* Simple structure styling */
+header {
+    padding: 12px;
+    background-color: #f2f2f2;
+    text-align: center;
+}
+
+nav {
+    margin-top: 12px;
+    padding: 10px;
+    background-color: #003058;
+    color: #ffffff;
+}
+
+/* Headings */
+h1 {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+h2, h3, h4 {
+    color: #BA1C21;
+    margin-top: 0;
+}
+
+/* Reusable class */
+.panel {
+    background-color: #f7f7f7;
+    padding: 12px;
+    margin-top: 12px;
+    min-height: 50vh;
+}
+
+/* Footer */
+footer {
+    margin-top: 16px;
+    padding-top: 10px;
+    color: #444444;
+    text-align: center;
+}
+
+address {
+    font-style: normal;
+    line-height: 1.4;
+}
+
+/* Table styling */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 12px;
+}
+
+th, td {
+    border: 1px solid #003058;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #003058;
+    color: #ffffff;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Pre tag styling */
+pre {
+    margin: 0;
+    font-family: inherit;
+}
+
+/* Link styling - LoVe HAte order */
+a:link { color: #BA1C21; }
+a:visited { color: #6B0F13; }
+a:hover { color: #003058; }
+a:active { color: #FF6B35; }
+
+/* Nav link styling */
+nav a { color: #ffffff; text-decoration: none; }
+nav a:hover { text-decoration: underline; }
+
+/* Skip link (accessibility) */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+}
+
+.skip-link:focus {
+    left: 0;
+    top: 0;
+    background: #003058;
+    color: #ffffff;
+    padding: 8px;
+    z-index: 100;
+}
