@@ -66,19 +66,16 @@ test('Step 1: The nav should contain anchor links', () => {
   const links = nav.querySelectorAll('a');
   if (links.length === 0) {
     throw new Error(
-      'The nav has no links. Replace the plain text with <a> elements.\n\n' +
-      'Change this:\n' +
-      'Home | Admissions | Academics | Tuition | Campus Life\n\n' +
-      'To this:\n' +
-      '<a href="#welcome">Home</a> | <a href="#apply">Admissions</a> | <a href="#colleges">Academics</a> | <a href="#tuition">Tuition</a> | <a href="#visit">Campus Life</a>'
+      'The nav has no links yet.\n\n' +
+      'Replace each plain text item (Home, Admissions, etc.) with an <a> element.\n' +
+      'Remember: anchor links use href="#id" to point to a section on the page.'
     );
   }
 
   if (links.length < 5) {
     throw new Error(
-      `Found ${links.length} links in the nav, but need 5.\n\n` +
-      'Each nav item should be an <a> element:\n' +
-      '<a href="#welcome">Home</a> | <a href="#apply">Admissions</a> | <a href="#colleges">Academics</a> | <a href="#tuition">Tuition</a> | <a href="#visit">Campus Life</a>'
+      `Found ${links.length} links in the nav, but there should be 5 (one for each section).\n\n` +
+      'Make sure each nav item (Home, Admissions, Academics, Tuition, Campus Life) is wrapped in its own <a> element.'
     );
   }
 
@@ -103,9 +100,13 @@ test('Step 1: The nav links should use anchor hrefs (#) pointing to section ids'
   if (missing.length > 0) {
     throw new Error(
       `Missing anchor links: ${missing.join(', ')}\n\n` +
-      'Each link should point to a section id. Found hrefs: ' + hrefs.join(', ') + '\n\n' +
-      'Expected:\n' +
-      '<a href="#welcome">Home</a> | <a href="#apply">Admissions</a> | <a href="#colleges">Academics</a> | <a href="#tuition">Tuition</a> | <a href="#visit">Campus Life</a>'
+      'Found these hrefs: ' + hrefs.join(', ') + '\n\n' +
+      'Check the mapping:\n' +
+      '- Home → #welcome\n' +
+      '- Admissions → #apply\n' +
+      '- Academics → #colleges\n' +
+      '- Tuition → #tuition\n' +
+      '- Campus Life → #visit'
     );
   }
 
@@ -116,7 +117,7 @@ test('Step 1: The nav links should use anchor hrefs (#) pointing to section ids'
 // Part 2: External Links
 // ============================================
 
-test('Step 2: The "online" text in "How to Apply" should be a link to utahtech.edu/admissions/', () => {
+test('Step 2: The word "online" in "How to Apply" should be a link to utahtech.edu/admissions/', () => {
   const applySection = document.querySelector('#apply');
   if (!applySection) {
     throw new Error('Could not find the section with id="apply".');
@@ -126,8 +127,17 @@ test('Step 2: The "online" text in "How to Apply" should be a link to utahtech.e
   if (!link) {
     throw new Error(
       'No link to utahtech.edu/admissions found in the "How to Apply" section.\n\n' +
-      'Wrap "online" in a link:\n' +
-      '<a href="https://utahtech.edu/admissions/" target="_blank" rel="noopener noreferrer">online</a>'
+      'Find "Submit your application online" and wrap the word "online" in an <a> element.\n' +
+      'The href should be: https://utahtech.edu/admissions/'
+    );
+  }
+
+  // Check that only the word "online" is wrapped, not the whole sentence
+  const linkText = link.textContent.trim().toLowerCase();
+  if (linkText.includes('submit') || linkText.includes('application')) {
+    throw new Error(
+      'It looks like you wrapped more than just the word "online" in the link.\n\n' +
+      'Only the word "online" should be inside the <a> element. The rest of the sentence stays as plain text.'
     );
   }
 
@@ -149,8 +159,7 @@ test('Step 2: The admissions link should open in a new tab with target="_blank"'
   if (target !== '_blank') {
     throw new Error(
       'The admissions link is missing target="_blank".\n\n' +
-      'Add target="_blank" to open the link in a new tab:\n' +
-      '<a href="https://utahtech.edu/admissions/" target="_blank" rel="noopener noreferrer">online</a>'
+      'Since this links to an external site, add target="_blank" so it opens in a new tab.'
     );
   }
 
@@ -172,8 +181,8 @@ test('Step 2: The admissions link should have rel="noopener noreferrer" for secu
   if (!rel.includes('noopener') || !rel.includes('noreferrer')) {
     throw new Error(
       'The admissions link is missing rel="noopener noreferrer".\n\n' +
-      'This attribute prevents the new tab from accessing your page (a security best practice):\n' +
-      '<a href="https://utahtech.edu/admissions/" target="_blank" rel="noopener noreferrer">online</a>'
+      'Any time you use target="_blank", you should also add rel="noopener noreferrer" for security.\n' +
+      'This prevents the new tab from accessing your page.'
     );
   }
 
@@ -181,7 +190,7 @@ test('Step 2: The admissions link should have rel="noopener noreferrer" for secu
   expect(rel).toContain('noreferrer');
 });
 
-test('Step 3: The "FAFSA" text should be a link to studentaid.gov', () => {
+test('Step 3: The word "FAFSA" should be a link to studentaid.gov', () => {
   const applySection = document.querySelector('#apply');
   if (!applySection) {
     throw new Error('Could not find the section with id="apply".');
@@ -191,8 +200,17 @@ test('Step 3: The "FAFSA" text should be a link to studentaid.gov', () => {
   if (!link) {
     throw new Error(
       'No link to studentaid.gov found in the "How to Apply" section.\n\n' +
-      'Wrap "FAFSA" in a link:\n' +
-      '<a href="https://studentaid.gov/" target="_blank" rel="noopener noreferrer">FAFSA</a>'
+      'Find "Complete the FAFSA for financial aid" and wrap just the word "FAFSA" in an <a> element.\n' +
+      'The href should be: https://studentaid.gov/'
+    );
+  }
+
+  // Check that only "FAFSA" is wrapped, not the whole sentence
+  const linkText = link.textContent.trim().toLowerCase();
+  if (linkText.includes('complete') || linkText.includes('financial')) {
+    throw new Error(
+      'It looks like you wrapped more than just the word "FAFSA" in the link.\n\n' +
+      'Only the word "FAFSA" should be inside the <a> element. The rest of the sentence stays as plain text.'
     );
   }
 
@@ -216,14 +234,14 @@ test('Step 3: The FAFSA link should open in a new tab with proper attributes', (
   if (target !== '_blank') {
     throw new Error(
       'The FAFSA link is missing target="_blank".\n\n' +
-      'Add target="_blank" to open external links in a new tab.'
+      'This is an external link, so add target="_blank" just like you did for the admissions link.'
     );
   }
 
   if (!rel.includes('noopener') || !rel.includes('noreferrer')) {
     throw new Error(
       'The FAFSA link is missing rel="noopener noreferrer".\n\n' +
-      'Always add rel="noopener noreferrer" when using target="_blank".'
+      'Remember: always add rel="noopener noreferrer" when using target="_blank".'
     );
   }
 
@@ -245,17 +263,19 @@ test('Step 4: The phone number should be wrapped in a tel: link', () => {
   if (!link) {
     throw new Error(
       'No telephone link found in the "Visit Campus" aside.\n\n' +
-      'Wrap the phone number in a tel: link:\n' +
-      '<a href="tel:+14356527500">(435) 652-7500</a>'
+      'Wrap the phone number (435) 652-7500 in an <a> element.\n' +
+      'The href should use tel: followed by the number in international format (no spaces, dashes, or parentheses).'
     );
   }
 
+  // Strip non-digit characters from the href to compare the number
   const href = link.getAttribute('href');
-  if (!href.includes('4356527500')) {
+  const digitsOnly = href.replace(/\D/g, '');
+  if (!digitsOnly.includes('4356527500')) {
     throw new Error(
-      `The tel: link has href="${href}" but should contain the phone number.\n\n` +
-      'Use international format with no spaces or parentheses:\n' +
-      '<a href="tel:+14356527500">(435) 652-7500</a>'
+      `The tel: link has href="${href}" but doesn't contain the correct phone number.\n\n` +
+      'The phone number in the href should be: +14356527500\n' +
+      'Use international format: +1 followed by the 10-digit number, with no spaces, dashes, or parentheses.'
     );
   }
 
@@ -276,8 +296,8 @@ test('Step 5: The "Visit Campus" aside should have a mailto link', () => {
   if (!link) {
     throw new Error(
       'No email link found in the "Visit Campus" aside.\n\n' +
-      'Add an email link after the phone number:\n' +
-      'Email us at <a href="mailto:admissions@utahtech.edu?subject=Campus Tour Question">admissions@utahtech.edu</a>'
+      'Add a new line after the phone number with an email link.\n' +
+      'Use mailto: in the href, followed by the email address and a ?subject= parameter.'
     );
   }
 
@@ -295,20 +315,20 @@ test('Step 5: The email link should point to admissions@utahtech.edu with a subj
     throw new Error('First add a mailto link (see previous test).');
   }
 
-  const href = link.getAttribute('href');
+  const href = link.getAttribute('href').toLowerCase();
   if (!href.includes('admissions@utahtech.edu')) {
     throw new Error(
-      `The email link points to "${href}" but should include admissions@utahtech.edu.\n\n` +
-      'Use this href:\n' +
-      'mailto:admissions@utahtech.edu?subject=Campus Tour Question'
+      'The email link should point to admissions@utahtech.edu.\n\n' +
+      'Make sure the href starts with mailto: followed by the email address:\n' +
+      'mailto:admissions@utahtech.edu'
     );
   }
 
   if (!href.includes('subject=')) {
     throw new Error(
       'The email link is missing a subject parameter.\n\n' +
-      'Add ?subject= after the email address:\n' +
-      'mailto:admissions@utahtech.edu?subject=Campus Tour Question'
+      'Add ?subject= after the email address to pre-fill the subject line.\n' +
+      'For example: mailto:admissions@utahtech.edu?subject=Campus Tour Question'
     );
   }
 
@@ -329,8 +349,7 @@ test('Step 6: The header should have id="top"', () => {
   if (header.id !== 'top') {
     throw new Error(
       'The header is missing id="top".\n\n' +
-      'Add the id to the opening tag:\n' +
-      '<header id="top">'
+      'Add an id attribute to the <header> element so the "Back to Top" link has something to point to.'
     );
   }
 
@@ -349,16 +368,15 @@ test('Step 7: The footer should have a "Back to Top" link pointing to #top', () 
     const anyLink = footer.querySelector('a');
     if (anyLink) {
       throw new Error(
-        `Found a link in the footer with href="${anyLink.getAttribute('href')}", but it should be href="#top".\n\n` +
-        'The "Back to Top" link should point to the header:\n' +
-        '<a href="#top">Back to Top</a>'
+        `Found a link in the footer with href="${anyLink.getAttribute('href')}", but it should point to #top.\n\n` +
+        'This is an anchor link, just like the nav links from Part 1. Use href="#top" to point to the header.'
       );
     }
 
     throw new Error(
       'No "Back to Top" link found in the footer.\n\n' +
-      'Add this link after the <address> element:\n' +
-      '<a href="#top">Back to Top</a>'
+      'Add an anchor link after the <address> element with the text "Back to Top".\n' +
+      'It should point to the id you added to the header in Step 6.'
     );
   }
 
@@ -373,8 +391,8 @@ test('Step 8: CSS should have an a:link rule with color #1565C0', () => {
   if (!findCSSRule('a:link', 'color', '#1565C0')) {
     throw new Error(
       'Missing CSS rule for a:link.\n\n' +
-      'Add this rule to your CSS file (remember LoVe HAte order):\n' +
-      'a:link { color: #1565C0; }'
+      'This is the first rule in the LoVe HAte order.\n' +
+      'Add a:link { color: #1565C0; } to your CSS file.'
     );
   }
 
@@ -385,8 +403,8 @@ test('Step 8: CSS should have an a:visited rule with color #6A1B9A', () => {
   if (!findCSSRule('a:visited', 'color', '#6A1B9A')) {
     throw new Error(
       'Missing CSS rule for a:visited.\n\n' +
-      'Add this rule to your CSS file (after a:link):\n' +
-      'a:visited { color: #6A1B9A; }'
+      'This is the second rule in the LoVe HAte order (after a:link).\n' +
+      'Add a:visited { color: #6A1B9A; } to your CSS file.'
     );
   }
 
@@ -397,8 +415,8 @@ test('Step 8: CSS should have an a:hover rule with color #0D47A1', () => {
   if (!findCSSRule('a:hover', 'color', '#0D47A1')) {
     throw new Error(
       'Missing CSS rule for a:hover.\n\n' +
-      'Add this rule to your CSS file (after a:visited):\n' +
-      'a:hover { color: #0D47A1; }'
+      'This is the third rule in the LoVe HAte order (after a:visited).\n' +
+      'Add a:hover { color: #0D47A1; } to your CSS file.'
     );
   }
 
@@ -409,8 +427,8 @@ test('Step 8: CSS should have an a:active rule with color #B71C1C', () => {
   if (!findCSSRule('a:active', 'color', '#B71C1C')) {
     throw new Error(
       'Missing CSS rule for a:active.\n\n' +
-      'Add this rule to your CSS file (after a:hover):\n' +
-      'a:active { color: #B71C1C; }'
+      'This is the fourth and last rule in the LoVe HAte order (after a:hover).\n' +
+      'Add a:active { color: #B71C1C; } to your CSS file.'
     );
   }
 
@@ -425,8 +443,8 @@ test('Step 9: CSS should have a "nav a" rule with color #ffffff', () => {
   if (!findCSSRule('nav a', 'color', '#ffffff')) {
     throw new Error(
       'Missing CSS rule for nav a.\n\n' +
-      'Add this rule to style links inside the nav:\n' +
-      'nav a { color: #ffffff; text-decoration: none; }'
+      'The nav links need to be white so they are visible on the dark background.\n' +
+      'Use the descendant selector "nav a" to target only links inside the nav.'
     );
   }
 
@@ -437,8 +455,7 @@ test('Step 9: CSS should have a "nav a" rule with text-decoration none', () => {
   if (!findCSSRule('nav a', 'text-decoration', 'none')) {
     throw new Error(
       'The nav a rule is missing text-decoration: none.\n\n' +
-      'Add text-decoration: none to remove the underline from nav links:\n' +
-      'nav a { color: #ffffff; text-decoration: none; }'
+      'Add text-decoration: none to your nav a rule to remove the default underline from nav links.'
     );
   }
 
@@ -449,8 +466,8 @@ test('Step 10: CSS should have a "nav a:hover" rule with text-decoration underli
   if (!findCSSRule('nav a:hover', 'text-decoration', 'underline')) {
     throw new Error(
       'Missing CSS rule for nav a:hover.\n\n' +
-      'Add this rule so nav links show an underline on hover:\n' +
-      'nav a:hover { text-decoration: underline; }'
+      'Add a nav a:hover rule that sets text-decoration to underline.\n' +
+      'This shows an underline only when hovering over a nav link.'
     );
   }
 
@@ -470,29 +487,29 @@ test('Step 11: The main element should have id="main-content"', () => {
   if (main.id !== 'main-content') {
     throw new Error(
       'The main element is missing id="main-content".\n\n' +
-      'Add the id to the opening tag:\n' +
-      '<main id="main-content">'
+      'Add an id attribute to the <main> element so the skip link has a target to jump to.'
     );
   }
 
   expect(main.id).toBe('main-content');
 });
 
-test('Step 12: A skip link should exist as the first element in body', () => {
+test('Step 12: A skip link should exist with class "skip-link" pointing to #main-content', () => {
   const skipLink = document.querySelector('a.skip-link');
   if (!skipLink) {
     throw new Error(
       'No skip link found.\n\n' +
-      'Add this as the very first element inside <body>:\n' +
-      '<a href="#main-content" class="skip-link">Skip to main content</a>'
+      'Add an <a> element as the very first thing inside <body> (before the header).\n' +
+      'Give it class="skip-link" and point its href to #main-content.\n' +
+      'The link text should be "Skip to main content".'
     );
   }
 
   const href = skipLink.getAttribute('href');
   if (href !== '#main-content') {
     throw new Error(
-      `The skip link has href="${href}" but should be href="#main-content".\n\n` +
-      '<a href="#main-content" class="skip-link">Skip to main content</a>'
+      `The skip link has href="${href}" but should point to #main-content.\n\n` +
+      'The skip link needs to jump to the <main> element you gave id="main-content" in Step 11.'
     );
   }
 
@@ -503,11 +520,7 @@ test('Step 13: CSS should have a .skip-link rule with position absolute', () => 
   if (!findCSSRule('.skip-link', 'position', 'absolute')) {
     throw new Error(
       'Missing CSS rule for .skip-link.\n\n' +
-      'Add this rule to hide the skip link off-screen:\n' +
-      '.skip-link {\n' +
-      '    position: absolute;\n' +
-      '    left: -9999px;\n' +
-      '}'
+      'Add a .skip-link rule with position: absolute so you can move it off-screen.'
     );
   }
 
@@ -518,11 +531,8 @@ test('Step 13: CSS .skip-link should have left: -9999px to hide it off-screen', 
   if (!findCSSRule('.skip-link', 'left', '-9999px')) {
     throw new Error(
       'The .skip-link rule is missing left: -9999px.\n\n' +
-      'This hides the link off-screen until it receives focus:\n' +
-      '.skip-link {\n' +
-      '    position: absolute;\n' +
-      '    left: -9999px;\n' +
-      '}'
+      'This moves the link far off the left side of the screen so it is hidden.\n' +
+      'It will still be in the HTML for keyboard users to Tab to.'
     );
   }
 
@@ -554,22 +564,15 @@ test('Step 14: CSS should have a .skip-link:focus rule that brings it on screen'
   if (!hasLeft) {
     throw new Error(
       'Missing or incomplete .skip-link:focus rule.\n\n' +
-      'Add this rule so the skip link appears when focused:\n' +
-      '.skip-link:focus {\n' +
-      '    left: 0;\n' +
-      '    top: 0;\n' +
-      '    background: #003058;\n' +
-      '    color: #ffffff;\n' +
-      '    padding: 8px;\n' +
-      '    z-index: 100;\n' +
-      '}'
+      'Add a .skip-link:focus rule that sets left: 0 to bring the link back on screen when focused.\n' +
+      'Also set top: 0, a background color, text color, padding, and z-index as described in the instructions.'
     );
   }
 
   if (!hasBackground) {
     throw new Error(
-      'The .skip-link:focus rule needs a background color so it is visible.\n\n' +
-      'Add background: #003058 to the .skip-link:focus rule.'
+      'The .skip-link:focus rule needs a background color so it is visible when it appears.\n\n' +
+      'Add a background property (e.g., background: #003058) to the .skip-link:focus rule.'
     );
   }
 
@@ -585,8 +588,7 @@ test('Step 15: CSS should have an html rule with scroll-behavior: smooth', () =>
   if (!findCSSRule('html', 'scroll-behavior', 'smooth')) {
     throw new Error(
       'Missing smooth scrolling CSS.\n\n' +
-      'Add this rule to your CSS file:\n' +
-      'html { scroll-behavior: smooth; }'
+      'Add an html selector to your CSS file and set the scroll-behavior property to smooth.'
     );
   }
 
