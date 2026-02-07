@@ -84,7 +84,7 @@ You can target links inside a specific parent using a **descendant selector**. F
 
 9. In your CSS file, add a <code>nav a</code> rule that sets <code>color</code> to <code>#ffffff</code> (white, so the links are visible on the dark nav background) and <code>text-decoration</code> to <code>none</code> (this removes the default underline).
 
-10. Add a <code>nav a:hover</code> rule that sets <code>text-decoration</code> to <code>underline</code>. This gives users a visual hint when they hover over a nav link.
+10. Add a <code>nav a:hover</code> rule that sets <code>color</code> to <code>#cccccc</code> (light grey). This gives users a subtle visual hint when they hover over a nav link — the text lightens slightly against the dark background.
 
 ### Part 8: Skip Link (Accessibility)
 

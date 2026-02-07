@@ -462,16 +462,16 @@ test('Step 9: CSS should have a "nav a" rule with text-decoration none', () => {
   expect(findCSSRule('nav a', 'text-decoration', 'none')).toBe(true);
 });
 
-test('Step 10: CSS should have a "nav a:hover" rule with text-decoration underline', () => {
-  if (!findCSSRule('nav a:hover', 'text-decoration', 'underline')) {
+test('Step 10: CSS should have a "nav a:hover" rule with color #cccccc', () => {
+  if (!findCSSRule('nav a:hover', 'color', '#cccccc')) {
     throw new Error(
       'Missing CSS rule for nav a:hover.\n\n' +
-      'Add a nav a:hover rule that sets text-decoration to underline.\n' +
-      'This shows an underline only when hovering over a nav link.'
+      'Add a nav a:hover rule that sets color to #cccccc (light grey).\n' +
+      'This gives a subtle hover effect on the nav links.'
     );
   }
 
-  expect(findCSSRule('nav a:hover', 'text-decoration', 'underline')).toBe(true);
+  expect(findCSSRule('nav a:hover', 'color', '#cccccc')).toBe(true);
 });
 
 // ============================================
