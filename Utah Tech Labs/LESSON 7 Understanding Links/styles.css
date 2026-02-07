@@ -88,10 +88,10 @@ pre {
 }
 
 /* Link styling - LoVe HAte order */
-a:link { color: #BA1C21; }
-a:visited { color: #6B0F13; }
-a:hover { color: #003058; }
-a:active { color: #FF6B35; }
+a:link { color: #1565C0; }
+a:visited { color: #6A1B9A; }
+a:hover { color: #0D47A1; }
+a:active { color: #B71C1C; }
 
 /* Nav link styling */
 nav a { color: #ffffff; text-decoration: none; }

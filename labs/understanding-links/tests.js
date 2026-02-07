@@ -369,52 +369,52 @@ test('Step 7: The footer should have a "Back to Top" link pointing to #top', () 
 // Part 6: CSS Link Styling
 // ============================================
 
-test('Step 8: CSS should have an a:link rule with color #BA1C21', () => {
-  if (!findCSSRule('a:link', 'color', '#BA1C21')) {
+test('Step 8: CSS should have an a:link rule with color #1565C0', () => {
+  if (!findCSSRule('a:link', 'color', '#1565C0')) {
     throw new Error(
       'Missing CSS rule for a:link.\n\n' +
-      'Add this rule to your CSS file:\n' +
-      'a:link { color: #BA1C21; }'
+      'Add this rule to your CSS file (remember LoVe HAte order):\n' +
+      'a:link { color: #1565C0; }'
     );
   }
 
-  expect(findCSSRule('a:link', 'color', '#BA1C21')).toBe(true);
+  expect(findCSSRule('a:link', 'color', '#1565C0')).toBe(true);
 });
 
-test('Step 8: CSS should have an a:visited rule with color #6B0F13', () => {
-  if (!findCSSRule('a:visited', 'color', '#6B0F13')) {
+test('Step 8: CSS should have an a:visited rule with color #6A1B9A', () => {
+  if (!findCSSRule('a:visited', 'color', '#6A1B9A')) {
     throw new Error(
       'Missing CSS rule for a:visited.\n\n' +
       'Add this rule to your CSS file (after a:link):\n' +
-      'a:visited { color: #6B0F13; }'
+      'a:visited { color: #6A1B9A; }'
     );
   }
 
-  expect(findCSSRule('a:visited', 'color', '#6B0F13')).toBe(true);
+  expect(findCSSRule('a:visited', 'color', '#6A1B9A')).toBe(true);
 });
 
-test('Step 8: CSS should have an a:hover rule with color #003058', () => {
-  if (!findCSSRule('a:hover', 'color', '#003058')) {
+test('Step 8: CSS should have an a:hover rule with color #0D47A1', () => {
+  if (!findCSSRule('a:hover', 'color', '#0D47A1')) {
     throw new Error(
       'Missing CSS rule for a:hover.\n\n' +
       'Add this rule to your CSS file (after a:visited):\n' +
-      'a:hover { color: #003058; }'
+      'a:hover { color: #0D47A1; }'
     );
   }
 
-  expect(findCSSRule('a:hover', 'color', '#003058')).toBe(true);
+  expect(findCSSRule('a:hover', 'color', '#0D47A1')).toBe(true);
 });
 
-test('Step 8: CSS should have an a:active rule with color #FF6B35', () => {
-  if (!findCSSRule('a:active', 'color', '#FF6B35')) {
+test('Step 8: CSS should have an a:active rule with color #B71C1C', () => {
+  if (!findCSSRule('a:active', 'color', '#B71C1C')) {
     throw new Error(
       'Missing CSS rule for a:active.\n\n' +
       'Add this rule to your CSS file (after a:hover):\n' +
-      'a:active { color: #FF6B35; }'
+      'a:active { color: #B71C1C; }'
     );
   }
 
-  expect(findCSSRule('a:active', 'color', '#FF6B35')).toBe(true);
+  expect(findCSSRule('a:active', 'color', '#B71C1C')).toBe(true);
 });
 
 // ============================================

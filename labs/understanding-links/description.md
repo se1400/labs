@@ -4,191 +4,111 @@ In this lab, you'll add hyperlinks and navigation to your Utah Tech University p
 
 **Objective:** Follow the instructions below and get all the tests to pass to complete the lab.
 
-**Important:** The <code>href</code> attribute is required on every <code>&lt;a&gt;</code> element. Without it, the link won't work. Pay close attention to the <code>#</code> symbol for anchor links and the <code>://</code> in external URLs.
+**Important:** Links are created with the <code>&lt;a&gt;</code> (anchor) element. Every link needs an <code>href</code> attribute that tells the browser where to go. The basic format is: <code>&lt;a href="destination"&gt;click text&lt;/a&gt;</code>
 
 ## Instructions:
 
 ### Part 1: Navigation Anchor Links
 
-Anchor links let users jump to different sections on the same page. The <code>href</code> uses a <code>#</code> followed by the <code>id</code> of the target element.
+Anchor links let users jump to different sections on the same page. The <code>href</code> uses a <code>#</code> followed by the <code>id</code> of the target element. For example, <code>&lt;a href="#about"&gt;About&lt;/a&gt;</code> would jump to whichever element has <code>id="about"</code>.
 
-Your starter page already has <code>id</code> attributes on each section (<code>id="welcome"</code>, <code>id="colleges"</code>, <code>id="apply"</code>, <code>id="tuition"</code>, <code>id="visit"</code>). You just need to create the links.
+Your starter page already has <code>id</code> attributes on each section: <code>welcome</code>, <code>colleges</code>, <code>apply</code>, <code>tuition</code>, and <code>visit</code>. You just need to create the links that point to them.
 
-1. In the <code>&lt;nav&gt;</code> element, replace the plain text with anchor links. Each word should become an <code>&lt;a&gt;</code> element that points to a section on the page. Keep the <code>|</code> separators between the links.
+1. In the <code>&lt;nav&gt;</code> element, the navigation items are currently plain text. Replace each text item with an <code>&lt;a&gt;</code> element that points to the matching section. Keep the <code>|</code> separators between the links. Here's how the nav items should map to section ids:
 
-   **Change this:**
-   ```html
-   Home | Admissions | Academics | Tuition | Campus Life
-   ```
+   - "Home" → <code>#welcome</code>
+   - "Admissions" → <code>#apply</code>
+   - "Academics" → <code>#colleges</code>
+   - "Tuition" → <code>#tuition</code>
+   - "Campus Life" → <code>#visit</code>
 
-   **To this:**
-   ```html
-   <a href="#welcome">Home</a> | <a href="#apply">Admissions</a> | <a href="#colleges">Academics</a> | <a href="#tuition">Tuition</a> | <a href="#visit">Campus Life</a>
-   ```
+   After this step, clicking each nav item should scroll the page to that section.
 
 ### Part 2: External Links
 
-External links point to other websites using a full URL that starts with <code>https://</code>. When linking to external sites, use <code>target="_blank"</code> to open the link in a new tab and <code>rel="noopener noreferrer"</code> for security.
+External links point to other websites using a full URL that starts with <code>https://</code>. When linking to an external site, you should add two attributes for security and usability:
+- <code>target="_blank"</code> opens the link in a new tab (so the user doesn't leave your page)
+- <code>rel="noopener noreferrer"</code> prevents the new tab from being able to access or manipulate your page — this is a security best practice any time you use <code>target="_blank"</code>
 
-2. In the "How to Apply" ordered list, find "Submit your application online" and wrap the word "online" in a link to the Utah Tech admissions page:
+2. In the "How to Apply" ordered list, find the text "Submit your application online". Wrap just the word "online" in a link to <code>https://utahtech.edu/admissions/</code>. Since this is an external site, make sure it opens in a new tab and includes the security attribute.
 
-   **Change this:**
-   ```html
-   <li>Submit your application online</li>
-   ```
-
-   **To this:**
-   ```html
-   <li>Submit your application <a href="https://utahtech.edu/admissions/" target="_blank" rel="noopener noreferrer">online</a></li>
-   ```
-
-3. In the same list, find "Complete the FAFSA for financial aid" and wrap "FAFSA" in a link to the federal student aid website:
-
-   **Change this:**
-   ```html
-   <li>Complete the FAFSA for financial aid</li>
-   ```
-
-   **To this:**
-   ```html
-   <li>Complete the <a href="https://studentaid.gov/" target="_blank" rel="noopener noreferrer">FAFSA</a> for financial aid</li>
-   ```
+3. In the same list, find "Complete the FAFSA for financial aid". Wrap just the word "FAFSA" in a link to <code>https://studentaid.gov/</code>. Use the same new-tab and security attributes as the previous link.
 
 ### Part 3: Telephone Link
 
-Telephone links use <code>tel:</code> instead of <code>https://</code>. The phone number in the <code>href</code> should use the international format with no spaces or parentheses: <code>+1</code> followed by the 10-digit number.
+Telephone links use <code>tel:</code> instead of <code>https://</code> in the <code>href</code>. On mobile devices, tapping a <code>tel:</code> link will open the phone dialer. The phone number in the <code>href</code> must use international format with no spaces, dashes, or parentheses: <code>+1</code> followed by the 10-digit number.
 
-4. In the "Visit Campus" aside, wrap the phone number <code>(435) 652-7500</code> in a telephone link:
+For example, if the number were (801) 555-1234, the href would be <code>tel:+18015551234</code>.
 
-   **Change this:**
-   ```html
-   Call us at (435) 652-7500
-   ```
-
-   **To this:**
-   ```html
-   Call us at <a href="tel:+14356527500">(435) 652-7500</a>
-   ```
+4. In the "Visit Campus" aside, find the phone number <code>(435) 652-7500</code>. Wrap just the phone number text in an <code>&lt;a&gt;</code> element with the appropriate <code>tel:</code> href. The display text should still show the number in its readable format with parentheses and dash.
 
 ### Part 4: Email Link
 
-Email links use <code>mailto:</code> instead of <code>https://</code>. You can add a pre-filled subject line using <code>?subject=</code> after the email address.
+Email links use <code>mailto:</code> in the <code>href</code>. Clicking one opens the user's default email client with a new message. You can pre-fill the subject line by adding <code>?subject=Your Subject Here</code> after the email address (spaces in the subject are OK).
 
-5. In the same aside, add a new line after the phone number with an email link. Add a <code>&lt;br&gt;</code> after the phone number link, then add the email link:
+For example: <code>href="mailto:info@example.com?subject=Hello There"</code>
 
-   ```html
-   Email us at <a href="mailto:admissions@utahtech.edu?subject=Campus Tour Question">admissions@utahtech.edu</a>
-   ```
-
-   Your paragraph should now look like this:
-   ```html
-   <p>Schedule a tour today!<br>
-   Call us at <a href="tel:+14356527500">(435) 652-7500</a><br>
-   Email us at <a href="mailto:admissions@utahtech.edu?subject=Campus Tour Question">admissions@utahtech.edu</a></p>
-   ```
+5. In the same "Visit Campus" aside, add a new line after the phone number. You'll need a <code>&lt;br&gt;</code> after the phone number link to create the line break (you've used <code>&lt;br&gt;</code> in previous labs). On the new line, write "Email us at " followed by a link. The link's <code>href</code> should use <code>mailto:</code> pointing to <code>admissions@utahtech.edu</code> with the subject "Campus Tour Question". The visible link text should show the email address.
 
 ### Part 5: Back to Top Link
 
-A "Back to Top" link is another anchor link that takes the user back to the top of the page.
+A "Back to Top" link is another anchor link — it works the same way as the nav links from Part 1, except it points to the top of the page.
 
-6. Add <code>id="top"</code> to the <code>&lt;header&gt;</code> element:
+6. You need something at the top of the page for the link to point to. Add an <code>id</code> attribute with the value <code>top</code> to the <code>&lt;header&gt;</code> element. You've added <code>id</code> attributes to elements in previous labs, so this should be familiar.
 
-   **Change this:**
-   ```html
-   <header>
-   ```
-
-   **To this:**
-   ```html
-   <header id="top">
-   ```
-
-7. In the <code>&lt;footer&gt;</code>, after the <code>&lt;address&gt;</code> element, add a "Back to Top" link:
-
-   ```html
-   <a href="#top">Back to Top</a>
-   ```
+7. In the <code>&lt;footer&gt;</code>, after the <code>&lt;address&gt;</code> element, add a link with the text "Back to Top" that points to the <code>id</code> you just added. Think about how you wrote the anchor links in Part 1 — this works the same way.
 
 ### Part 6: CSS Link Styling
 
-Links have five states that you can style with CSS pseudo-classes. The order matters and follows the mnemonic **LoVe HAte**:
-- <code>a:link</code> — unvisited links (the **L** in LoVe)
-- <code>a:visited</code> — links already clicked (the **V** in LoVe)
-- <code>a:hover</code> — when the mouse is over the link (the **H** in HAte)
-- <code>a:active</code> — the moment a link is being clicked (the **A** in HAte)
+Links have four visual states that you can style with CSS pseudo-classes. A pseudo-class is a keyword added to a selector with a colon, like <code>a:hover</code>. The order you write these rules matters because of how the CSS cascade works. Use the mnemonic **LoVe HAte** to remember the order:
 
-8. In your CSS file, add these four rules in this exact order. The order matters because of how CSS cascading works:
+- <code>a:link</code> — an unvisited link (the **L** in **L**o**V**e)
+- <code>a:visited</code> — a link the user has already clicked (the **V** in Lo**V**e)
+- <code>a:hover</code> — when the mouse cursor is over the link (the **H** in **H****A**te)
+- <code>a:active</code> — the moment a link is being clicked (the **A** in H**A**te)
 
-   ```css
-   a:link { color: #BA1C21; }
-   a:visited { color: #6B0F13; }
-   a:hover { color: #003058; }
-   a:active { color: #FF6B35; }
-   ```
+8. In your CSS file, add four rules in LoVe HAte order. Each rule uses the <code>color</code> property to set the link color for that state. Use these colors:
+
+   - <code>a:link</code> — <code>#1565C0</code> (a strong blue so links are clearly clickable)
+   - <code>a:visited</code> — <code>#6A1B9A</code> (purple, the traditional color for visited links)
+   - <code>a:hover</code> — <code>#0D47A1</code> (darker blue to show interaction)
+   - <code>a:active</code> — <code>#B71C1C</code> (red flash when clicked)
+
+   After saving, notice how the links on your page change color. Try clicking a link, then look at how its color changes to the visited color.
 
 ### Part 7: Nav Link Styling
 
-The nav bar has a dark background, so the links inside it need different colors than the rest of the page. You can target links inside the nav using the descendant selector <code>nav a</code>.
+After adding the link colors above, you'll notice the nav bar links also changed — they're no longer white! That's because the <code>a:link</code> rule applies to *all* links on the page. You need to override those styles for links inside the nav.
 
-9. In your CSS file, add a <code>nav a</code> selector and set:
-   - <code>color</code> to <code>#ffffff</code>
-   - <code>text-decoration</code> to <code>none</code>
+You can target links inside a specific parent using a **descendant selector**. For example, <code>nav a</code> selects all <code>&lt;a&gt;</code> elements that are inside a <code>&lt;nav&gt;</code>. This is more specific than just <code>a:link</code>, so it will override the general link colors.
 
-10. Add a <code>nav a:hover</code> selector and set <code>text-decoration</code> to <code>underline</code>.
+9. In your CSS file, add a <code>nav a</code> rule that sets <code>color</code> to <code>#ffffff</code> (white, so the links are visible on the dark nav background) and <code>text-decoration</code> to <code>none</code> (this removes the default underline).
+
+10. Add a <code>nav a:hover</code> rule that sets <code>text-decoration</code> to <code>underline</code>. This gives users a visual hint when they hover over a nav link.
 
 ### Part 8: Skip Link (Accessibility)
 
-A skip link lets keyboard users jump past the navigation straight to the main content. It is hidden off-screen and only becomes visible when a user presses the Tab key.
+A skip link is a hidden link that lets keyboard users jump past the navigation straight to the main content. It stays invisible until a user presses the Tab key, then it appears at the top of the page. This is an important accessibility feature — screen reader and keyboard-only users shouldn't have to tab through every nav link on every page.
 
-11. Add <code>id="main-content"</code> to the <code>&lt;main&gt;</code> element:
+11. Add <code>id="main-content"</code> to the <code>&lt;main&gt;</code> element. This gives the skip link a target to jump to.
 
-    **Change this:**
-    ```html
-    <main>
-    ```
+12. As the very first element inside <code>&lt;body&gt;</code> (before the <code>&lt;header&gt;</code>), add a link with the text "Skip to main content" that points to <code>#main-content</code>. Give this link <code>class="skip-link"</code> so you can style it in the next steps.
 
-    **To this:**
-    ```html
-    <main id="main-content">
-    ```
+13. In your CSS file, add a <code>.skip-link</code> rule that hides the link off-screen. Set <code>position</code> to <code>absolute</code> and <code>left</code> to <code>-9999px</code>. This moves the link far off the left side of the screen — it's still in the HTML (so keyboard users can Tab to it), but it's not visible.
 
-12. As the very first element inside <code>&lt;body&gt;</code> (before <code>&lt;header&gt;</code>), add a skip link:
+14. Add a <code>.skip-link:focus</code> rule that brings the link back on screen when it receives keyboard focus. Set:
+    - <code>left</code> to <code>0</code> and <code>top</code> to <code>0</code> (moves it to the top-left corner)
+    - <code>background</code> to <code>#003058</code> and <code>color</code> to <code>#ffffff</code> (dark background with white text so it's clearly visible)
+    - <code>padding</code> to <code>8px</code> (gives it some breathing room)
+    - <code>z-index</code> to <code>100</code> (ensures it appears on top of everything else)
 
-    ```html
-    <a href="#main-content" class="skip-link">Skip to main content</a>
-    ```
-
-13. In your CSS file, add a <code>.skip-link</code> selector to hide the link off-screen:
-
-    ```css
-    .skip-link {
-        position: absolute;
-        left: -9999px;
-    }
-    ```
-
-14. Add a <code>.skip-link:focus</code> selector to show it when focused with the keyboard:
-
-    ```css
-    .skip-link:focus {
-        left: 0;
-        top: 0;
-        background: #003058;
-        color: #ffffff;
-        padding: 8px;
-        z-index: 100;
-    }
-    ```
+    Try pressing Tab on your page — the skip link should appear at the top!
 
 ### Part 9: Smooth Scrolling
 
 By default, clicking an anchor link instantly jumps to the target section. You can make it scroll smoothly with one CSS property.
 
-15. In your CSS file, add an <code>html</code> selector and set <code>scroll-behavior</code> to <code>smooth</code>.
-
-    ```css
-    html { scroll-behavior: smooth; }
-    ```
+15. In your CSS file, add an <code>html</code> selector and set <code>scroll-behavior</code> to <code>smooth</code>. After saving, click the nav links and watch the page glide to each section instead of jumping.
 
 ## Summary
 
