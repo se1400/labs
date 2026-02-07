@@ -69,10 +69,10 @@ Links have four visual states that you can style with CSS pseudo-classes. A pseu
 
 8. In your CSS file, add four rules in LoVe HAte order. Each rule uses the <code>color</code> property to set the link color for that state. Use these colors:
 
-   - <code>a:link</code> — <code>#1565C0</code> (a strong blue so links are clearly clickable)
-   - <code>a:visited</code> — <code>#6A1B9A</code> (purple, the traditional color for visited links)
-   - <code>a:hover</code> — <code>#0D47A1</code> (darker blue to show interaction)
-   - <code>a:active</code> — <code>#B71C1C</code> (red flash when clicked)
+   - <code>a:link</code> — <code>#BA1C21</code> (Utah Tech red — stands out from the dark blue body text)
+   - <code>a:visited</code> — <code>#8B1518</code> (darker red — shows the link has been clicked)
+   - <code>a:hover</code> — <code>#D32F2F</code> (brighter red — gives clear hover feedback)
+   - <code>a:active</code> — <code>#003058</code> (dark blue flash when clicked)
 
    After saving, notice how the links on your page change color. Try clicking a link, then look at how its color changes to the visited color.
 
