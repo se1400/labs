@@ -22,9 +22,13 @@ header {
 
 nav {
     margin-top: 12px;
-    padding: 10px;
+    padding: 10px 20px;
     background-color: #003058;
     color: #ffffff;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 15px;
 }
 
 /* Headings */
@@ -90,12 +94,22 @@ pre {
 /* Link styling - LoVe HAte order */
 a:link { color: #BA1C21; }
 a:visited { color: #6A1039; }
-a:hover { color: #ffffff; background-color: #BA1C21; border-radius: 3px; }
-a:active { color: #ffffff; background-color: #003058; border-radius: 3px; }
+a:hover { color: #003058; }
+a:active { color: #000000; }
 
 /* Nav link styling */
-nav a { color: #ffffff; text-decoration: none; }
-nav a:hover { text-decoration: underline; background-color: transparent; }
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    padding: 6px 12px;
+    border: 2px solid transparent;
+    border-radius: 4px;
+}
+nav a:hover {
+    background-color: #ffffff;
+    color: #BA1C21;
+    border-color: #BA1C21;
+}
 
 /* Skip link (accessibility) */
 .skip-link {
