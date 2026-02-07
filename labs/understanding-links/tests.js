@@ -12,8 +12,7 @@ const findCSSRule = (selector, property, value) => {
   for (let sheet of document.styleSheets) {
     try {
       for (let rule of sheet.cssRules) {
-        const selectors = rule.selectorText ? rule.selectorText.split(',').map(s => s.trim()) : [];
-        if (selectors.includes(selector)) {
+        if (rule.selectorText && rule.selectorText === selector) {
           const propValue = rule.style.getPropertyValue(property);
           if (value === undefined) {
             return propValue !== '';
@@ -39,10 +38,35 @@ const findCSSRule = (selector, property, value) => {
               (normalizedPropValue === '0' || normalizedPropValue === '0px')) {
             return true;
           }
+          // Handle border-color shorthand expansion
+          if (property === 'border-color') {
+            const topColor = rule.style.getPropertyValue('border-top-color').replace(/\s/g, '').toLowerCase();
+            if (topColor === normalizedValue || (normalizedValue.startsWith('#') && topColor === hexToRgb(normalizedValue))) {
+              return true;
+            }
+          }
+          // Handle border shorthand expansion
+          if (property === 'border') {
+            const topWidth = rule.style.getPropertyValue('border-top-width');
+            const topStyle = rule.style.getPropertyValue('border-top-style');
+            const topColor = rule.style.getPropertyValue('border-top-color').replace(/\s/g, '').toLowerCase();
+            if (topWidth && topStyle && topColor) {
+              const reconstructed = `${topWidth}${topStyle}${topColor}`;
+              if (reconstructed === normalizedValue || normalizedValue.includes(topStyle)) {
+                return true;
+              }
+            }
+          }
           // Handle text-decoration shorthand expansion
           if (property === 'text-decoration' && normalizedValue === 'none') {
             const lineValue = rule.style.getPropertyValue('text-decoration-line').replace(/\s/g, '').toLowerCase();
             if (lineValue === 'none') {
+              return true;
+            }
+          }
+          if (property === 'text-decoration' && normalizedValue === 'underline') {
+            const lineValue = rule.style.getPropertyValue('text-decoration-line').replace(/\s/g, '').toLowerCase();
+            if (lineValue === 'underline') {
               return true;
             }
           }
@@ -462,74 +486,51 @@ test('Step 8: CSS should have an a:active rule with background-color #003058', (
 // Part 7: Nav Link Styling
 // ============================================
 
-test('Step 9: CSS should have a "nav a:link" rule with background-color transparent', () => {
-  if (!findCSSRule('nav a:link', 'background-color', 'transparent')) {
+test('Step 9: CSS should have a "nav a" rule with background-color transparent', () => {
+  if (!findCSSRule('nav a', 'background-color', 'transparent')) {
     throw new Error(
-      'Missing CSS rule for nav a:link.\n\n' +
+      'Missing CSS rule for nav a.\n\n' +
       'The nav links need the red background removed so the dark nav bar shows through.\n' +
-      'Use "nav a:link, nav a:visited" as the selector and set background-color to transparent.\n' +
-      'You need the :link pseudo-class to override the a:link rule from Part 6 (specificity matters!).'
+      'Use the descendant selector "nav a" and set background-color to transparent.'
     );
   }
 
-  expect(findCSSRule('nav a:link', 'background-color', 'transparent')).toBe(true);
+  expect(findCSSRule('nav a', 'background-color', 'transparent')).toBe(true);
 });
 
-test('Step 9: CSS should have a "nav a:link" rule with color #ffffff', () => {
-  if (!findCSSRule('nav a:link', 'color', '#ffffff')) {
+test('Step 9: CSS should have a "nav a" rule with padding 0', () => {
+  if (!findCSSRule('nav a', 'padding', '0')) {
     throw new Error(
-      'The nav a:link rule is missing color: #ffffff.\n\n' +
-      'Set the nav link text to white so it is readable on the dark blue nav bar.'
+      'The nav a rule is missing padding: 0.\n\n' +
+      'Remove the extra padding from the badge styling so the nav links fit naturally.'
     );
   }
 
-  expect(findCSSRule('nav a:link', 'color', '#ffffff')).toBe(true);
+  expect(findCSSRule('nav a', 'padding', '0')).toBe(true);
 });
 
-test('Step 9: CSS should have a "nav a:link" rule with padding 20px 16px', () => {
-  if (!findCSSRule('nav a:link', 'padding', '20px 16px')) {
-    throw new Error(
-      'The nav a:link rule is missing padding: 20px 16px.\n\n' +
-      'This padding gives each link a tall clickable area that fills the full height of the nav bar.'
-    );
-  }
-
-  expect(findCSSRule('nav a:link', 'padding', '20px 16px')).toBe(true);
-});
-
-test('Step 9: CSS should also include nav a:visited in the same rule', () => {
-  if (!findCSSRule('nav a:visited', 'background-color', 'transparent')) {
-    throw new Error(
-      'Missing nav a:visited in the selector.\n\n' +
-      'Your rule should use "nav a:link, nav a:visited" so that visited nav links\n' +
-      'also get the transparent background instead of the plum color from Part 6.'
-    );
-  }
-
-  expect(findCSSRule('nav a:visited', 'background-color', 'transparent')).toBe(true);
-});
-
-test('Step 10: CSS should have a "nav a:hover" rule with background-color #003058', () => {
-  if (!findCSSRule('nav a:hover', 'background-color', '#003058')) {
+test('Step 10: CSS should have a "nav a:hover" rule with text-decoration underline', () => {
+  if (!findCSSRule('nav a:hover', 'text-decoration', 'underline')) {
     throw new Error(
       'Missing CSS rule for nav a:hover.\n\n' +
-      'Add a nav a:hover rule that sets background-color to #003058.\n' +
-      'This keeps the nav links from picking up the bright red hover from Part 6.'
+      'Add a nav a:hover rule that sets text-decoration to underline.\n' +
+      'This gives users a visual hint when they hover over a nav link.'
     );
   }
 
-  expect(findCSSRule('nav a:hover', 'background-color', '#003058')).toBe(true);
+  expect(findCSSRule('nav a:hover', 'text-decoration', 'underline')).toBe(true);
 });
 
-test('Step 10: CSS "nav a:hover" should have padding 20px 16px', () => {
-  if (!findCSSRule('nav a:hover', 'padding', '20px 16px')) {
+test('Step 10: The "nav a:hover" rule should have background-color transparent', () => {
+  if (!findCSSRule('nav a:hover', 'background-color', 'transparent')) {
     throw new Error(
-      'The nav a:hover rule is missing padding: 20px 16px.\n\n' +
-      'Repeat the padding in the hover rule so the nav links keep the same height on hover.'
+      'The nav a:hover rule is missing background-color: transparent.\n\n' +
+      'Without this, the hover background from Part 6 will show on the dark nav bar.\n' +
+      'Add background-color: transparent to your nav a:hover rule to prevent this.'
     );
   }
 
-  expect(findCSSRule('nav a:hover', 'padding', '20px 16px')).toBe(true);
+  expect(findCSSRule('nav a:hover', 'background-color', 'transparent')).toBe(true);
 });
 
 // ============================================
