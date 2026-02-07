@@ -94,7 +94,7 @@ a:hover { color: #D32F2F; }
 a:active { color: #003058; }
 
 /* Nav link styling */
-nav a { color: #ffffff; text-decoration: none; }
+nav a:link, nav a:visited { color: #ffffff; text-decoration: none; }
 nav a:hover { color: #cccccc; }
 
 /* Skip link (accessibility) */

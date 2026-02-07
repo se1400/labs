@@ -80,9 +80,9 @@ Links have four visual states that you can style with CSS pseudo-classes. A pseu
 
 After adding the link colors above, you'll notice the nav bar links also changed — they're no longer white! That's because the <code>a:link</code> rule applies to *all* links on the page. You need to override those styles for links inside the nav.
 
-You can target links inside a specific parent using a **descendant selector**. For example, <code>nav a</code> selects all <code>&lt;a&gt;</code> elements that are inside a <code>&lt;nav&gt;</code>. This is more specific than just <code>a:link</code>, so it will override the general link colors.
+You can target links inside a specific parent using a **descendant selector** combined with pseudo-classes. For example, <code>nav a:link</code> selects unvisited <code>&lt;a&gt;</code> elements inside a <code>&lt;nav&gt;</code>. To override the general link colors from Part 6, your nav rules need to include the pseudo-class — <code>nav a:link</code> is more specific than <code>a:link</code>, so it wins. Using just <code>nav a</code> without a pseudo-class wouldn't be specific enough.
 
-9. In your CSS file, add a <code>nav a</code> rule that sets <code>color</code> to <code>#ffffff</code> (white, so the links are visible on the dark nav background) and <code>text-decoration</code> to <code>none</code> (this removes the default underline).
+9. In your CSS file, add a <code>nav a:link, nav a:visited</code> rule that sets <code>color</code> to <code>#ffffff</code> (white, so the links are visible on the dark nav background) and <code>text-decoration</code> to <code>none</code> (this removes the default underline). The comma lets you apply the same styles to both unvisited and visited nav links in one rule.
 
 10. Add a <code>nav a:hover</code> rule that sets <code>color</code> to <code>#cccccc</code> (light grey). This gives users a subtle visual hint when they hover over a nav link — the text lightens slightly against the dark background.
 
@@ -120,6 +120,6 @@ In this lab, you learned:
 - **Email Links** — Using <code>mailto:</code> with optional <code>?subject=</code> parameters
 - **Back to Top** — Combining an <code>id</code> on the header with an anchor link in the footer
 - **Link Pseudo-classes** — Styling <code>a:link</code>, <code>a:visited</code>, <code>a:hover</code>, and <code>a:active</code> in LoVe HAte order
-- **Nav Link Styling** — Using descendant selectors to style links differently in the nav
+- **Nav Link Styling** — Using descendant selectors with pseudo-classes to override general link colors
 - **Skip Links** — Adding accessible navigation for keyboard users
 - **Smooth Scrolling** — Using <code>scroll-behavior: smooth</code> for animated navigation

@@ -12,7 +12,11 @@ const findCSSRule = (selector, property, value) => {
   for (let sheet of document.styleSheets) {
     try {
       for (let rule of sheet.cssRules) {
-        if (rule.selectorText && rule.selectorText === selector) {
+        // Handle comma-separated selectors (e.g., "nav a:link, nav a:visited")
+        const ruleSelectors = rule.selectorText ? rule.selectorText.split(',').map(s => s.trim()) : [];
+        const targetSelectors = selector.split(',').map(s => s.trim());
+        const selectorMatch = targetSelectors.every(s => ruleSelectors.includes(s)) && ruleSelectors.every(s => targetSelectors.includes(s));
+        if (rule.selectorText && selectorMatch) {
           const propValue = rule.style.getPropertyValue(property);
           if (value === undefined) {
             return propValue !== '';
@@ -439,27 +443,28 @@ test('Step 8: CSS should have an a:active rule with color #003058', () => {
 // Part 7: Nav Link Styling
 // ============================================
 
-test('Step 9: CSS should have a "nav a" rule with color #ffffff', () => {
-  if (!findCSSRule('nav a', 'color', '#ffffff')) {
+test('Step 9: CSS should have a "nav a:link, nav a:visited" rule with color #ffffff', () => {
+  if (!findCSSRule('nav a:link, nav a:visited', 'color', '#ffffff')) {
     throw new Error(
-      'Missing CSS rule for nav a.\n\n' +
+      'Missing CSS rule for nav a:link, nav a:visited.\n\n' +
       'The nav links need to be white so they are visible on the dark background.\n' +
-      'Use the descendant selector "nav a" to target only links inside the nav.'
+      'Use "nav a:link, nav a:visited" to override the general link colors from Part 6.\n' +
+      'Just "nav a" alone is not specific enough to beat a:link.'
     );
   }
 
-  expect(findCSSRule('nav a', 'color', '#ffffff')).toBe(true);
+  expect(findCSSRule('nav a:link, nav a:visited', 'color', '#ffffff')).toBe(true);
 });
 
-test('Step 9: CSS should have a "nav a" rule with text-decoration none', () => {
-  if (!findCSSRule('nav a', 'text-decoration', 'none')) {
+test('Step 9: CSS should have a "nav a:link, nav a:visited" rule with text-decoration none', () => {
+  if (!findCSSRule('nav a:link, nav a:visited', 'text-decoration', 'none')) {
     throw new Error(
-      'The nav a rule is missing text-decoration: none.\n\n' +
-      'Add text-decoration: none to your nav a rule to remove the default underline from nav links.'
+      'The nav a:link, nav a:visited rule is missing text-decoration: none.\n\n' +
+      'Add text-decoration: none to remove the default underline from nav links.'
     );
   }
 
-  expect(findCSSRule('nav a', 'text-decoration', 'none')).toBe(true);
+  expect(findCSSRule('nav a:link, nav a:visited', 'text-decoration', 'none')).toBe(true);
 });
 
 test('Step 10: CSS should have a "nav a:hover" rule with color #cccccc', () => {
