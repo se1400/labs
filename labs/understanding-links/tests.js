@@ -411,126 +411,126 @@ test('Step 7: The footer should have a "Back to Top" link pointing to #top', () 
 // Part 6: CSS Link Styling
 // ============================================
 
-test('Step 8: CSS should have an a:link rule with color #BA1C21', () => {
-  if (!findCSSRule('a:link', 'color', '#BA1C21')) {
+test('Step 8: CSS should have an a:link rule with white text', () => {
+  if (!findCSSRule('a:link', 'color', '#ffffff')) {
     throw new Error(
-      'Missing CSS rule for a:link.\n\n' +
-      'This is the first rule in the LoVe HAte order.\n' +
-      'Set the color to the Utah Tech red value specified in the instructions.'
+      'Missing or incorrect a:link color.\n\n' +
+      'The a:link rule should set color to #ffffff (white).\n' +
+      'All link states in this lab use white text on colored backgrounds.'
     );
   }
 
-  expect(findCSSRule('a:link', 'color', '#BA1C21')).toBe(true);
+  expect(findCSSRule('a:link', 'color', '#ffffff')).toBe(true);
 });
 
-test('Step 8: CSS should have an a:visited rule with color #6A1039', () => {
-  if (!findCSSRule('a:visited', 'color', '#6A1039')) {
+test('Step 8: CSS should have an a:link rule with background-color #BA1C21', () => {
+  if (!findCSSRule('a:link', 'background-color', '#BA1C21')) {
+    throw new Error(
+      'Missing or incorrect a:link background-color.\n\n' +
+      'The a:link rule should set background-color to #BA1C21 (Utah Tech red).\n' +
+      'This creates the colored badge look behind the white text.'
+    );
+  }
+
+  expect(findCSSRule('a:link', 'background-color', '#BA1C21')).toBe(true);
+});
+
+test('Step 8: CSS should have an a:link rule with text-decoration none', () => {
+  if (!findCSSRule('a:link', 'text-decoration', 'none')) {
+    throw new Error(
+      'The a:link rule is missing text-decoration: none.\n\n' +
+      'Remove the default underline since the background color already makes links obvious.'
+    );
+  }
+
+  expect(findCSSRule('a:link', 'text-decoration', 'none')).toBe(true);
+});
+
+test('Step 8: CSS should have an a:visited rule with background-color #6A1039', () => {
+  if (!findCSSRule('a:visited', 'background-color', '#6A1039')) {
     throw new Error(
       'Missing CSS rule for a:visited.\n\n' +
       'This is the second rule in the LoVe HAte order (after a:link).\n' +
-      'Set the color to the plum tone specified in the instructions.'
+      'Set the background-color to the plum value specified in the instructions.'
     );
   }
 
-  expect(findCSSRule('a:visited', 'color', '#6A1039')).toBe(true);
+  expect(findCSSRule('a:visited', 'background-color', '#6A1039')).toBe(true);
 });
 
-test('Step 8: CSS should have an a:hover rule with color #003058', () => {
-  if (!findCSSRule('a:hover', 'color', '#003058')) {
+test('Step 8: CSS should have an a:hover rule with background-color #D32F2F', () => {
+  if (!findCSSRule('a:hover', 'background-color', '#D32F2F')) {
     throw new Error(
       'Missing CSS rule for a:hover.\n\n' +
       'This is the third rule in the LoVe HAte order (after a:visited).\n' +
-      'Set the color to the dark blue value specified in the instructions.'
+      'Set the background-color to the bright red value specified in the instructions.'
     );
   }
 
-  expect(findCSSRule('a:hover', 'color', '#003058')).toBe(true);
+  expect(findCSSRule('a:hover', 'background-color', '#D32F2F')).toBe(true);
 });
 
-test('Step 8: CSS should have an a:active rule with color #000000', () => {
-  if (!findCSSRule('a:active', 'color', '#000000')) {
+test('Step 8: CSS should have an a:active rule with background-color #003058', () => {
+  if (!findCSSRule('a:active', 'background-color', '#003058')) {
     throw new Error(
       'Missing CSS rule for a:active.\n\n' +
       'This is the fourth and last rule in the LoVe HAte order (after a:hover).\n' +
-      'Set the color to the value specified in the instructions.'
+      'Set the background-color to the dark blue value specified in the instructions.'
     );
   }
 
-  expect(findCSSRule('a:active', 'color', '#000000')).toBe(true);
+  expect(findCSSRule('a:active', 'background-color', '#003058')).toBe(true);
 });
 
 // ============================================
 // Part 7: Nav Link Styling
 // ============================================
 
-test('Step 9: CSS should have a "nav a" rule with color #ffffff', () => {
-  if (!findCSSRule('nav a', 'color', '#ffffff')) {
+test('Step 9: CSS should have a "nav a" rule with background-color transparent', () => {
+  if (!findCSSRule('nav a', 'background-color', 'transparent')) {
     throw new Error(
       'Missing CSS rule for nav a.\n\n' +
-      'The nav links need to be white so they are visible on the dark background.\n' +
-      'Use the descendant selector "nav a" to target only links inside the nav.'
+      'The nav links need the red background removed so the dark nav bar shows through.\n' +
+      'Use the descendant selector "nav a" and set background-color to transparent.'
     );
   }
 
-  expect(findCSSRule('nav a', 'color', '#ffffff')).toBe(true);
+  expect(findCSSRule('nav a', 'background-color', 'transparent')).toBe(true);
 });
 
-test('Step 9: CSS should have a "nav a" rule with text-decoration none', () => {
-  if (!findCSSRule('nav a', 'text-decoration', 'none')) {
+test('Step 9: CSS should have a "nav a" rule with padding 0', () => {
+  if (!findCSSRule('nav a', 'padding', '0')) {
     throw new Error(
-      'The nav a rule is missing text-decoration: none.\n\n' +
-      'Add text-decoration: none to your nav a rule to remove the default underline from nav links.'
+      'The nav a rule is missing padding: 0.\n\n' +
+      'Remove the extra padding from the badge styling so the nav links fit naturally.'
     );
   }
 
-  expect(findCSSRule('nav a', 'text-decoration', 'none')).toBe(true);
+  expect(findCSSRule('nav a', 'padding', '0')).toBe(true);
 });
 
-test('Step 9: CSS should have a "nav a" rule with border-radius 4px', () => {
-  if (!findCSSRule('nav a', 'border-radius', '4px')) {
+test('Step 10: CSS should have a "nav a:hover" rule with text-decoration underline', () => {
+  if (!findCSSRule('nav a:hover', 'text-decoration', 'underline')) {
     throw new Error(
-      'The nav a rule is missing border-radius: 4px.\n\n' +
-      'Add border-radius: 4px to slightly round the corners of each nav link.'
+      'Missing CSS rule for nav a:hover.\n\n' +
+      'Add a nav a:hover rule that sets text-decoration to underline.\n' +
+      'This gives users a visual hint when they hover over a nav link.'
     );
   }
 
-  expect(findCSSRule('nav a', 'border-radius', '4px')).toBe(true);
+  expect(findCSSRule('nav a:hover', 'text-decoration', 'underline')).toBe(true);
 });
 
-test('Step 10: CSS should have a "nav a:hover" rule with background-color #ffffff', () => {
-  if (!findCSSRule('nav a:hover', 'background-color', '#ffffff')) {
+test('Step 10: The "nav a:hover" rule should have background-color transparent', () => {
+  if (!findCSSRule('nav a:hover', 'background-color', 'transparent')) {
     throw new Error(
-      'Missing or incorrect nav a:hover background-color.\n\n' +
-      'The nav a:hover rule should set background-color to #ffffff (white).\n' +
-      'This flips the background so the link stands out from the dark nav bar.'
+      'The nav a:hover rule is missing background-color: transparent.\n\n' +
+      'Without this, the hover background from Part 6 will show on the dark nav bar.\n' +
+      'Add background-color: transparent to your nav a:hover rule to prevent this.'
     );
   }
 
-  expect(findCSSRule('nav a:hover', 'background-color', '#ffffff')).toBe(true);
-});
-
-test('Step 10: CSS should have a "nav a:hover" rule with color #BA1C21', () => {
-  if (!findCSSRule('nav a:hover', 'color', '#BA1C21')) {
-    throw new Error(
-      'Missing or incorrect nav a:hover color.\n\n' +
-      'The nav a:hover rule should set color to #BA1C21 (Utah Tech red).\n' +
-      'This makes the text pop against the white hover background.'
-    );
-  }
-
-  expect(findCSSRule('nav a:hover', 'color', '#BA1C21')).toBe(true);
-});
-
-test('Step 10: CSS should have a "nav a:hover" rule with border-color #BA1C21', () => {
-  if (!findCSSRule('nav a:hover', 'border-color', '#BA1C21')) {
-    throw new Error(
-      'Missing or incorrect nav a:hover border-color.\n\n' +
-      'The nav a:hover rule should set border-color to #BA1C21 (Utah Tech red).\n' +
-      'This makes the transparent border from Step 9 visible on hover.'
-    );
-  }
-
-  expect(findCSSRule('nav a:hover', 'border-color', '#BA1C21')).toBe(true);
+  expect(findCSSRule('nav a:hover', 'background-color', 'transparent')).toBe(true);
 });
 
 // ============================================

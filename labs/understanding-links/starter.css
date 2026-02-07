@@ -17,13 +17,9 @@ header {
 
 nav {
     margin-top: 12px;
-    padding: 10px 20px;
+    padding: 10px;
     background-color: #003058;
     color: #ffffff;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    font-size: 15px;
 }
 
 /* Headings */

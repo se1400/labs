@@ -14,7 +14,7 @@ Anchor links let users jump to different sections on the same page. The <code>hr
 
 Your starter page already has <code>id</code> attributes on each section: <code>welcome</code>, <code>colleges</code>, <code>apply</code>, <code>tuition</code>, and <code>visit</code>. You just need to create the links that point to them.
 
-1. In the <code>&lt;nav&gt;</code> element, the navigation items are currently plain text. Wrap each text item in its own <code>&lt;a&gt;</code> element that points to the matching section. Here's how the nav items should map to section ids:
+1. In the <code>&lt;nav&gt;</code> element, the navigation items are currently plain text. Replace each text item with an <code>&lt;a&gt;</code> element that points to the matching section. Keep the <code>|</code> separators between the links. Here's how the nav items should map to section ids:
 
    - "Home" → <code>#welcome</code>
    - "Admissions" → <code>#apply</code>
@@ -67,14 +67,20 @@ Links have four visual states that you can style with CSS pseudo-classes. A pseu
 - <code>a:hover</code> — when the mouse cursor is over the link (the **H** in **H****A**te)
 - <code>a:active</code> — the moment a link is being clicked (the **A** in H**A**te)
 
-8. In your CSS file, add four rules in LoVe HAte order. Each rule uses the <code>color</code> property to set the link's text color for that state:
+8. In your CSS file, add the <code>a:link</code> rule first. This one sets up the look for all links — white text on a colored background, creating a badge-like appearance. Set these properties:
+   - <code>color</code> to <code>#ffffff</code> (white text — always stays white for readability)
+   - <code>background-color</code> to <code>#BA1C21</code> (Utah Tech red background)
+   - <code>padding</code> to <code>2px 6px</code> (a little space around the text so the background isn't cramped)
+   - <code>border-radius</code> to <code>3px</code> (slightly rounds the corners)
+   - <code>text-decoration</code> to <code>none</code> (removes the default underline since the background color already makes links obvious)
 
-   - <code>a:link</code> — <code>#BA1C21</code> (Utah Tech red — clearly stands out as a clickable link against the page text)
-   - <code>a:visited</code> — <code>#6A1039</code> (a plum tone — shows users which links they've already clicked)
-   - <code>a:hover</code> — <code>#003058</code> (dark blue — matches the body text color, giving a subtle shift that says "you're hovering")
-   - <code>a:active</code> — <code>#000000</code> (black — a brief flash when clicking)
+   Now add the remaining three rules. These only need to set <code>color</code> to <code>#ffffff</code> and a <code>background-color</code> — they inherit the padding, border-radius, and text-decoration from the <code>a:link</code> rule:
 
-   After saving, try hovering over the links on your page and notice how each state looks different. Click a link, then observe how it changes to the visited color.
+   - <code>a:visited</code> — <code>background-color: #6A1039</code> (plum — shows which links have been clicked)
+   - <code>a:hover</code> — <code>background-color: #D32F2F</code> (bright red — gives clear feedback when hovering)
+   - <code>a:active</code> — <code>background-color: #003058</code> (dark blue flash when clicking)
+
+   After saving, notice how your links now look like colored badges. Hover over them and watch the background shift. Click one and see the visited color change.
 
 ### Part 7: Nav Link Styling
 
@@ -82,19 +88,12 @@ After adding the link colors above, you'll notice the nav bar links also changed
 
 You can target links inside a specific parent using a **descendant selector**. For example, <code>nav a</code> selects all <code>&lt;a&gt;</code> elements that are inside a <code>&lt;nav&gt;</code>. This is more specific than just <code>a:link</code>, so it will override the general link colors.
 
-9. In your CSS file, add a <code>nav a</code> rule with these properties:
-   - <code>color</code> — <code>#ffffff</code> (white text on the dark background)
-   - <code>text-decoration</code> — <code>none</code> (removes the default underline)
-   - <code>padding</code> — <code>6px 12px</code> (adds space around each link, making them easier to click)
-   - <code>border</code> — <code>2px solid transparent</code> (invisible border that reserves space — you'll see why in the next step)
-   - <code>border-radius</code> — <code>4px</code> (rounds the corners slightly)
+9. In your CSS file, add a <code>nav a</code> rule that resets the link styling for the nav. The nav links already have a dark blue background from the nav bar itself, so you need to remove the red background and padding you added in Step 8. Set:
+   - <code>background-color</code> to <code>transparent</code> (removes the red background — the nav's own dark blue shows through instead)
+   - <code>padding</code> to <code>0</code> (removes the extra padding since nav links don't need the badge look)
+   - <code>border-radius</code> to <code>0</code> (removes the rounded corners)
 
-10. Add a <code>nav a:hover</code> rule that creates a button-like highlight effect inspired by the real Utah Tech website. Set:
-    - <code>background-color</code> to <code>#ffffff</code> (flips the background to white)
-    - <code>color</code> to <code>#BA1C21</code> (Utah Tech red text)
-    - <code>border-color</code> to <code>#BA1C21</code> (red border appears around the link)
-
-    The transparent border you added in Step 9 prevents the nav from "jumping" when the colored border appears on hover — a common trick in web design.
+10. Add a <code>nav a:hover</code> rule that sets <code>text-decoration</code> to <code>underline</code> and <code>background-color</code> to <code>transparent</code>. The underline gives users a visual hint when they hover, and the transparent background prevents any color from showing through on hover.
 
 ### Part 8: Skip Link (Accessibility)
 
