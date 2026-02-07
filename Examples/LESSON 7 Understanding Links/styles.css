@@ -22,7 +22,7 @@ header {
 
 nav {
     margin-top: 12px;
-    padding: 10px;
+    display: flex;
     background-color: #003058;
     color: #ffffff;
 }
@@ -94,8 +94,8 @@ a:hover { color: #ffffff; background-color: #D32F2F; }
 a:active { color: #ffffff; background-color: #003058; }
 
 /* Nav link styling */
-nav a { background-color: transparent; padding: 0; border-radius: 0; }
-nav a:hover { text-decoration: underline; background-color: transparent; }
+nav a:link, nav a:visited { color: #ffffff; background-color: transparent; padding: 20px 16px; border-radius: 0; text-decoration: none; }
+nav a:hover { color: #ffffff; background-color: #003058; padding: 20px 16px; text-decoration: none; }
 
 /* Skip link (accessibility) */
 .skip-link {

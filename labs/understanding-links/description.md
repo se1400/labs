@@ -14,7 +14,7 @@ Anchor links let users jump to different sections on the same page. The <code>hr
 
 Your starter page already has <code>id</code> attributes on each section: <code>welcome</code>, <code>colleges</code>, <code>apply</code>, <code>tuition</code>, and <code>visit</code>. You just need to create the links that point to them.
 
-1. In the <code>&lt;nav&gt;</code> element, the navigation items are currently plain text. Replace each text item with an <code>&lt;a&gt;</code> element that points to the matching section. Keep the <code>|</code> separators between the links. Here's how the nav items should map to section ids:
+1. In the <code>&lt;nav&gt;</code> element, the navigation items are currently plain text. Replace each text item with an <code>&lt;a&gt;</code> element that points to the matching section. Here's how the nav items should map to section ids:
 
    - "Home" → <code>#welcome</code>
    - "Admissions" → <code>#apply</code>
@@ -84,16 +84,22 @@ Links have four visual states that you can style with CSS pseudo-classes. A pseu
 
 ### Part 7: Nav Link Styling
 
-After adding the link colors above, you'll notice the nav bar links also changed — they're no longer white! That's because the <code>a:link</code> rule applies to *all* links on the page. You need to override those styles for links inside the nav.
+After adding the link colors above, you'll notice the nav bar links also changed — they now have the red badge background instead of fitting into the dark blue nav bar! That's because the <code>a:link</code> rule applies to *all* links on the page. You need to override those styles for links inside the nav.
 
 You can target links inside a specific parent using a **descendant selector**. For example, <code>nav a</code> selects all <code>&lt;a&gt;</code> elements that are inside a <code>&lt;nav&gt;</code>. This is more specific than just <code>a:link</code>, so it will override the general link colors.
 
-9. In your CSS file, add a <code>nav a</code> rule that resets the link styling for the nav. The nav links already have a dark blue background from the nav bar itself, so you need to remove the red background and padding you added in Step 8. Set:
-   - <code>background-color</code> to <code>transparent</code> (removes the red background — the nav's own dark blue shows through instead)
-   - <code>padding</code> to <code>0</code> (removes the extra padding since nav links don't need the badge look)
-   - <code>border-radius</code> to <code>0</code> (removes the rounded corners)
+The starter CSS already has <code>display: flex</code> on the nav, which lays the links out in a row. You just need to style the links themselves so they look like proper nav buttons that fill the full height of the bar.
 
-10. Add a <code>nav a:hover</code> rule that sets <code>text-decoration</code> to <code>underline</code> and <code>background-color</code> to <code>transparent</code>. The underline gives users a visual hint when they hover, and the transparent background prevents any color from showing through on hover.
+**Important:** The link rules from Part 6 use pseudo-class selectors like <code>a:link</code>, which have higher specificity than a plain <code>nav a</code> selector. That means <code>nav a</code> alone won't override them! To win the specificity battle, your nav rules also need to use pseudo-classes: <code>nav a:link</code> and <code>nav a:visited</code>.
+
+9. In your CSS file, add a <code>nav a:link, nav a:visited</code> rule that overrides the badge styling and makes the links look like nav buttons. By listing both selectors separated by a comma, this rule applies to both unvisited and visited nav links. Set:
+   - <code>color</code> to <code>#ffffff</code> (white text to match the nav bar)
+   - <code>background-color</code> to <code>transparent</code> (removes the red background — the nav's own dark blue shows through instead)
+   - <code>padding</code> to <code>20px 16px</code> (gives each link a tall clickable area that fills the full height of the nav bar — great for touch screens)
+   - <code>border-radius</code> to <code>0</code> (removes the rounded corners from the badge styling)
+   - <code>text-decoration</code> to <code>none</code> (removes any underline)
+
+10. Add a <code>nav a:hover</code> rule that sets <code>color</code> to <code>#ffffff</code>, <code>background-color</code> to <code>#003058</code> (the same dark blue as the nav bar), <code>padding</code> to <code>20px 16px</code>, and <code>text-decoration</code> to <code>none</code>. This ensures the nav links don't pick up the bright red hover color from Part 6 — they stay clean and consistent with the nav bar. The padding is repeated here so the hover state keeps the same height as the normal state.
 
 ### Part 8: Skip Link (Accessibility)
 
