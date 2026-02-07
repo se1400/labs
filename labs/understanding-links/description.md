@@ -67,20 +67,14 @@ Links have four visual states that you can style with CSS pseudo-classes. A pseu
 - <code>a:hover</code> — when the mouse cursor is over the link (the **H** in **H****A**te)
 - <code>a:active</code> — the moment a link is being clicked (the **A** in H**A**te)
 
-8. In your CSS file, add the <code>a:link</code> rule first. This one sets up the look for all links — white text on a colored background, creating a badge-like appearance. Set these properties:
-   - <code>color</code> to <code>#ffffff</code> (white text — always stays white for readability)
-   - <code>background-color</code> to <code>#BA1C21</code> (Utah Tech red background)
-   - <code>padding</code> to <code>2px 6px</code> (a little space around the text so the background isn't cramped)
-   - <code>border-radius</code> to <code>3px</code> (slightly rounds the corners)
-   - <code>text-decoration</code> to <code>none</code> (removes the default underline since the background color already makes links obvious)
+8. In your CSS file, add four rules in LoVe HAte order. Each rule uses the <code>color</code> property to set the link color for that state. Use these colors:
 
-   Now add the remaining three rules. These only need to set <code>color</code> to <code>#ffffff</code> and a <code>background-color</code> — they inherit the padding, border-radius, and text-decoration from the <code>a:link</code> rule:
+   - <code>a:link</code> — <code>#BA1C21</code> (Utah Tech red — stands out from the dark blue body text)
+   - <code>a:visited</code> — <code>#8B1518</code> (darker red — shows the link has been clicked)
+   - <code>a:hover</code> — <code>#D32F2F</code> (brighter red — gives clear hover feedback)
+   - <code>a:active</code> — <code>#003058</code> (dark blue flash when clicked)
 
-   - <code>a:visited</code> — <code>background-color: #6A1039</code> (plum — shows which links have been clicked)
-   - <code>a:hover</code> — <code>background-color: #D32F2F</code> (bright red — gives clear feedback when hovering)
-   - <code>a:active</code> — <code>background-color: #003058</code> (dark blue flash when clicking)
-
-   After saving, notice how your links now look like colored badges. Hover over them and watch the background shift. Click one and see the visited color change.
+   After saving, notice how the links on your page change color. Try clicking a link, then look at how its color changes to the visited color.
 
 ### Part 7: Nav Link Styling
 
@@ -88,12 +82,9 @@ After adding the link colors above, you'll notice the nav bar links also changed
 
 You can target links inside a specific parent using a **descendant selector**. For example, <code>nav a</code> selects all <code>&lt;a&gt;</code> elements that are inside a <code>&lt;nav&gt;</code>. This is more specific than just <code>a:link</code>, so it will override the general link colors.
 
-9. In your CSS file, add a <code>nav a</code> rule that resets the link styling for the nav. The nav links already have a dark blue background from the nav bar itself, so you need to remove the red background and padding you added in Step 8. Set:
-   - <code>background-color</code> to <code>transparent</code> (removes the red background — the nav's own dark blue shows through instead)
-   - <code>padding</code> to <code>0</code> (removes the extra padding since nav links don't need the badge look)
-   - <code>border-radius</code> to <code>0</code> (removes the rounded corners)
+9. In your CSS file, add a <code>nav a</code> rule that sets <code>color</code> to <code>#ffffff</code> (white, so the links are visible on the dark nav background) and <code>text-decoration</code> to <code>none</code> (this removes the default underline).
 
-10. Add a <code>nav a:hover</code> rule that sets <code>text-decoration</code> to <code>underline</code> and <code>background-color</code> to <code>transparent</code>. The underline gives users a visual hint when they hover, and the transparent background prevents any color from showing through on hover.
+10. Add a <code>nav a:hover</code> rule that sets <code>text-decoration</code> to <code>underline</code>. This gives users a visual hint when they hover over a nav link.
 
 ### Part 8: Skip Link (Accessibility)
 

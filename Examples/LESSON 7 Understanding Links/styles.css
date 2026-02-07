@@ -88,14 +88,14 @@ pre {
 }
 
 /* Link styling - LoVe HAte order */
-a:link { color: #ffffff; background-color: #BA1C21; padding: 2px 6px; border-radius: 3px; text-decoration: none; }
-a:visited { color: #ffffff; background-color: #6A1039; }
-a:hover { color: #ffffff; background-color: #D32F2F; }
-a:active { color: #ffffff; background-color: #003058; }
+a:link { color: #BA1C21; }
+a:visited { color: #8B1518; }
+a:hover { color: #D32F2F; }
+a:active { color: #003058; }
 
 /* Nav link styling */
-nav a { background-color: transparent; padding: 0; border-radius: 0; }
-nav a:hover { text-decoration: underline; background-color: transparent; }
+nav a { color: #ffffff; text-decoration: none; }
+nav a:hover { text-decoration: underline; }
 
 /* Skip link (accessibility) */
 .skip-link {
