@@ -1,0 +1,138 @@
+/* CSS Custom Properties */
+:root {
+    --ut-navy: #003058;
+    --ut-red: #BA1C21;
+    --ut-white: #ffffff;
+    --ut-light-gray: #f2f2f2;
+    --ut-panel-gray: #f7f7f7;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Utah Tech inspired colors */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--ut-navy);
+    background-color: var(--ut-white);
+    line-height: 1.6;
+    margin: 0;
+    padding: 16px;
+}
+
+/* Simple structure styling */
+header {
+    padding: 12px;
+    background-color: whitesmoke;
+    text-align: center;
+}
+
+nav {
+    margin-top: 12px;
+    padding: 10px;
+    background-color: var(--ut-navy);
+    color: var(--ut-white);
+}
+
+/* Headings */
+h1 {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+h2, h3, h4 {
+    color: #BA1C21;
+    margin-top: 0;
+}
+
+/* Reusable class */
+.panel {
+    background-color: var(--ut-panel-gray);
+    padding: 12px;
+    margin-top: 12px;
+    border: 2px solid var(--ut-red);
+}
+
+/* Footer */
+footer {
+    margin-top: 16px;
+    padding-top: 10px;
+    color: rgb(68, 68, 68);
+    text-align: center;
+}
+
+address {
+    font-style: normal;
+    line-height: 1.4;
+}
+
+/* Table styling */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 12px;
+}
+
+th, td {
+    border: 1px solid #003058;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #003058;
+    color: #ffffff;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Pre tag styling */
+pre {
+    margin: 0;
+    font-family: inherit;
+}
+
+/* Link styling - LoVe HAte order */
+a:link { color: #BA1C21; }
+a:visited { color: #8B1518; }
+a:hover { color: hsl(0, 65%, 51%); }
+a:active { color: #003058; }
+
+/* Nav link styling */
+nav a:link, nav a:visited { color: #ffffff; text-decoration: none; }
+nav a:hover { color: #cccccc; }
+
+/* Skip link (accessibility) */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+}
+
+.skip-link:focus {
+    left: 0;
+    top: 0;
+    background: #003058;
+    color: #ffffff;
+    padding: 8px;
+    z-index: 100;
+}
+
+/* Visit Campus aside */
+#visit {
+    background-color: rgba(0, 48, 88, 0.1);
+    background-image: url("https://se1400.github.io/labs/assets/campus.jpg");
+    background-size: cover;
+}
+
+/* Footer image filter */
+footer img {
+    filter: grayscale(100%);
+}
+
+footer img:hover {
+    filter: grayscale(0%);
+}

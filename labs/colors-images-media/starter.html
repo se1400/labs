@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utah Tech University</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header id="top">
+        <h1>Utah Tech University</h1>
+        <p class="tagline">Active Learning. Active Life.</p>
+    </header>
+
+    <nav>
+        <a href="#welcome">Home</a> | <a href="#apply">Admissions</a> | <a href="#colleges">Academics</a> | <a href="#tuition">Tuition</a> | <a href="#visit">Campus Life</a>
+    </nav>
+
+    <main id="main-content">
+        <section class="panel" id="welcome">
+            <h2>Welcome to Utah Tech</h2>
+            <p>Utah Tech University is located in St. George, Utah. Our campus sits at the base of beautiful red rock cliffs in Southern Utah.</p>
+            <p>We are committed to <strong>active learning</strong> and helping students <em>succeed</em>.</p>
+            <p>With 300+ degrees of sunshine per year and a 20:1 student-faculty ratio<sup>1</sup>, Utah Tech offers an ideal learning environment.</p>
+        </section>
+
+        <section class="panel" id="colleges">
+            <h3>Our Colleges</h3>
+            <ul>
+                <li>College of Science, Engineering &amp; Technology
+                    <ul>
+                        <li>Computer Science</li>
+                        <li>Software Engineering</li>
+                        <li>Biology</li>
+                    </ul>
+                </li>
+                <li>College of Health Sciences</li>
+                <li>College of Humanities &amp; Social Sciences</li>
+                <li>College of Education</li>
+                <li>College of the Arts</li>
+            </ul>
+        </section>
+
+        <section class="panel" id="apply">
+            <h3>How to Apply</h3>
+            <ol>
+                <li>Submit your application <a href="https://utahtech.edu/admissions/" target="_blank" rel="noopener noreferrer">online</a></li>
+                <li>Send official transcripts</li>
+                <li>Complete the <a href="https://studentaid.gov/" target="_blank" rel="noopener noreferrer">FAFSA</a> for financial aid</li>
+            </ol>
+        </section>
+
+        <section class="panel" id="tuition">
+            <h3>Tuition &amp; Fees</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="3">Tuition Per Credit Hour</th>
+                    </tr>
+                    <tr>
+                        <th>Program</th>
+                        <th>Resident</th>
+                        <th>Non-Resident</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="2">Campus</td>
+                        <td>Undergraduate: $227</td>
+                        <td>$725</td>
+                    </tr>
+                    <tr>
+                        <td>Graduate: $445</td>
+                        <td>$662</td>
+                    </tr>
+                    <tr>
+                        <td>Online</td>
+                        <td>$260</td>
+                        <td>$260</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <aside class="panel" id="visit">
+            <h4>Visit Campus</h4>
+            <p>Schedule a tour today!<br>
+            Call us at <a href="tel:+14356527500">(435) 652-7500</a><br>
+            Email us at <a href="mailto:admissions@utahtech.edu?subject=Campus Tour Question">admissions@utahtech.edu</a></p>
+        </aside>
+    </main>
+
+    <footer>
+        <hr>
+        <p>&copy; <span id="year"></span> Utah Tech University</p>
+        <address>
+<pre>225 S 700 E
+St. George, UT 84770</pre>
+        </address>
+        <a href="#top">Back to Top</a>
+    </footer>
+
+    <script>
+        document.querySelector('#year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
