@@ -78,6 +78,23 @@ const getCSSVariable = (varName) => {
   return null;
 };
 
+// Helper: Check if a CSS property does NOT exist (or has empty value) on a selector
+const propertyNotSet = (selector, property) => {
+  for (let sheet of document.styleSheets) {
+    try {
+      for (let rule of sheet.cssRules) {
+        if (rule.selectorText && rule.selectorText.trim() === selector) {
+          const value = rule.style.getPropertyValue(property);
+          if (value && value.trim() !== '') {
+            return false; // Property exists with a value
+          }
+        }
+      }
+    } catch (e) {}
+  }
+  return true; // Property not found or empty
+};
+
 // ============================================
 // Part 1: CSS Custom Properties
 // ============================================
@@ -138,6 +155,16 @@ test('The nav background-color should use var(--ut-navy)', () => {
   expect(true).toBe(true);
 });
 
+test('The nav rule should not have margin-top', () => {
+  if (!propertyNotSet('nav', 'margin-top')) {
+    throw new Error(
+      'The nav rule still has a margin-top property.\n\n' +
+      'Remove the margin-top property from the nav rule as instructed in Step 3.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
 // ============================================
 // Part 2: Page Layout & Border
 // ============================================
@@ -175,6 +202,26 @@ test('The .panel rule should have a border-top using var(--ut-red)', () => {
     );
   }
   expect(found).toBe(true);
+});
+
+test('The .panel rule should not have margin-top', () => {
+  if (!propertyNotSet('.panel', 'margin-top')) {
+    throw new Error(
+      'The .panel rule still has a margin-top property.\n\n' +
+      'Remove the margin-top property from the .panel rule as instructed in Step 3.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+test('The .panel rule should not have min-height', () => {
+  if (!propertyNotSet('.panel', 'min-height')) {
+    throw new Error(
+      'The .panel rule still has a min-height property.\n\n' +
+      'Remove the min-height property from the .panel rule as instructed in Step 3.'
+    );
+  }
+  expect(true).toBe(true);
 });
 
 // ============================================
@@ -648,6 +695,26 @@ test('The footer should have a dark background using var(--ut-navy)', () => {
       'The footer should have a navy background.\n\n' +
       'Add background-color: var(--ut-navy) to your footer rule.\n' +
       'This gives the footer a dark background that matches the nav bar.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+test('The footer rule should not have margin-top', () => {
+  if (!propertyNotSet('footer', 'margin-top')) {
+    throw new Error(
+      'The footer rule still has a margin-top property.\n\n' +
+      'In Step 20, you should replace margin-top and padding-top with just padding: 16px.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+test('The footer rule should not have padding-top', () => {
+  if (!propertyNotSet('footer', 'padding-top')) {
+    throw new Error(
+      'The footer rule still has a padding-top property.\n\n' +
+      'In Step 20, you should replace margin-top and padding-top with just padding: 16px.'
     );
   }
   expect(true).toBe(true);
