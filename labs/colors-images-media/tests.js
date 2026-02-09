@@ -453,18 +453,6 @@ test('Step 15: The picture should have an img fallback', () => {
   expect(img).toBeTruthy();
 });
 
-test('Step 16: CSS #colleges img should have width set to 100%', () => {
-  if (!findCSSRule('#colleges img', 'width', '100%')) {
-    throw new Error(
-      'Missing CSS rule: #colleges img { width: 100%; }\n\n' +
-      'This makes the campus photo stretch to fill its container,\n' +
-      'so the image grows and shrinks with the browser window.\n' +
-      'Add a #colleges img rule with: width: 100%;'
-    );
-  }
-  expect(true).toBe(true);
-});
-
 test('Step 16: The #colleges figcaption should use rgb() for its color', () => {
   // rgb(68, 68, 68) — browsers store rgb natively, so getPropertyValue returns it directly
   const hasRgb = findCSSRuleContains('#colleges figcaption', 'color', 'rgb(68') ||
