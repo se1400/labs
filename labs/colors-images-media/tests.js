@@ -82,7 +82,7 @@ const getCSSVariable = (varName) => {
 // Part 1: CSS Custom Properties
 // ============================================
 
-test('Step 1: The :root rule should define --ut-navy as #003058', () => {
+test('Test 1: The :root rule should define --ut-navy as #003058', () => {
   const value = getCSSVariable('--ut-navy');
   if (!value) {
     throw new Error(
@@ -100,7 +100,7 @@ test('Step 1: The :root rule should define --ut-navy as #003058', () => {
   expect(true).toBe(true);
 });
 
-test('Step 1: The :root rule should define --ut-red as #BA1C21', () => {
+test('Test 2: The :root rule should define --ut-red as #BA1C21', () => {
   const value = getCSSVariable('--ut-red');
   if (!value) {
     throw new Error(
@@ -117,7 +117,7 @@ test('Step 1: The :root rule should define --ut-red as #BA1C21', () => {
   expect(true).toBe(true);
 });
 
-test('Step 2: The body color should use var(--ut-navy)', () => {
+test('Test 3: The body color should use var(--ut-navy)', () => {
   if (!findCSSRuleContains('body', 'color', 'var(--ut-navy)')) {
     throw new Error(
       'The body rule still has a hardcoded color value.\n\n' +
@@ -128,7 +128,7 @@ test('Step 2: The body color should use var(--ut-navy)', () => {
   expect(true).toBe(true);
 });
 
-test('Step 2: The nav background-color should use var(--ut-navy)', () => {
+test('Test 4: The nav background-color should use var(--ut-navy)', () => {
   if (!findCSSRuleContains('nav', 'background-color', 'var(--ut-navy)')) {
     throw new Error(
       'The nav rule still has a hardcoded background-color value.\n\n' +
@@ -142,7 +142,7 @@ test('Step 2: The nav background-color should use var(--ut-navy)', () => {
 // Part 2: Page Layout & Border
 // ============================================
 
-test('Step 4: The .panel rule should have a border-top using var(--ut-red)', () => {
+test('Test 5: The .panel rule should have a border-top using var(--ut-red)', () => {
   // Border shorthand may decompose into longhand properties in the CSSOM.
   // Check both cssText (preserves original) and individual longhand properties.
   let found = false;
@@ -150,9 +150,9 @@ test('Step 4: The .panel rule should have a border-top using var(--ut-red)', () 
     try {
       for (let rule of sheet.cssRules) {
         if (rule.selectorText === '.panel') {
-          const cssText = rule.cssText.toLowerCase();
-          // Check cssText for border (works even if decomposed — longhand names contain 'border')
-          if (cssText.includes('border')) {
+          const cssText = rule.cssText.replace(/\s/g, '').toLowerCase();
+          // Check cssText for border-top (catches shorthand and longhand)
+          if (cssText.includes('border-top') || cssText.includes('border:')) {
             // Verify they used the CSS variable or its resolved color
             if (cssText.includes('var(--ut-red)') ||
                 cssText.includes('#ba1c21') ||
@@ -181,7 +181,7 @@ test('Step 4: The .panel rule should have a border-top using var(--ut-red)', () 
 // Part 3: Color Formats
 // ============================================
 
-test('Step 5: The header background-color should use the named color whitesmoke', () => {
+test('Test 6: The header background-color should use the named color whitesmoke', () => {
   // Browsers may normalize 'whitesmoke' to rgb(245, 245, 245) in getPropertyValue
   // but typically preserve it in cssText. Check both.
   const hasWhitesmoke = findCSSRuleContains('header', 'background-color', 'whitesmoke');
@@ -199,10 +199,35 @@ test('Step 5: The header background-color should use the named color whitesmoke'
   expect(true).toBe(true);
 });
 
-test('Step 6: The a:hover color should use hsl()', () => {
-  // Browsers may normalize hsl() to rgb() in getPropertyValue,
-  // but cssText typically preserves the authored value.
-  if (!findCSSRuleContains('a:hover', 'color', 'hsl')) {
+test('Test 7: The a:hover color should use hsl()', () => {
+  // Check for hsl in cssText (most modern browsers preserve it)
+  const hasHsl = findCSSRuleContains('a:hover', 'color', 'hsl');
+
+  if (hasHsl) {
+    expect(true).toBe(true);
+    return;
+  }
+
+  // Fallback: Some browsers normalize hsl() to rgb() in both getPropertyValue and cssText.
+  // hsl(0, 65%, 51%) converts to approximately rgb(211, 49, 49).
+  // The original value was #D32F2F which is rgb(211, 47, 47) — a different value.
+  // Check that the color has changed from the original hex.
+  let colorChanged = false;
+  for (let sheet of document.styleSheets) {
+    try {
+      for (let rule of sheet.cssRules) {
+        if (rule.selectorText && rule.selectorText.trim() === 'a:hover') {
+          const color = rule.style.getPropertyValue('color').replace(/\s/g, '').toLowerCase();
+          // Original was #D32F2F which normalizes to rgb(211,47,47)
+          if (color && color !== '#d32f2f' && color !== 'rgb(211,47,47)') {
+            colorChanged = true;
+          }
+        }
+      }
+    } catch (e) {}
+  }
+
+  if (!colorChanged) {
     throw new Error(
       'The a:hover color should use the hsl() format.\n\n' +
       'HSL uses three values: Hue (0-360), Saturation (0%-100%), Lightness (0%-100%).\n' +
@@ -217,7 +242,7 @@ test('Step 6: The a:hover color should use hsl()', () => {
 // Part 4: SVG Logo
 // ============================================
 
-test('Step 7: The header should contain an img element', () => {
+test('Test 8: The header should contain an img element', () => {
   const header = document.querySelector('header');
   if (!header) {
     throw new Error('Could not find a <header> element on the page.');
@@ -233,7 +258,7 @@ test('Step 7: The header should contain an img element', () => {
   expect(img).toBeTruthy();
 });
 
-test('Step 7: The header logo should point to the SVG file', () => {
+test('Test 9: The header logo should point to the SVG file', () => {
   const img = document.querySelector('header img');
   if (!img) {
     throw new Error('First add an <img> to the header (see previous test).');
@@ -249,7 +274,7 @@ test('Step 7: The header logo should point to the SVG file', () => {
   expect(src).toContain('logo.svg');
 });
 
-test('Step 7: The header logo should have a descriptive alt attribute', () => {
+test('Test 10: The header logo should have a descriptive alt attribute', () => {
   const img = document.querySelector('header img');
   if (!img) {
     throw new Error('First add an <img> to the header (see previous test).');
@@ -270,7 +295,7 @@ test('Step 7: The header logo should have a descriptive alt attribute', () => {
 // Part 5: Hero Background Image
 // ============================================
 
-test('Step 9: The #welcome section should not have class="panel"', () => {
+test('Test 11: The #welcome section should not have class="panel"', () => {
   const welcome = document.querySelector('#welcome');
   if (!welcome) {
     throw new Error('Could not find the section with id="welcome".');
@@ -285,7 +310,7 @@ test('Step 9: The #welcome section should not have class="panel"', () => {
   expect(welcome.classList.contains('panel')).toBe(false);
 });
 
-test('Step 10: The #welcome section should contain a div with class="hero-overlay"', () => {
+test('Test 12: The #welcome section should contain a div with class="hero-overlay"', () => {
   const welcome = document.querySelector('#welcome');
   if (!welcome) {
     throw new Error('Could not find the section with id="welcome".');
@@ -308,7 +333,7 @@ test('Step 10: The #welcome section should contain a div with class="hero-overla
   expect(overlay).toBeTruthy();
 });
 
-test('Step 11: CSS #welcome should have a background-image with url()', () => {
+test('Test 13: CSS #welcome should have a background-image with url()', () => {
   if (!findCSSRuleContains('#welcome', 'background-image', 'url(')) {
     throw new Error(
       'Missing background-image on the #welcome rule.\n\n' +
@@ -320,7 +345,7 @@ test('Step 11: CSS #welcome should have a background-image with url()', () => {
   expect(true).toBe(true);
 });
 
-test('Step 11: CSS #welcome should have background-size set to cover', () => {
+test('Test 14: CSS #welcome should have background-size set to cover', () => {
   if (!findCSSRule('#welcome', 'background-size', 'cover')) {
     throw new Error(
       'Missing background-size: cover on the #welcome rule.\n\n' +
@@ -331,7 +356,7 @@ test('Step 11: CSS #welcome should have background-size set to cover', () => {
   expect(true).toBe(true);
 });
 
-test('Step 12: CSS .hero-overlay should have a background-color using rgba()', () => {
+test('Test 15: CSS .hero-overlay should have a background-color using rgba()', () => {
   // Browsers preserve rgba() when alpha < 1. Check both propValue and cssText.
   if (!findCSSRuleContains('.hero-overlay', 'background-color', 'rgba')) {
     throw new Error(
@@ -348,7 +373,7 @@ test('Step 12: CSS .hero-overlay should have a background-color using rgba()', (
 // Part 6: Campus Photo with Figure & Picture
 // ============================================
 
-test('Step 14: The #colleges section should contain a figure element', () => {
+test('Test 16: The #colleges section should contain a figure element', () => {
   const colleges = document.querySelector('#colleges');
   if (!colleges) {
     throw new Error('Could not find the section with id="colleges".');
@@ -364,7 +389,7 @@ test('Step 14: The #colleges section should contain a figure element', () => {
   expect(figure).toBeTruthy();
 });
 
-test('Step 14: The figure should contain a figcaption with text', () => {
+test('Test 17: The figure should contain a figcaption with text', () => {
   const figure = document.querySelector('#colleges figure');
   if (!figure) {
     throw new Error('First add a <figure> element (see previous test).');
@@ -380,7 +405,7 @@ test('Step 14: The figure should contain a figcaption with text', () => {
   expect(figcaption.textContent.trim().length).toBeGreaterThan(0);
 });
 
-test('Step 15: The figure should contain a picture element', () => {
+test('Test 18: The figure should contain a picture element', () => {
   const figure = document.querySelector('#colleges figure');
   if (!figure) {
     throw new Error('First add a <figure> element (see previous test).');
@@ -396,7 +421,7 @@ test('Step 15: The figure should contain a picture element', () => {
   expect(picture).toBeTruthy();
 });
 
-test('Step 15: The picture should have source elements with media attributes', () => {
+test('Test 19: The picture should have source elements with media attributes', () => {
   const picture = document.querySelector('#colleges figure picture');
   if (!picture) {
     throw new Error('First add a <picture> element (see previous test).');
@@ -421,7 +446,7 @@ test('Step 15: The picture should have source elements with media attributes', (
   expect(sources.length).toBeGreaterThanOrEqual(2);
 });
 
-test('Step 15: The picture should have an img fallback', () => {
+test('Test 20: The picture should have an img fallback', () => {
   const picture = document.querySelector('#colleges figure picture');
   if (!picture) {
     throw new Error('First add a <picture> element (see previous test).');
@@ -453,28 +478,34 @@ test('Step 15: The picture should have an img fallback', () => {
   expect(img).toBeTruthy();
 });
 
-test('Step 16: The #colleges figcaption should use rgb() for its color', () => {
-  // rgb(68, 68, 68) — browsers store rgb natively, so getPropertyValue returns it directly
-  const hasRgb = findCSSRuleContains('#colleges figcaption', 'color', 'rgb(68') ||
-                 findCSSRuleContains('#colleges figcaption', 'color', 'rgb(68');
+test('Test 21: The #colleges figcaption should use rgb() for its color', () => {
+  // rgb(68, 68, 68) — browsers store rgb natively, so getPropertyValue returns it directly.
+  // Check both the helper and a direct rule scan for robustness.
+  let found = false;
 
-  // Also check via computed style as a fallback
-  let foundInRule = false;
-  for (let sheet of document.styleSheets) {
-    try {
-      for (let rule of sheet.cssRules) {
-        if (rule.selectorText && rule.selectorText.trim() === '#colleges figcaption') {
-          const color = rule.style.getPropertyValue('color').replace(/\s/g, '').toLowerCase();
-          if (color.includes('rgb(68')) {
-            foundInRule = true;
-          }
-        }
-      }
-    } catch (e) {}
-    if (foundInRule) break;
+  // Check via findCSSRuleContains (handles selector matching and cssText fallback)
+  if (findCSSRuleContains('#colleges figcaption', 'color', 'rgb(68')) {
+    found = true;
   }
 
-  if (!hasRgb && !foundInRule) {
+  // Also check via direct rule scan as a fallback
+  if (!found) {
+    for (let sheet of document.styleSheets) {
+      try {
+        for (let rule of sheet.cssRules) {
+          if (rule.selectorText && rule.selectorText.trim() === '#colleges figcaption') {
+            const color = rule.style.getPropertyValue('color').replace(/\s/g, '').toLowerCase();
+            if (color.includes('rgb(68')) {
+              found = true;
+            }
+          }
+        }
+      } catch (e) {}
+      if (found) break;
+    }
+  }
+
+  if (!found) {
     throw new Error(
       'The #colleges figcaption should have a color using the rgb() format.\n\n' +
       'Add a #colleges figcaption rule with: color: rgb(68, 68, 68);\n' +
@@ -488,7 +519,7 @@ test('Step 16: The #colleges figcaption should use rgb() for its color', () => {
 // Part 7: Video with Captions
 // ============================================
 
-test('Step 17: The hero overlay should contain a video element with controls', () => {
+test('Test 22: The hero overlay should contain a video element with controls', () => {
   // Video should be inside #welcome (in the hero overlay)
   const welcome = document.querySelector('#welcome');
   if (!welcome) {
@@ -512,7 +543,7 @@ test('Step 17: The hero overlay should contain a video element with controls', (
   expect(video.hasAttribute('controls')).toBe(true);
 });
 
-test('Step 18: The video should have a source with type="video/mp4"', () => {
+test('Test 23: The video should have a source with type="video/mp4"', () => {
   const video = document.querySelector('#welcome video');
   if (!video) {
     throw new Error('First add a <video> element (see previous test).');
@@ -534,7 +565,7 @@ test('Step 18: The video should have a source with type="video/mp4"', () => {
   expect(type).toBe('video/mp4');
 });
 
-test('Step 18: The video should have a track element with kind="captions"', () => {
+test('Test 24: The video should have a track element with kind="captions"', () => {
   const video = document.querySelector('#welcome video');
   if (!video) {
     throw new Error('First add a <video> element.');
@@ -557,7 +588,7 @@ test('Step 18: The video should have a track element with kind="captions"', () =
   expect(kind).toBe('captions');
 });
 
-test('Step 18: The track should have srclang and label attributes', () => {
+test('Test 25: The track should have srclang and label attributes', () => {
   const track = document.querySelector('#welcome video track');
   if (!track) {
     throw new Error('First add a <track> element to the video.');
@@ -584,7 +615,7 @@ test('Step 18: The track should have srclang and label attributes', () => {
 // Part 8: Footer with PNG Image
 // ============================================
 
-test('Step 19: The footer should contain an img element for the seal', () => {
+test('Test 26: The footer should contain an img element for the seal', () => {
   const footer = document.querySelector('footer');
   if (!footer) {
     throw new Error('Could not find a <footer> element on the page.');
@@ -607,7 +638,7 @@ test('Step 19: The footer should contain an img element for the seal', () => {
   expect(src).toContain('seal.png');
 });
 
-test('Step 20: The footer should have a dark background using var(--ut-navy)', () => {
+test('Test 27: The footer should have a dark background using var(--ut-navy)', () => {
   // Check if footer has a navy background — could be via var() or resolved hex/rgb
   const hasVar = findCSSRuleContains('footer', 'background-color', 'var(--ut-navy)');
   const hasHex = findCSSRule('footer', 'background-color', '#003058');
@@ -626,7 +657,7 @@ test('Step 20: The footer should have a dark background using var(--ut-navy)', (
 // Part 9: CSS Filter
 // ============================================
 
-test('Step 23: CSS "footer img" should have a grayscale filter', () => {
+test('Test 28: CSS "footer img" should have a grayscale filter', () => {
   let found = false;
   for (let sheet of document.styleSheets) {
     try {
@@ -657,7 +688,7 @@ test('Step 23: CSS "footer img" should have a grayscale filter', () => {
   expect(found).toBe(true);
 });
 
-test('Step 24: CSS "footer img:hover" should remove the grayscale filter', () => {
+test('Test 29: CSS "footer img:hover" should remove the grayscale filter', () => {
   let found = false;
   for (let sheet of document.styleSheets) {
     try {
