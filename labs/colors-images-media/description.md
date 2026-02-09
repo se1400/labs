@@ -104,11 +104,11 @@ JPEG is the most common format for photographs — it compresses well while keep
 
     - A <code>&lt;source&gt;</code> with <code>srcset</code> pointing to <code>https://se1400.github.io/labs/assets/campus-large.jpg</code> and <code>media</code> set to <code>(min-width: 1200px)</code>
     - A <code>&lt;source&gt;</code> with <code>srcset</code> pointing to <code>https://se1400.github.io/labs/assets/campus-medium.jpg</code> and <code>media</code> set to <code>(min-width: 600px)</code>
-    - An <code>&lt;img&gt;</code> with <code>src</code> pointing to <code>https://se1400.github.io/labs/assets/campus-small.jpg</code>, an <code>alt</code> attribute describing the image, and <code>width</code> set to <code>480</code>
+    - An <code>&lt;img&gt;</code> with <code>src</code> pointing to <code>https://se1400.github.io/labs/assets/campus-small.jpg</code> and an <code>alt</code> attribute describing the image. Don't set a width here — you'll control the size with CSS instead.
 
     Try resizing your browser window — you should see different images appear at different widths. This is how real websites serve appropriately sized images to save bandwidth on smaller devices.
 
-16. In your CSS file, add a <code>#colleges figure</code> rule with <code>margin</code> set to <code>16px 0 0 0</code>. Then add a <code>#colleges figcaption</code> rule with <code>color</code> set to <code>rgb(68, 68, 68)</code> and <code>margin-top</code> set to <code>4px</code>. RGB specifies colors using Red, Green, and Blue values from 0 to 255. This dark grey is more subtle than black for a caption.
+16. In your CSS file, add a <code>#colleges figure</code> rule with <code>margin</code> set to <code>16px 0 0 0</code>. Add a <code>#colleges img</code> rule with <code>width</code> set to <code>100%</code> — this makes the image stretch to fill its container, so the photo grows and shrinks with the browser window. Try resizing your browser to see the image change both its source and its size. Then add a <code>#colleges figcaption</code> rule with <code>color</code> set to <code>rgb(68, 68, 68)</code> and <code>margin-top</code> set to <code>4px</code>. RGB specifies colors using Red, Green, and Blue values from 0 to 255. This dark grey is more subtle than black for a caption.
 
 ### Part 7: Video with Captions
 
