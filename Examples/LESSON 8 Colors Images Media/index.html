@@ -23,18 +23,17 @@
     </nav>
 
     <main id="main-content">
-        <section class="panel" id="welcome">
-            <h2>Welcome to Utah Tech</h2>
-            <p>Utah Tech University is located in St. George, Utah. Our campus sits at the base of beautiful red rock cliffs in Southern Utah.</p>
-            <p>We are committed to <strong>active learning</strong> and helping students <em>succeed</em>.</p>
-            <p>With 300+ degrees of sunshine per year and a 20:1 student-faculty ratio<sup>1</sup>, Utah Tech offers an ideal learning environment.</p>
-            <figure>
-                <picture>
-                    <source srcset="https://se1400.github.io/labs/assets/campus.webp" type="image/webp">
-                    <img src="https://se1400.github.io/labs/assets/campus.jpg" alt="Aerial view of Utah Tech University campus" width="600" height="400">
-                </picture>
-                <figcaption>Utah Tech University campus in St. George, Utah</figcaption>
-            </figure>
+        <section id="welcome">
+            <div class="hero-overlay">
+                <h2>Welcome to Utah Tech</h2>
+                <p>Utah Tech University is located in St. George, Utah. Our campus sits at the base of beautiful red rock cliffs in Southern Utah.</p>
+                <p>We are committed to <strong>active learning</strong> and helping students <em>succeed</em>.</p>
+                <p>With 300+ degrees of sunshine per year and a 20:1 student-faculty ratio<sup>1</sup>, Utah Tech offers an ideal learning environment.</p>
+                <video controls width="320">
+                    <source src="https://se1400.github.io/labs/assets/video.mp4" type="video/mp4">
+                    <track src="https://se1400.github.io/labs/assets/video.vtt" kind="captions" srclang="en" label="English">
+                </video>
+            </div>
         </section>
 
         <section class="panel" id="colleges">
@@ -52,6 +51,14 @@
                 <li>College of Education</li>
                 <li>College of the Arts</li>
             </ul>
+            <figure>
+                <picture>
+                    <source srcset="https://se1400.github.io/labs/assets/campus-large.jpg" media="(min-width: 1200px)">
+                    <source srcset="https://se1400.github.io/labs/assets/campus-medium.jpg" media="(min-width: 600px)">
+                    <img src="https://se1400.github.io/labs/assets/campus-small.jpg" alt="Aerial view of Utah Tech University campus" width="480">
+                </picture>
+                <figcaption>Utah Tech University campus in St. George, Utah</figcaption>
+            </figure>
         </section>
 
         <section class="panel" id="apply">
@@ -100,10 +107,6 @@
             <p>Schedule a tour today!<br>
             Call us at <a href="tel:+14356527500">(435) 652-7500</a><br>
             Email us at <a href="mailto:admissions@utahtech.edu?subject=Campus Tour Question">admissions@utahtech.edu</a></p>
-            <video controls width="400">
-                <source src="https://se1400.github.io/labs/assets/video.mp4" type="video/mp4">
-                <track src="https://se1400.github.io/labs/assets/video.vtt" kind="captions" srclang="en" label="English">
-            </video>
         </aside>
     </main>
 
