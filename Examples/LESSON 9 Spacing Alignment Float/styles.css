@@ -1,0 +1,194 @@
+/* CSS Custom Properties */
+:root {
+    --ut-navy: #003058;
+    --ut-red: #BA1C21;
+    --ut-white: #ffffff;
+    --ut-light-gray: #f2f2f2;
+    --ut-panel-gray: #f7f7f7;
+}
+
+/* Box Sizing */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Utah Tech inspired colors */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--ut-navy);
+    background-color: var(--ut-white);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+header {
+    padding: 1rem;
+    background-color: whitesmoke;
+    text-align: center;
+}
+
+header img {
+    margin-bottom: 8px;
+}
+
+nav {
+    padding: 0.75rem 1.5rem;
+    background-color: var(--ut-navy);
+    color: var(--ut-white);
+    text-align: center;
+}
+
+/* Content Container */
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* Headings */
+h1 {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+h2, h3, h4 {
+    color: var(--ut-red);
+    margin-top: 0;
+}
+
+/* Hero section - campus background */
+#welcome {
+    background-image: url("https://se1400.github.io/labs/assets/campus.jpg");
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-overlay {
+    background-color: rgba(0, 48, 88, 0.8);
+    color: var(--ut-white);
+    padding: 2rem 1.5rem;
+}
+
+.hero-overlay h2 {
+    color: var(--ut-white);
+}
+
+/* Reusable class */
+.panel {
+    background-color: var(--ut-panel-gray);
+    padding: 1rem 1.5rem;
+    border-top: 3px solid var(--ut-red);
+    margin-bottom: 1.5rem;
+}
+
+/* Colleges section figure */
+#colleges figure {
+    float: right;
+    width: 50%;
+    margin: 0 0 1rem 1rem;
+}
+
+#colleges figcaption {
+    color: rgb(68, 68, 68);
+    margin-top: 4px;
+}
+
+/* Apply section - clear float */
+#apply {
+    clear: both;
+}
+
+/* Visit Campus aside */
+#visit {
+    background-color: var(--ut-light-gray);
+}
+
+/* Footer */
+footer {
+    padding: 1rem;
+    background-color: var(--ut-navy);
+    color: var(--ut-white);
+    text-align: center;
+}
+
+footer a:link, footer a:visited {
+    color: var(--ut-white);
+}
+
+footer a:hover {
+    color: hsl(0, 65%, 51%);
+}
+
+address {
+    font-style: normal;
+    line-height: 1.4;
+}
+
+/* Table styling */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 12px;
+}
+
+th, td {
+    border: 1px solid var(--ut-navy);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+}
+
+th {
+    background-color: var(--ut-navy);
+    color: var(--ut-white);
+}
+
+tbody tr:nth-child(even) {
+    background-color: var(--ut-light-gray);
+}
+
+/* Pre tag styling */
+pre {
+    margin: 0;
+    font-family: inherit;
+}
+
+/* Link styling - LoVe HAte order */
+a:link { color: var(--ut-red); }
+a:visited { color: #8B1518; }
+a:hover { color: hsl(0, 65%, 51%); }
+a:active { color: var(--ut-navy); }
+
+/* Nav link styling */
+nav a:link, nav a:visited { color: var(--ut-white); text-decoration: none; }
+nav a:hover { color: #cccccc; }
+
+/* Skip link (accessibility) */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+}
+
+.skip-link:focus {
+    left: 0;
+    top: 0;
+    background: var(--ut-navy);
+    color: var(--ut-white);
+    padding: 8px;
+    z-index: 100;
+}
+
+/* Footer image filter */
+footer img {
+    filter: grayscale(100%);
+}
+
+footer img:hover {
+    filter: grayscale(0%);
+}
