@@ -73,7 +73,7 @@ h2, h3, h4 {
 .hero-overlay {
     background-color: rgba(0, 48, 88, 0.8);
     color: var(--ut-white);
-    padding: 2rem 1.5rem;
+    padding: 2rem 0;
 }
 
 .hero-overlay h2 {
@@ -100,9 +100,9 @@ h2, h3, h4 {
     margin-top: 4px;
 }
 
-/* Apply section - clear float */
-#apply {
-    clear: both;
+/* Contain the float within the colleges section */
+#colleges {
+    overflow: hidden;
 }
 
 /* Visit Campus aside */
