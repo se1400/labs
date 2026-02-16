@@ -26,7 +26,11 @@ Right now, your page content stretches from edge to edge. On wide screens, text 
 
 When you set the left and right margins to <code>auto</code>, the browser calculates the remaining space and splits it equally on both sides — centering the element. This only works on block elements that have a set width (or max-width).
 
-2. In your HTML file, inside <code>&lt;main&gt;</code>, find the closing <code>&lt;/section&gt;</code> tag of the <code>#welcome</code> section. After it, wrap all of the remaining content — the <code>#colleges</code>, <code>#apply</code>, <code>#tuition</code> sections and the <code>#visit</code> aside — inside a <code>&lt;div&gt;</code> element with <code>class="container"</code>. The hero section stays outside the container so its background image can span the full width of the page.
+2. You'll add the <code>container</code> class in two places so that all page content is centered consistently while the hero background still spans full width.
+
+   First, in the <code>#welcome</code> section, inside the <code>.hero-overlay</code> div, wrap all of the existing content (the <code>&lt;h2&gt;</code>, the <code>&lt;p&gt;</code> elements, and the <code>&lt;video&gt;</code>) in a <code>&lt;div&gt;</code> with <code>class="container"</code>. This centers the hero text without affecting the full-width background.
+
+   Second, find the closing <code>&lt;/section&gt;</code> tag of the <code>#welcome</code> section. After it, wrap all of the remaining content — the <code>#colleges</code>, <code>#apply</code>, <code>#tuition</code> sections and the <code>#visit</code> aside — inside another <code>&lt;div&gt;</code> with <code>class="container"</code>.
 
 3. In your CSS file, add a <code>.container</code> rule with three properties:
 
@@ -73,7 +77,7 @@ Here's a quick reference: 8px = 0.5rem, 12px = 0.75rem, 16px = 1rem, 24px = 1.5r
 9. Convert the spacing in your panel and hero overlay rules:
 
    - In the <code>.panel</code> rule, change <code>padding</code> from <code>16px 24px</code> to <code>1rem 1.5rem</code>
-   - In the <code>.hero-overlay</code> rule, change <code>padding</code> from <code>32px 24px</code> to <code>2rem 1.5rem</code>
+   - In the <code>.hero-overlay</code> rule, change <code>padding</code> from <code>32px 24px</code> to <code>2rem 0</code>. The horizontal padding is now <code>0</code> because the <code>.container</code> div inside already provides the horizontal spacing.
 
    After saving, the page should look the same — rem values at the default font size produce the same result as the equivalent pixel values. The difference only shows when a user changes their browser font size.
 
@@ -93,6 +97,8 @@ The <code>float</code> property was originally designed for a simple purpose: wr
     - <code>width</code> set to <code>50%</code> — this constrains the figure to half the section width so the college list has room to wrap beside it
 
     Also change the <code>margin</code> to <code>0 0 1rem 1rem</code> (4-value shorthand: no top or right margin, 1rem below the image, and 1rem gap between the image and the wrapping text on the left). Try your clockwise memory trick: top: 0, right: 0, bottom: 1rem, left: 1rem.
+
+    Also add a new <code>#colleges figure img</code> rule with <code>width</code> set to <code>100%</code> and <code>height</code> set to <code>auto</code>. This ensures the image scales to fit within the floated figure instead of overflowing past its edges.
 
     The college list should now wrap around the campus photo on the right side.
 

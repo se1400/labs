@@ -143,6 +143,23 @@ test('The main element should contain a div with class "container"', () => {
   expect(container).toBeTruthy();
 });
 
+test('The .hero-overlay should contain a div with class "container"', () => {
+  const heroOverlay = document.querySelector('.hero-overlay');
+  if (!heroOverlay) {
+    throw new Error('Could not find a <div> with class="hero-overlay" on the page.');
+  }
+  const container = heroOverlay.querySelector('div.container');
+  if (!container) {
+    throw new Error(
+      'No <div> with class="container" found inside .hero-overlay.\n\n' +
+      'Inside the .hero-overlay div, wrap all existing content\n' +
+      '(h2, paragraphs, video) in a <div class="container">.\n' +
+      'This centers the hero text while the background spans full width.'
+    );
+  }
+  expect(container).toBeTruthy();
+});
+
 test('The .container rule should have a max-width set', () => {
   const value = getCSSPropertyValue('.container', 'max-width');
   if (!value) {
@@ -330,7 +347,8 @@ test('The .hero-overlay padding should use rem units', () => {
   if (!padding || !padding.includes('rem')) {
     throw new Error(
       'The .hero-overlay padding should use rem units.\n\n' +
-      'Change the .hero-overlay padding from 32px 24px to 2rem 1.5rem.'
+      'Change the .hero-overlay padding from 32px 24px to 2rem 0.\n' +
+      'The horizontal padding is 0 because the .container inside handles it.'
     );
   }
   expect(padding).toContain('rem');
@@ -400,6 +418,35 @@ test('The #colleges figure should have width set to 50%', () => {
     );
   }
   expect(width).toContain('50');
+});
+
+test('The #colleges figure img should have width set to 100%', () => {
+  const width = getCSSPropertyValue('#colleges figure img', 'width');
+  if (!width || !width.includes('100')) {
+    throw new Error(
+      'The #colleges figure img should have width: 100%.\n\n' +
+      'Add a #colleges figure img rule with width: 100%;\n' +
+      'This ensures the image scales to fit within the floated figure.'
+    );
+  }
+  expect(width).toContain('100');
+});
+
+test('The #colleges figure img should have height set to auto', () => {
+  const height = getCSSPropertyValue('#colleges figure img', 'height');
+  if (!height || height === '0' || height === '0px') {
+    throw new Error(
+      'The #colleges figure img should have height: auto.\n\n' +
+      'Add height: auto; to the #colleges figure img rule.\n' +
+      'This maintains the image\'s aspect ratio when the width scales.'
+    );
+  }
+  if (height !== 'auto') {
+    throw new Error(
+      `The #colleges figure img height is "${height}" but should be "auto".`
+    );
+  }
+  expect(height).toBe('auto');
 });
 
 test('The #colleges figure margin should use 4-value shorthand with rem', () => {

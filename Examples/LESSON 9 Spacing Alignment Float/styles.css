@@ -105,9 +105,9 @@ h2, h3, h4 {
     margin-top: 4px;
 }
 
-/* Contain the float within the colleges section */
-#colleges {
-    overflow: hidden;
+/* Clear the float so the next section starts below */
+#apply {
+    clear: both;
 }
 
 /* Visit Campus aside */
