@@ -710,12 +710,25 @@ test('The footer rule should not have margin-top', () => {
   expect(true).toBe(true);
 });
 
-test('The footer rule should not have padding-top', () => {
-  if (!propertyNotSet('footer', 'padding-top')) {
-    throw new Error(
-      'The footer rule still has a padding-top property.\n\n' +
-      'In Step 20, you should replace margin-top and padding-top with just padding: 16px.'
-    );
+test('The footer rule should not have an explicit padding-top property', () => {
+  // padding: 16px decomposes to padding-top: 16px in the CSSOM, which is fine.
+  // We only fail if padding-top is set WITHOUT a padding shorthand (meaning it's explicit).
+  for (let sheet of document.styleSheets) {
+    try {
+      for (let rule of sheet.cssRules) {
+        if (rule.selectorText && rule.selectorText.trim() === 'footer') {
+          const paddingTop = rule.style.getPropertyValue('padding-top');
+          const paddingShorthand = rule.style.getPropertyValue('padding');
+          if (paddingTop && paddingTop.trim() !== '' && (!paddingShorthand || paddingShorthand.trim() === '')) {
+            throw new Error(
+              'The footer rule still has an explicit padding-top property.\n\n' +
+              'In Step 20, replace margin-top and padding-top with just padding: 16px.\n' +
+              'The padding shorthand sets all four sides at once.'
+            );
+          }
+        }
+      }
+    } catch (e) { if (e.message.includes('padding-top')) throw e; }
   }
   expect(true).toBe(true);
 });
