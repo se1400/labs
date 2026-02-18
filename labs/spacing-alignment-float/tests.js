@@ -342,16 +342,17 @@ test('The .panel padding should use rem units', () => {
   expect(padding).toContain('rem');
 });
 
-test('The .hero-overlay padding should use rem units', () => {
-  const padding = getCSSPropertyValue('.hero-overlay', 'padding');
-  if (!padding || !padding.includes('rem')) {
+test('The .hero-overlay padding-top should be 2rem', () => {
+  const pt = getCSSPropertyValue('.hero-overlay', 'padding-top');
+  if (!pt || !pt.includes('2rem')) {
     throw new Error(
-      'The .hero-overlay padding should use rem units.\n\n' +
+      'The .hero-overlay padding-top should be 2rem.\n\n' +
       'Change the .hero-overlay padding from 32px 24px to 2rem 0.\n' +
-      'The horizontal padding is 0 because the .container inside handles it.'
+      'The horizontal padding is 0 because the .container inside handles it.\n' +
+      'Quick reference: 32px = 2rem'
     );
   }
-  expect(padding).toContain('rem');
+  expect(pt).toContain('2rem');
 });
 
 // ============================================
@@ -449,20 +450,25 @@ test('The #colleges figure img should have height set to auto', () => {
   expect(height).toBe('auto');
 });
 
-test('The #colleges figure margin should use 4-value shorthand with rem', () => {
-  const margin = getCSSPropertyValue('#colleges figure', 'margin');
-  if (!margin) {
-    throw new Error('Could not find a margin on the #colleges figure rule.');
-  }
-  // After float is added, margin should change to 4-value: 0 0 1rem 1rem
-  if (!margin.includes('rem')) {
+test('The #colleges figure should have 1rem margin-bottom and 1rem margin-left', () => {
+  const mb = getCSSPropertyValue('#colleges figure', 'margin-bottom');
+  const ml = getCSSPropertyValue('#colleges figure', 'margin-left');
+  if (!mb || !mb.includes('1rem')) {
     throw new Error(
-      'The #colleges figure margin should use rem units.\n\n' +
+      'The #colleges figure margin-bottom should be 1rem.\n\n' +
       'Set margin to 0 0 1rem 1rem (4-value shorthand):\n' +
       'top: 0, right: 0, bottom: 1rem (space below), left: 1rem (gap from text).'
     );
   }
-  expect(margin).toContain('rem');
+  if (!ml || !ml.includes('1rem')) {
+    throw new Error(
+      'The #colleges figure margin-left should be 1rem.\n\n' +
+      'Set margin to 0 0 1rem 1rem (4-value shorthand):\n' +
+      'The left margin creates a gap between the floated image and the wrapping text.'
+    );
+  }
+  expect(mb).toContain('1rem');
+  expect(ml).toContain('1rem');
 });
 
 test('The #apply section should have a clear property', () => {
