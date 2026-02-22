@@ -2,6 +2,8 @@
 
 In this lab you'll learn CSS Grid — the most powerful layout system in CSS. You'll transform a stacked page into a sophisticated two-column layout with a sidebar, a full-width hero with a centered content overlay, and a responsive card grid — all using CSS Grid.
 
+**<a href="https://se1400.github.io/labs/labs/css-grid/example.jpg" target="_blank">View completed example</a>** — This is what your page should look like when you're done.
+
 **Objective:** Follow the instructions below and get all the tests to pass to complete the lab.
 
 **Note:** The starter page for this lab already has the Flexbox navigation, sticky nav, and figcaption overlay from the previous lab built in. You'll work primarily in the CSS file, with one HTML change in Part 5.
