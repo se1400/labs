@@ -90,6 +90,14 @@ test('The body grid-template-columns should define a 4-column layout with minmax
       'The 280px column is the fixed-width sidebar.'
     );
   }
+  const frCount = (cols.match(/\b1fr\b/gi) || []).length;
+  if (frCount < 2) {
+    throw new Error(
+      `The body grid-template-columns is "${cols}" but should have two 1fr gutter columns.\n\n` +
+      'In Step 1, use: grid-template-columns: 1fr minmax(0, 640px) 280px 1fr;\n' +
+      'The two 1fr columns on either side create flexible gutters that center the content.'
+    );
+  }
   expect(true).toBe(true);
 });
 
@@ -112,57 +120,57 @@ test('The body should have a column-gap set', () => {
 test('header should span all four columns using a negative line number', () => {
   const value = findCSSProperty('header', 'grid-column');
   const valueNorm = (value || '').replace(/\s/g, '');
-  if (!value || !valueNorm.includes('-1')) {
+  if (!value || !valueNorm.startsWith('1') || !valueNorm.includes('-1')) {
     throw new Error(
       'The header should have grid-column: 1 / -1;\n\n' +
       'In Step 2, add a rule with selector "header, nav, #welcome, footer"\n' +
       'and set grid-column: 1 / -1;\n' +
-      'The -1 refers to the last grid line, making the element span the full page width.'
+      'The value must start at line 1 and end at the last line (-1) to span the full width.'
     );
   }
-  expect(valueNorm.includes('-1')).toBe(true);
+  expect(true).toBe(true);
 });
 
 test('nav should span all four columns using a negative line number', () => {
   const value = findCSSProperty('nav', 'grid-column');
   const valueNorm = (value || '').replace(/\s/g, '');
-  if (!value || !valueNorm.includes('-1')) {
+  if (!value || !valueNorm.startsWith('1') || !valueNorm.includes('-1')) {
     throw new Error(
       'The nav should have grid-column: 1 / -1;\n\n' +
       'In Step 2, include "nav" in the selector "header, nav, #welcome, footer"\n' +
       'and set grid-column: 1 / -1;\n' +
-      'The nav needs to span the full width so it covers the entire top of the page.'
+      'The value must start at line 1 and end at the last line (-1) to span the full width.'
     );
   }
-  expect(valueNorm.includes('-1')).toBe(true);
+  expect(true).toBe(true);
 });
 
 test('#welcome should span all four columns using a negative line number', () => {
   const value = findCSSProperty('#welcome', 'grid-column');
   const valueNorm = (value || '').replace(/\s/g, '');
-  if (!value || !valueNorm.includes('-1')) {
+  if (!value || !valueNorm.startsWith('1') || !valueNorm.includes('-1')) {
     throw new Error(
       'The #welcome section should have grid-column: 1 / -1;\n\n' +
       'In Step 2, include "#welcome" in the selector "header, nav, #welcome, footer"\n' +
       'and set grid-column: 1 / -1;\n' +
-      'The hero needs to span the full width so the background image fills the page.'
+      'The value must start at line 1 and end at the last line (-1) so the background image fills the page.'
     );
   }
-  expect(valueNorm.includes('-1')).toBe(true);
+  expect(true).toBe(true);
 });
 
 test('footer should span all four columns using a negative line number', () => {
   const value = findCSSProperty('footer', 'grid-column');
   const valueNorm = (value || '').replace(/\s/g, '');
-  if (!value || !valueNorm.includes('-1')) {
+  if (!value || !valueNorm.startsWith('1') || !valueNorm.includes('-1')) {
     throw new Error(
       'The footer should have grid-column: 1 / -1;\n\n' +
       'In Step 2, include "footer" in the selector "header, nav, #welcome, footer"\n' +
       'and set grid-column: 1 / -1;\n' +
-      'The footer needs to span the full width of the page.'
+      'The value must start at line 1 and end at the last line (-1) to span the full width.'
     );
   }
-  expect(valueNorm.includes('-1')).toBe(true);
+  expect(true).toBe(true);
 });
 
 // ============================================
@@ -170,20 +178,21 @@ test('footer should span all four columns using a negative line number', () => {
 // ============================================
 
 test('main should have grid-column set to 2', () => {
-  const value = findCSSProperty('main', 'grid-column');
+  const value = findCSSProperty('main', 'grid-column') || findCSSProperty('main', 'grid-column-start');
   const valueNorm = (value || '').replace(/\s/g, '');
-  if (!value || (!valueNorm.startsWith('2') )) {
+  if (!value || !valueNorm.startsWith('2') || valueNorm.includes('-1')) {
     throw new Error(
       'The main rule should have grid-column: 2;\n\n' +
       'In Step 3, find the main rule and add grid-column: 2;\n' +
-      'This places main in the second column (the 640px content area).'
+      'This places main in the second column (the 640px content area).\n' +
+      'Do not use -1 here — that would stretch main across columns it should not occupy.'
     );
   }
   expect(true).toBe(true);
 });
 
 test('main should have grid-row set to 4', () => {
-  const value = findCSSProperty('main', 'grid-row');
+  const value = findCSSProperty('main', 'grid-row') || findCSSProperty('main', 'grid-row-start');
   if (!value || !value.trim().startsWith('4')) {
     throw new Error(
       'The main rule should have grid-row: 4;\n\n' +
@@ -196,20 +205,21 @@ test('main should have grid-row set to 4', () => {
 });
 
 test('.sidebar should have grid-column set to 3', () => {
-  const value = findCSSProperty('.sidebar', 'grid-column');
+  const value = findCSSProperty('.sidebar', 'grid-column') || findCSSProperty('.sidebar', 'grid-column-start');
   const valueNorm = (value || '').replace(/\s/g, '');
-  if (!value || !valueNorm.startsWith('3')) {
+  if (!value || !valueNorm.startsWith('3') || valueNorm.includes('-1')) {
     throw new Error(
       'The .sidebar rule should have grid-column: 3;\n\n' +
       'In Step 4, find the .sidebar rule and add grid-column: 3;\n' +
-      'This places the sidebar in the third column.'
+      'This places the sidebar in the third column.\n' +
+      'Do not use -1 here — that would stretch the sidebar beyond its column.'
     );
   }
   expect(true).toBe(true);
 });
 
 test('.sidebar should have grid-row set to 4', () => {
-  const value = findCSSProperty('.sidebar', 'grid-row');
+  const value = findCSSProperty('.sidebar', 'grid-row') || findCSSProperty('.sidebar', 'grid-row-start');
   if (!value || !value.trim().startsWith('4')) {
     throw new Error(
       'The .sidebar rule should have grid-row: 4;\n\n' +
@@ -267,14 +277,14 @@ test('#welcome should use subgrid for its columns', () => {
 test('.hero-overlay should span all columns (grid-column: 1 / -1)', () => {
   const value = getCSSPropertyValue('.hero-overlay', 'grid-column');
   const valueNorm = (value || '').replace(/\s/g, '');
-  if (!value || !valueNorm.includes('-1')) {
+  if (!value || !valueNorm.startsWith('1') || !valueNorm.includes('-1')) {
     throw new Error(
       'The .hero-overlay rule should have grid-column: 1 / -1;\n\n' +
       'In Step 6, add grid-column: 1 / -1; to the .hero-overlay rule.\n' +
-      'This stretches the blue overlay to cover the full width of the hero background image.'
+      'The value must start at line 1 and end at -1 so the blue overlay covers the full width.'
     );
   }
-  expect(valueNorm.includes('-1')).toBe(true);
+  expect(true).toBe(true);
 });
 
 test('.hero-overlay should have display set to grid', () => {
@@ -306,7 +316,7 @@ test('.hero-overlay should use subgrid for its columns', () => {
 test('.hero-content should span columns 2 through 4', () => {
   const value = getCSSPropertyValue('.hero-content', 'grid-column');
   const valueNorm = (value || '').replace(/\s/g, '');
-  if (!value || !valueNorm.includes('2') || !valueNorm.includes('4')) {
+  if (!value || !valueNorm.startsWith('2/') || !valueNorm.endsWith('4')) {
     throw new Error(
       'The .hero-content rule should have grid-column: 2 / 4;\n\n' +
       'In Step 7, add grid-column: 2 / 4; to the .hero-content rule.\n' +
@@ -410,15 +420,15 @@ test('.programs-grid should have a gap set', () => {
 test('#colleges figure should span the full width of the programs grid (grid-column: 1 / -1)', () => {
   const value = getCSSPropertyValue('#colleges figure', 'grid-column');
   const valueNorm = (value || '').replace(/\s/g, '');
-  if (!value || !valueNorm.includes('-1')) {
+  if (!value || !valueNorm.startsWith('1') || !valueNorm.includes('-1')) {
     throw new Error(
       'The #colleges figure should have grid-column: 1 / -1;\n\n' +
       'In Step 10, add grid-column: 1 / -1; to the #colleges figure rule.\n' +
-      'This makes the campus photo span the full width of the programs grid,\n' +
-      'appearing as a wide banner image above the college cards.'
+      'The value must start at line 1 and end at -1 so the campus photo spans\n' +
+      'the full width of the programs grid as a banner above the college cards.'
     );
   }
-  expect(valueNorm.includes('-1')).toBe(true);
+  expect(true).toBe(true);
 });
 
 test('.featured should have grid-column set to span 2', () => {
