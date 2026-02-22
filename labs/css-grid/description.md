@@ -4,85 +4,111 @@ In this lab you'll learn CSS Grid — the most powerful layout system in CSS. Yo
 
 **Objective:** Follow the instructions below and get all the tests to pass to complete the lab.
 
-**Important:** This lab builds on your completed Positioning & Flexbox lab. The starter page already has Flexbox navigation, a sticky nav bar, and the figcaption overlay. You'll work primarily in the CSS file, with one HTML change in Part 5.
+**Note:** The starter page for this lab already has the Flexbox navigation, sticky nav, and figcaption overlay from the previous lab built in. You'll work primarily in the CSS file, with one HTML change in Part 5.
 
 ## Instructions
 
 ### Part 1: Body as Grid Container
 
-CSS Grid starts with a **grid container** — an element you turn into a grid by setting `display: grid`. Every direct child becomes a **grid item** that can be placed anywhere on the grid.
+CSS Grid starts with a **grid container** — an element you turn into a grid by setting `display: grid`. Every **direct child** of that element automatically becomes a **grid item** and gets placed on the grid.
 
-In this layout, `body` is the grid container. This lets you control the placement of every major section — header, nav, hero, main, aside, footer — from one place.
+In this layout, `body` is the grid container. Every major section of the page — header, nav, hero, main, aside, footer — is a direct child of `body`, so all of them become grid items you can control from one place.
 
-The four-column pattern creates a responsive centered layout:
-- Columns 1 and 4 are `1fr` gutters — they share the leftover space, creating automatic side margins
-- Column 2 is `minmax(0, 640px)` — the main content area, up to 640px wide
-- Column 3 is `280px` — fixed-width for the sidebar
+You'll define four columns. Think of them like invisible vertical lanes running top to bottom across the page:
+
+```
+| 1fr gutter | main content (up to 640px) | sidebar (280px) | 1fr gutter |
+|  column 1  |          column 2          |    column 3     |  column 4  |
+```
+
+- **Columns 1 and 4** are `1fr` gutters — they each take an equal share of whatever space is left over, creating automatic side margins that grow and shrink with the viewport
+- **Column 2** uses `minmax(0, 640px)` — it grows to fill space, but never wider than 640px
+- **Column 3** is a fixed `280px` sidebar
 
 1. In your **CSS file**, find the `body` rule. Add three properties:
 
-   - `display` set to `grid` — this makes `body` a grid container
-   - `grid-template-columns` set to `1fr minmax(0, 640px) 280px 1fr` — this defines the four-column layout
-   - `column-gap` set to `1.5rem` — this adds horizontal space between the columns
+   - `display` set to `grid` — this activates the grid, making every direct child of body a grid item
+   - `grid-template-columns` set to `1fr minmax(0, 640px) 280px 1fr` — this defines the four columns described above
+   - `column-gap` set to `1.5rem` — this adds horizontal space *between* the columns only
+
+   > **Why `column-gap` and not `gap`?** `gap` sets spacing in both directions — between rows *and* columns. Using `gap` here would add vertical space between your header, nav, hero, main, and footer too, which you don't want. `column-gap` only affects the space between columns.
 
 ### Part 2: Full-Width Elements
 
-With the four-column body grid active, direct children of `body` auto-place into columns. But the header, nav, hero section, and footer need to span **all four columns** — the full width of the page.
+Now that `body` is a grid, every direct child gets auto-placed. By default, auto-placement fills one column at a time, left to right, top to bottom — so your header would land in column 1 and take up only that first narrow gutter column, not the full width.
 
-The syntax `1 / -1` means "start at line 1, end at the last line." In a 4-column grid, `-1` always refers to the last column line, no matter how many columns there are. It's a shortcut that works even if you later change the number of columns.
+The header, nav, hero section, and footer all need to span the **entire width** of the page across all four columns.
 
-2. In your **CSS file**, add a new rule with the selector `header, nav, #welcome, footer`. Give it one property:
+To span multiple columns, you use `grid-column` with two line numbers separated by a slash: `grid-column: start / end`. CSS Grid draws a line *between* every column — a 4-column grid has 5 lines, numbered 1 through 5 from left to right. You can also count backward: line `-1` is always the very last line, no matter how many columns there are.
 
-   - `grid-column` set to `1 / -1` — this makes all four elements span the full page width
+So `grid-column: 1 / -1` means "start at the first line, end at the last line" — always the full width, even if you later change the number of columns.
+
+2. In your **CSS file**, add a **new** CSS rule — separate from any existing rules — using the selector `header, nav, #welcome, footer`. Give it one property:
+
+   - `grid-column` set to `1 / -1` — this makes all four elements span the full width of the page
+
+   After this step, the page should look mostly similar to before (these elements were already full-width by nature), but now their width is controlled by the grid. In the next step you'll see the grid's real power.
 
 ### Part 3: Placing Main and Sidebar
 
-Now you'll place `main` and `.sidebar` in their specific columns. Since `header`, `nav`, and `#welcome` each take up one full row, `main` and `.sidebar` are the first items in row 4. Using `grid-row: 4` makes that placement explicit rather than relying on auto-placement.
+With the full-width elements handled, you now have two elements that need to sit **side by side**: `main` in the content column and `.sidebar` in the sidebar column.
+
+When `main` is placed in column 2 and `.sidebar` is placed in column 3, they'll sit beside each other naturally — but only if they're in the **same row**. Without explicit row placement, auto-placement might put `.sidebar` after `main` in a new row rather than next to it.
+
+Count the rows your full-width elements occupy: header is row 1, nav is row 2, the hero section is row 3. That makes row 4 the right place for main and sidebar. Adding `grid-row: 4` to both guarantees they share the same row regardless of how auto-placement might otherwise work.
 
 3. In your **CSS file**, find the `main` rule. Add two properties:
 
-   - `grid-column` set to `2` — this places main in the second column (the 640px content area)
-   - `grid-row` set to `4` — this explicitly anchors main to row 4 of the body grid
+   - `grid-column` set to `2` — places main in the second column (the wide content area)
+   - `grid-row` set to `4` — places main in row 4, below the hero section
 
 4. In your **CSS file**, find the `.sidebar` rule. Add three properties:
 
-   - `grid-column` set to `3` — this places the sidebar in the third column
-   - `grid-row` set to `4` — this places the sidebar in the same row as main, so they sit side by side
-   - `align-self` set to `start` — by default, grid items stretch to fill the full row height; `start` prevents the sidebar from stretching down to match main's height
+   - `grid-column` set to `3` — places the sidebar in the third column, beside main
+   - `grid-row` set to `4` — puts the sidebar in the same row as main so they appear side by side
+   - `align-self` set to `start` — by default, a grid item stretches to fill the full height of its row; if main is tall, the sidebar would stretch to match it. `start` pins the sidebar to the top and lets it be only as tall as its content.
 
 ### Part 4: Hero Section with Subgrid
 
-The hero section needs two things at once: the **blue overlay** should cover the full width, while the **text content** should align to the same columns as the main content area.
+The hero section needs to do two things simultaneously:
+- The **blue overlay** should cover the full width (all four body columns)
+- The **hero text** inside the overlay should line up with the same content columns as `main` — not stretch edge to edge
 
-CSS `subgrid` solves this. When a grid item sets `grid-template-columns: subgrid`, it inherits the column tracks from its ancestor grid — no need to redefine them. This creates a three-level cascade:
+To achieve both, you need **CSS `subgrid`**. When a grid item sets `grid-template-columns: subgrid`, it doesn't define new column sizes — it *inherits* the column tracks from its parent grid. This means nested elements can align to the same columns as everything else on the page.
 
-1. `body` defines the 4 columns
-2. `#welcome` inherits them with subgrid
-3. `.hero-overlay` spans full width and also inherits them with subgrid
-4. `.hero-content` is placed in columns 2–4 using those inherited tracks
+The inheritance works in a chain:
+
+- `body` → owns the 4 columns
+- `#welcome` → becomes a grid itself and inherits those 4 columns via `subgrid`
+- `.hero-overlay` → spans all 4 columns AND becomes a grid with `subgrid`, passing the columns through
+- `.hero-content` → gets placed in specific columns using those inherited tracks
 
 5. In your **CSS file**, find the `#welcome` rule. Add two properties:
 
-   - `display` set to `grid` — makes `#welcome` a grid container so it can pass columns to children
-   - `grid-template-columns` set to `subgrid` — inherits the 4 column tracks from `body`
+   - `display` set to `grid` — makes `#welcome` a grid container so it can have its own grid items
+   - `grid-template-columns` set to `subgrid` — instead of defining new column sizes, this inherits the 4 column tracks from the `body` grid directly above it
 
 6. In your **CSS file**, find the `.hero-overlay` rule. Add three properties:
 
-   - `grid-column` set to `1 / -1` — spans the overlay across all 4 columns (full width of the hero)
-   - `display` set to `grid` — makes the overlay a grid container
-   - `grid-template-columns` set to `subgrid` — inherits the 4 columns so `.hero-content` can be placed precisely
+   - `grid-column` set to `1 / -1` — this is a *placement* instruction: it tells the overlay where to go within `#welcome`'s grid (all the way across, edge to edge)
+   - `display` set to `grid` — this is separate from placement: it turns the overlay into its *own* grid container so `.hero-content` inside it can be placed on a grid
+   - `grid-template-columns` set to `subgrid` — this inherits the 4 column tracks from `body` (through `#welcome`), so `.hero-content` can reference the same column lines as the rest of the page
+
+   > **Why does `.hero-overlay` need both `grid-column` and `display: grid`?** These two properties do completely different things. `grid-column: 1 / -1` controls *where the overlay is placed* within its parent grid. `display: grid` + `grid-template-columns: subgrid` controls *what happens inside the overlay* — it makes the overlay itself a grid container so you can place `.hero-content` in specific columns.
 
 7. In your **CSS file**, find the `.hero-content` rule. Add one property:
 
-   - `grid-column` set to `2 / 4` — places the hero text in columns 2 and 3, centering it within the full-width blue overlay
+   - `grid-column` set to `2 / 4` — places the hero text starting at column line 2 and ending at column line 4
+
+   > **Line numbers vs. column numbers:** `grid-column: 2 / 4` uses *line* numbers, not column numbers. Column lines are the boundaries between columns — line 1 is the far left edge, line 2 is between column 1 and column 2, line 3 is between column 2 and column 3, and line 4 is between column 3 and column 4. So `2 / 4` means "from the left edge of column 2 to the right edge of column 3" — spanning two columns.
 
 ### Part 5: Programs Grid
 
-Inside `#colleges`, you'll create a **responsive card grid** using `repeat(auto-fit, minmax(180px, 1fr))`. This is one of the most useful Grid patterns — the browser automatically creates as many columns as fit, each at least 180px wide. No media queries needed.
+Inside `#colleges`, you'll create a **responsive card grid** using `repeat(auto-fit, minmax(180px, 1fr))`. This is one of the most practical Grid patterns: the browser figures out how many columns fit given the available width, and each column is at least 180px wide. Resize the window and the number of columns adjusts automatically — no media queries needed.
 
-First you need a wrapper element to become the grid container.
+Before you can style the grid, you need a wrapper element to act as the grid container.
 
-8. In your **HTML file**, find the `#colleges` section. After the `<h3>Our Colleges</h3>` heading, wrap the `<figure>` and all six `<div class="program-card">` elements inside a new `<div>` with `class="programs-grid"`. The `<h3>` stays outside the wrapper.
+8. In your **HTML file**, find the `#colleges` section. The `<figure>` (campus photo) and the six `<div class="program-card">` elements need to be wrapped together in a new `<div>`. Add this `<div>` **after** the `<h3>Our Colleges</h3>` heading and place the `<figure>` and all six program cards inside it. The `<h3>` should remain outside the wrapper as a direct child of the section.
 
    Your structure should look like this:
    ```
@@ -100,24 +126,28 @@ First you need a wrapper element to become the grid container.
 9. In your **CSS file**, add a new `.programs-grid` rule with three properties:
 
    - `display` set to `grid`
-   - `grid-template-columns` set to `repeat(auto-fit, minmax(180px, 1fr))` — creates as many columns as fit, each at least 180px wide
-   - `gap` set to `1rem` — adds spacing between all grid items
+   - `grid-template-columns` set to `repeat(auto-fit, minmax(180px, 1fr))` — this tells the browser to create as many columns as fit, where each column is at least 180px wide and can grow to fill available space (`1fr` here means the same thing as in Step 1: one equal share of remaining space)
+   - `gap` set to `1rem` — adds consistent spacing between all grid items (both rows and columns, since everything here should be evenly spaced)
+
+   > **Why `gap` here but `column-gap` on body?** On `body`, you only wanted horizontal space between columns — not vertical space between your page sections. Here in `.programs-grid`, you want even spacing in all directions between the cards, so `gap` (which sets both) is the right choice.
 
 ### Part 6: Spanning Across the Grid
 
-Two items in `.programs-grid` need to span multiple columns.
+Two items inside `.programs-grid` need special treatment: the campus photo should always span the full width, and the featured college card should be twice as wide as the others.
 
-The campus photo should always span the **full width** of the programs grid — it acts as a photo banner above the cards. The `1 / -1` trick works here too, inside the nested grid.
-
-The featured college card should be **twice as wide** as the others. Using `span 2` tells the browser to stretch the item across 2 column tracks without needing to know the exact column numbers.
+Both use `grid-column`, but with different approaches for different reasons.
 
 10. In your **CSS file**, find the `#colleges figure` rule. Add one property:
 
-    - `grid-column` set to `1 / -1` — makes the campus photo span the full width of the programs grid
+    - `grid-column` set to `1 / -1` — this makes the campus photo span the full width of the programs grid
+
+    > **Which grid does this `1 / -1` refer to?** It refers to `.programs-grid` — the direct parent grid of the figure. Every `grid-column` value is always relative to the element's immediate grid container, not the page grid. The `1 / -1` here spans all columns of the card grid, not all columns of the body. The result is a full-width photo banner across the top of the cards.
 
 11. In your **CSS file**, add a new `.featured` rule with one property:
 
-    - `grid-column` set to `span 2` — makes the Science, Engineering & Technology card occupy two columns
+    - `grid-column` set to `span 2` — makes the Science, Engineering & Technology card occupy two column tracks instead of one
+
+    > **Why `span 2` instead of `1 / -1`?** Both make an element wider, but they work differently. `1 / -1` always spans *everything* — from the very first line to the very last. `span 2` means "be exactly twice as wide as one column, wherever I'm placed." When auto-fit reduces the grid to fewer columns at a narrow viewport, `span 2` keeps the card proportionally wider, while `1 / -1` would still span the entire width. `span 2` is the right tool when you want a card to be *relatively* larger than its neighbors.
 
 ## Summary
 
@@ -125,9 +155,11 @@ In this lab, you learned:
 
 - **Body Grid Layout** — Using `display: grid` on `body` with `grid-template-columns` to define a 4-column page layout
 - **`fr` units and `minmax()`** — Creating flexible gutters with `1fr` and a bounded content column with `minmax(0, 640px)`
+- **`column-gap` vs `gap`** — Choosing between column-only spacing and all-direction spacing depending on the context
 - **Negative line numbers** — Using `grid-column: 1 / -1` to span all columns regardless of how many there are
 - **`grid-column` and `grid-row`** — Explicitly placing elements in specific columns and rows
 - **`align-self: start`** — Preventing a grid item from stretching to fill its row
 - **CSS `subgrid`** — Inheriting parent grid columns so nested elements align to the same tracks
+- **Line numbers vs. column numbers** — Understanding that `2 / 4` spans columns 2 and 3 because the numbers refer to the lines *between* columns
 - **`repeat(auto-fit, minmax())`** — Responsive grids that create the right number of columns automatically
-- **`grid-column: span 2`** — Making an item span multiple columns without knowing the exact line numbers
+- **`grid-column: span 2`** — Making an item span multiple columns without knowing the exact line numbers, adapting gracefully as the grid changes
