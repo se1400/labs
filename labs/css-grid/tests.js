@@ -66,36 +66,36 @@ test('The body should have display set to grid', () => {
   expect(display).toBe('grid');
 });
 
-test('The body grid-template-columns should define a 4-column layout with minmax and a fixed sidebar', () => {
+test('The body grid-template-columns should define a 4-column layout with collapsing gutters, a growing content column, and a fixed sidebar', () => {
   const cols = getCSSPropertyValue('body', 'grid-template-columns');
   if (!cols) {
     throw new Error(
       'The body rule is missing a grid-template-columns property.\n\n' +
-      'In Step 1, add grid-template-columns: 1fr minmax(0, 640px) 280px 1fr;\n' +
-      'This creates 4 columns: two flexible gutters, a content area, and a sidebar.'
+      'In Step 1, add grid-template-columns: minmax(0, 1fr) minmax(640px, 1fr) 280px minmax(0, 1fr);\n' +
+      'This creates 4 columns: two collapsing gutters, a growing content area, and a fixed sidebar.'
     );
   }
   const normalized = cols.replace(/\s/g, '').toLowerCase();
-  if (!normalized.includes('minmax(0,640px)') && !normalized.includes('minmax(0px,640px)')) {
+  if (!normalized.includes('minmax(640px,1fr)') && !normalized.includes('minmax(640px,1fr)')) {
     throw new Error(
-      `The body grid-template-columns is "${cols}" but should include minmax(0, 640px).\n\n` +
-      'In Step 1, set grid-template-columns: 1fr minmax(0, 640px) 280px 1fr;\n' +
-      'The minmax(0, 640px) column holds the main content, growing up to 640px wide.'
+      `The body grid-template-columns is "${cols}" but should include minmax(640px, 1fr) for the content column.\n\n` +
+      'In Step 1, set grid-template-columns: minmax(0, 1fr) minmax(640px, 1fr) 280px minmax(0, 1fr);\n' +
+      'The minmax(640px, 1fr) column ensures the main content is always at least 640px wide and grows to fill available space.'
     );
   }
   if (!normalized.includes('280px')) {
     throw new Error(
       `The body grid-template-columns is "${cols}" but should include 280px.\n\n` +
-      'In Step 1, set grid-template-columns: 1fr minmax(0, 640px) 280px 1fr;\n' +
+      'In Step 1, set grid-template-columns: minmax(0, 1fr) minmax(640px, 1fr) 280px minmax(0, 1fr);\n' +
       'The 280px column is the fixed-width sidebar.'
     );
   }
-  const frCount = (cols.match(/\b1fr\b/gi) || []).length;
-  if (frCount < 2) {
+  const gutterCount = (normalized.match(/minmax\(0(px)?,1fr\)/g) || []).length;
+  if (gutterCount < 2) {
     throw new Error(
-      `The body grid-template-columns is "${cols}" but should have two 1fr gutter columns.\n\n` +
-      'In Step 1, use: grid-template-columns: 1fr minmax(0, 640px) 280px 1fr;\n' +
-      'The two 1fr columns on either side create flexible gutters that center the content.'
+      `The body grid-template-columns is "${cols}" but should have two minmax(0, 1fr) gutter columns.\n\n` +
+      'In Step 1, use: grid-template-columns: minmax(0, 1fr) minmax(640px, 1fr) 280px minmax(0, 1fr);\n' +
+      'The two minmax(0, 1fr) columns create gutters that collapse on narrow viewports and share leftover space on wide ones.'
     );
   }
   expect(true).toBe(true);

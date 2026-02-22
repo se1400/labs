@@ -19,20 +19,20 @@ In this layout, `body` is the grid container. Every major section of the page �
 You'll define four columns. Think of them like invisible vertical lanes running top to bottom across the page:
 
 ```
-Col 1: 1fr              (left gutter)
-Col 2: minmax(0, 640px) (main content)
-Col 3: 280px            (sidebar)
-Col 4: 1fr              (right gutter)
+Col 1: minmax(0, 1fr)    (left gutter)
+Col 2: minmax(640px, 1fr) (main content)
+Col 3: 280px             (sidebar)
+Col 4: minmax(0, 1fr)    (right gutter)
 ```
 
-- **Columns 1 and 4** are `1fr` gutters — they each take an equal share of whatever space is left over, creating automatic side margins that grow and shrink with the viewport
-- **Column 2** uses `minmax(0, 640px)` — it grows to fill space, but never wider than 640px
+- **Columns 1 and 4** use `minmax(0, 1fr)` — they can collapse completely to zero when space is tight, and expand to share any leftover space on wide viewports
+- **Column 2** uses `minmax(640px, 1fr)` — it is *always at least* 640px wide, and grows to fill available space beyond that. The gutters shrink first before this column ever gets squeezed
 - **Column 3** is a fixed `280px` sidebar
 
 1. In your **CSS file**, find the `body` rule. Add three properties:
 
    - `display` set to `grid` — this activates the grid, making every direct child of body a grid item
-   - `grid-template-columns` set to `1fr minmax(0, 640px) 280px 1fr` — this defines the four columns described above
+   - `grid-template-columns` set to `minmax(0, 1fr) minmax(640px, 1fr) 280px minmax(0, 1fr)` — this defines the four columns described above
    - `column-gap` set to `1.5rem` — this adds horizontal space *between* the columns only
 
    > **Why `column-gap` and not `gap`?** `gap` sets spacing in both directions — between rows *and* columns. Using `gap` here would add vertical space between your header, nav, hero, main, and footer too, which you don't want. `column-gap` only affects the space between columns.

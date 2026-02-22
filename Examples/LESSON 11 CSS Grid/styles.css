@@ -20,7 +20,7 @@ html {
 /* Utah Tech inspired colors */
 body {
     display: grid;
-    grid-template-columns: 1fr minmax(0, 640px) 280px 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(640px, 1fr) 280px minmax(0, 1fr);
     column-gap: 1.5rem;
     font-family: Arial, Helvetica, sans-serif;
     color: var(--ut-navy);
