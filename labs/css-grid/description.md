@@ -19,8 +19,10 @@ In this layout, `body` is the grid container. Every major section of the page â€
 You'll define four columns. Think of them like invisible vertical lanes running top to bottom across the page:
 
 ```
-| 1fr gutter | main content (up to 640px) | sidebar (280px) | 1fr gutter |
-|  column 1  |          column 2          |    column 3     |  column 4  |
+Col 1: 1fr              (left gutter)
+Col 2: minmax(0, 640px) (main content)
+Col 3: 280px            (sidebar)
+Col 4: 1fr              (right gutter)
 ```
 
 - **Columns 1 and 4** are `1fr` gutters â€” they each take an equal share of whatever space is left over, creating automatic side margins that grow and shrink with the viewport
