@@ -18,6 +18,20 @@ const getCSSPropertyValue = (selector, property) => {
   return null;
 };
 
+// Helper: Returns true if a CSS value string contains a comma at the top level
+// (i.e., not inside any parentheses). Used to detect multi-layer backgrounds:
+//   "linear-gradient(to bottom, #000, #fff), url(...)"  →  true  (top-level comma between layers)
+//   "linear-gradient(to bottom, #000, #fff)"            →  false (commas only inside function)
+const hasTopLevelComma = (str) => {
+  let depth = 0;
+  for (const ch of str) {
+    if (ch === '(') depth++;
+    else if (ch === ')') depth--;
+    else if (ch === ',' && depth === 0) return true;
+  }
+  return false;
+};
+
 // Helper: Find a CSS property on a selector that may appear in a grouped rule.
 // e.g., findCSSProperty('header', 'background') finds it even if the rule is
 // "header, nav { ... }"
@@ -42,12 +56,13 @@ const findCSSProperty = (selector, property) => {
 // Part 1: Linear Gradient & Layered Backgrounds
 // ============================================
 
-test('The #welcome background should contain a linear-gradient', () => {
-  const bg = getCSSPropertyValue('#welcome', 'background') ||
-             getCSSPropertyValue('#welcome', 'background-image');
+test('The #welcome background shorthand should contain a linear-gradient', () => {
+  // Only check the background shorthand — not background-image — so that the test
+  // requires students to use the shorthand syntax as the instructions describe.
+  const bg = getCSSPropertyValue('#welcome', 'background');
   if (!bg || !bg.includes('linear-gradient')) {
     throw new Error(
-      'The #welcome rule should have a background containing linear-gradient(...).\n\n' +
+      'The #welcome rule should have a background shorthand containing linear-gradient(...).\n\n' +
       'In Step 1, replace the three separate background properties (background-image,\n' +
       'background-size, background-position) with a single background shorthand:\n' +
       'background: linear-gradient(to bottom, rgba(0, 48, 88, 0.3) 0%, rgba(0, 20, 60, 0.78) 100%),\n' +
@@ -58,12 +73,14 @@ test('The #welcome background should contain a linear-gradient', () => {
   expect(true).toBe(true);
 });
 
-test('The #welcome background should include the campus photo URL', () => {
-  const bg = getCSSPropertyValue('#welcome', 'background') ||
-             getCSSPropertyValue('#welcome', 'background-image');
+test('The #welcome background shorthand should include the campus photo URL', () => {
+  // Only check the background shorthand — the starter already has campus.jpg in
+  // background-image, so checking background-image as a fallback would pass before
+  // the student writes anything.
+  const bg = getCSSPropertyValue('#welcome', 'background');
   if (!bg || !bg.includes('campus.jpg')) {
     throw new Error(
-      'The #welcome background should include the campus.jpg photo as a background layer.\n\n' +
+      'The #welcome background shorthand should include the campus.jpg photo as a layer.\n\n' +
       'In Step 1, the background shorthand should include:\n' +
       'url("https://se1400.github.io/labs/assets/campus.jpg") center / cover no-repeat\n' +
       'as the second item in the comma-separated list (the bottom layer).'
@@ -72,14 +89,16 @@ test('The #welcome background should include the campus photo URL', () => {
   expect(true).toBe(true);
 });
 
-test('The #welcome background should layer the gradient over the campus photo using a comma-separated list', () => {
-  const bg = getCSSPropertyValue('#welcome', 'background') ||
-             getCSSPropertyValue('#welcome', 'background-image');
-  if (!bg || !bg.includes(',')) {
+test('The #welcome background should use a comma to separate the gradient layer from the photo layer', () => {
+  // Use hasTopLevelComma rather than bg.includes(',') — linear-gradient color stops
+  // already contain commas inside the function, so any gradient value would pass
+  // a naive includes(',') check even without a second layer.
+  const bg = getCSSPropertyValue('#welcome', 'background');
+  if (!bg || !hasTopLevelComma(bg)) {
     throw new Error(
       'The #welcome background should use two comma-separated layers.\n\n' +
-      'In Step 1, the background shorthand should contain a comma between the\n' +
-      'gradient and the photo:\n' +
+      'In Step 1, the background shorthand should contain a top-level comma between\n' +
+      'the gradient and the photo:\n' +
       'background: linear-gradient(...), url("campus.jpg") center / cover no-repeat;\n' +
       'The first item (before the comma) is the gradient overlay. The second is the photo.\n' +
       'CSS paints backgrounds in order — first listed means on top.'
@@ -157,7 +176,9 @@ test('The h1 rule should have background-clip set to text', () => {
 
 test('The h1 rule should have color set to transparent', () => {
   const color = getCSSPropertyValue('h1', 'color');
-  if (color !== 'transparent') {
+  // Some browsers serialize `transparent` as `rgba(0, 0, 0, 0)` in the CSSOM.
+  const isTransparent = color === 'transparent' || color === 'rgba(0, 0, 0, 0)';
+  if (!isTransparent) {
     throw new Error(
       `The h1 color is "${color || 'not set'}" but should be transparent.\n\n` +
       'In Step 3, add color: transparent; to the h1 rule.\n' +
@@ -166,7 +187,7 @@ test('The h1 rule should have color set to transparent', () => {
       'Without transparent, the solid color covers the gradient and the effect disappears.'
     );
   }
-  expect(color).toBe('transparent');
+  expect(true).toBe(true);
 });
 
 // ============================================
@@ -238,7 +259,8 @@ test('The .panel rule should have border-radius set', () => {
 
 test('The .program-card rule should have box-shadow set', () => {
   const shadow = getCSSPropertyValue('.program-card', 'box-shadow');
-  if (!shadow) {
+  // box-shadow: none is a truthy string but means no shadow — treat it as missing.
+  if (!shadow || shadow === 'none') {
     throw new Error(
       'The .program-card rule should have box-shadow set.\n\n' +
       'In Step 7, add box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); to the .program-card rule.\n' +
@@ -252,7 +274,10 @@ test('The .program-card rule should have box-shadow set', () => {
 
 test('The .program-card rule should have aspect-ratio set to 1', () => {
   const ratio = getCSSPropertyValue('.program-card', 'aspect-ratio');
-  if (!ratio || ratio.replace(/\s/g, '') !== '1') {
+  // Accept both '1' and '1/1' — they are identical values. Some students write
+  // the explicit fraction form; browsers may also serialize '1' as '1 / 1'.
+  const normalized = ratio ? ratio.replace(/\s/g, '') : '';
+  if (normalized !== '1' && normalized !== '1/1') {
     throw new Error(
       `The .program-card aspect-ratio is "${ratio || 'not set'}" but should be 1.\n\n` +
       'In Step 8, add aspect-ratio: 1; to the .program-card rule.\n' +
@@ -283,8 +308,17 @@ test('tbody tr:nth-child(odd) should have a background-color set', () => {
 });
 
 test('nav a:focus-visible should have an outline set', () => {
+  // Some browsers decompose the `outline` shorthand into outline-width / outline-style /
+  // outline-color longhands in the CSSOM, causing getPropertyValue('outline') to return
+  // empty string even when the shorthand was written. Check longhands as fallback.
+  // Also reject 'none' — it's a truthy string but explicitly removes the outline.
   const outline = getCSSPropertyValue('nav a:focus-visible', 'outline');
-  if (!outline) {
+  const outlineStyle = getCSSPropertyValue('nav a:focus-visible', 'outline-style');
+  const outlineWidth = getCSSPropertyValue('nav a:focus-visible', 'outline-width');
+  const hasOutline = (outline && outline !== 'none') ||
+                     (outlineStyle && outlineStyle !== 'none') ||
+                     (outlineWidth && outlineWidth !== '0' && outlineWidth !== '0px');
+  if (!hasOutline) {
     throw new Error(
       'No outline found on nav a:focus-visible.\n\n' +
       'In Step 10, add a new CSS rule:\n' +
@@ -296,7 +330,7 @@ test('nav a:focus-visible should have an outline set', () => {
       'Keyboard users see a clear indicator; mouse users see nothing cluttering the nav.'
     );
   }
-  expect(outline).toBeTruthy();
+  expect(true).toBe(true);
 });
 
 test('.skip-link:focus-visible should have styles that make it visible', () => {
