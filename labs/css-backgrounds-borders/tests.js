@@ -1,0 +1,315 @@
+// Helper: Get a CSS property value from a rule matching the exact selector
+const getCSSPropertyValue = (selector, property) => {
+  for (let sheet of document.styleSheets) {
+    try {
+      for (let rule of sheet.cssRules) {
+        const ruleSelectors = rule.selectorText ? rule.selectorText.split(',').map(s => s.trim()) : [];
+        const targetSelectors = selector.split(',').map(s => s.trim());
+        const selectorMatch = targetSelectors.length === ruleSelectors.length &&
+          targetSelectors.every(s => ruleSelectors.includes(s)) &&
+          ruleSelectors.every(s => targetSelectors.includes(s));
+        if (rule.selectorText && selectorMatch) {
+          const value = rule.style.getPropertyValue(property).trim();
+          if (value) return value;
+        }
+      }
+    } catch (e) {}
+  }
+  return null;
+};
+
+// Helper: Find a CSS property on a selector that may appear in a grouped rule.
+// e.g., findCSSProperty('header', 'background') finds it even if the rule is
+// "header, nav { ... }"
+const findCSSProperty = (selector, property) => {
+  const trimmed = selector.trim();
+  for (let sheet of document.styleSheets) {
+    try {
+      for (let rule of sheet.cssRules) {
+        if (!rule.selectorText) continue;
+        const ruleSelectors = rule.selectorText.split(',').map(s => s.trim());
+        if (ruleSelectors.includes(trimmed)) {
+          const value = rule.style.getPropertyValue(property).trim();
+          if (value) return value;
+        }
+      }
+    } catch (e) {}
+  }
+  return null;
+};
+
+// ============================================
+// Part 1: Linear Gradient & Layered Backgrounds
+// ============================================
+
+test('The #welcome background should contain a linear-gradient', () => {
+  const bg = getCSSPropertyValue('#welcome', 'background') ||
+             getCSSPropertyValue('#welcome', 'background-image');
+  if (!bg || !bg.includes('linear-gradient')) {
+    throw new Error(
+      'The #welcome rule should have a background containing linear-gradient(...).\n\n' +
+      'In Step 1, replace the three separate background properties (background-image,\n' +
+      'background-size, background-position) with a single background shorthand:\n' +
+      'background: linear-gradient(to bottom, rgba(0, 48, 88, 0.3) 0%, rgba(0, 20, 60, 0.78) 100%),\n' +
+      '            url("campus.jpg") center / cover no-repeat;\n' +
+      'The gradient is the top layer — it goes first in the comma-separated list.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+test('The #welcome background should include the campus photo URL', () => {
+  const bg = getCSSPropertyValue('#welcome', 'background') ||
+             getCSSPropertyValue('#welcome', 'background-image');
+  if (!bg || !bg.includes('campus.jpg')) {
+    throw new Error(
+      'The #welcome background should include the campus.jpg photo as a background layer.\n\n' +
+      'In Step 1, the background shorthand should include:\n' +
+      'url("https://se1400.github.io/labs/assets/campus.jpg") center / cover no-repeat\n' +
+      'as the second item in the comma-separated list (the bottom layer).'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+test('The #welcome background should layer the gradient over the campus photo using a comma-separated list', () => {
+  const bg = getCSSPropertyValue('#welcome', 'background') ||
+             getCSSPropertyValue('#welcome', 'background-image');
+  if (!bg || !bg.includes(',')) {
+    throw new Error(
+      'The #welcome background should use two comma-separated layers.\n\n' +
+      'In Step 1, the background shorthand should contain a comma between the\n' +
+      'gradient and the photo:\n' +
+      'background: linear-gradient(...), url("campus.jpg") center / cover no-repeat;\n' +
+      'The first item (before the comma) is the gradient overlay. The second is the photo.\n' +
+      'CSS paints backgrounds in order — first listed means on top.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+test('The .hero-overlay should not have a background-color (the gradient on #welcome handles the overlay)', () => {
+  const bg = getCSSPropertyValue('.hero-overlay', 'background-color');
+  if (bg && bg !== 'transparent' && bg !== 'rgba(0, 0, 0, 0)') {
+    throw new Error(
+      `The .hero-overlay has background-color: ${bg}\n\n` +
+      'In Step 1, remove the background-color from the .hero-overlay rule.\n' +
+      'The linear-gradient on #welcome now provides the dark cinematic overlay.\n' +
+      '.hero-overlay should be fully transparent so backdrop-filter can blur the\n' +
+      'campus photo and gradient showing through from behind.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+// ============================================
+// Part 2: backdrop-filter
+// ============================================
+
+test('The .hero-overlay should have a backdrop-filter with blur()', () => {
+  const filter = getCSSPropertyValue('.hero-overlay', 'backdrop-filter') ||
+                 getCSSPropertyValue('.hero-overlay', '-webkit-backdrop-filter');
+  if (!filter || !filter.includes('blur')) {
+    throw new Error(
+      'The .hero-overlay rule should have backdrop-filter: blur(...);\n\n' +
+      'In Step 2, add backdrop-filter: blur(3px); to the .hero-overlay rule.\n' +
+      'Because .hero-overlay is now transparent, the campus photo shows through it.\n' +
+      'backdrop-filter: blur() softens that photo while the text in .hero-content stays sharp.\n' +
+      'Note: backdrop-filter only works when the element has a transparent or semi-transparent background.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+// ============================================
+// Part 3: Gradient Text
+// ============================================
+
+test('The h1 rule should have a background with a linear-gradient', () => {
+  const bg = getCSSPropertyValue('h1', 'background');
+  if (!bg || !bg.includes('linear-gradient')) {
+    throw new Error(
+      'The h1 rule should have a background property containing linear-gradient(...).\n\n' +
+      'In Step 3, add to the h1 rule:\n' +
+      'background: linear-gradient(to right, var(--ut-navy), var(--ut-red));\n' +
+      'This gradient will fill the text letterforms — but only after you also add\n' +
+      'background-clip: text and color: transparent.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+test('The h1 rule should have background-clip set to text', () => {
+  const clip = getCSSPropertyValue('h1', 'background-clip');
+  const webkitClip = getCSSPropertyValue('h1', '-webkit-background-clip');
+  if ((!clip || clip !== 'text') && (!webkitClip || webkitClip !== 'text')) {
+    throw new Error(
+      'The h1 rule should have background-clip: text; and -webkit-background-clip: text;\n\n' +
+      'In Step 3, add both lines to the h1 rule:\n' +
+      '-webkit-background-clip: text;\n' +
+      'background-clip: text;\n' +
+      'These clip the gradient background to the exact shape of the text letterforms.\n' +
+      'Without both, the gradient fills the element box rather than the letters.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+test('The h1 rule should have color set to transparent', () => {
+  const color = getCSSPropertyValue('h1', 'color');
+  if (color !== 'transparent') {
+    throw new Error(
+      `The h1 color is "${color || 'not set'}" but should be transparent.\n\n` +
+      'In Step 3, add color: transparent; to the h1 rule.\n' +
+      'This hides the solid text color so the gradient background shows through\n' +
+      'the clipped letterforms.\n' +
+      'Without transparent, the solid color covers the gradient and the effect disappears.'
+    );
+  }
+  expect(color).toBe('transparent');
+});
+
+// ============================================
+// Part 4: Radial & Conic Gradients
+// ============================================
+
+test('The header rule should use a radial-gradient for its background', () => {
+  const bg = findCSSProperty('header', 'background');
+  if (!bg || !bg.includes('radial-gradient')) {
+    throw new Error(
+      'The header rule should have a background containing radial-gradient(...).\n\n' +
+      'In Step 4, replace background-color: whitesmoke in the header rule with:\n' +
+      'background: radial-gradient(circle at 50% 50%, #fff 0%, #eee 70%);\n' +
+      'The circle keyword creates a circular shape (default without it is an ellipse).\n' +
+      'This produces a centered white spotlight that fades to light gray at the edges.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+test('The .featured rule should use a conic-gradient for its background', () => {
+  const bg = getCSSPropertyValue('.featured', 'background');
+  if (!bg || !bg.includes('conic-gradient')) {
+    throw new Error(
+      'The .featured rule should have a background containing conic-gradient(...).\n\n' +
+      'In Step 5, add a background property using conic-gradient() to the .featured rule.\n' +
+      'Example: conic-gradient(from 200deg at 0% 100%, #dce8f0, white 40%, #f5e8e8 80%, white)\n' +
+      'Colors sweep around a center point — like a clock face — giving the featured card\n' +
+      'a distinctive look that sets it apart from the regular cards.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+// ============================================
+// Part 5: Border Radius, Box Shadow & Aspect Ratio
+// ============================================
+
+test('The .program-card rule should have border-radius set', () => {
+  const radius = getCSSPropertyValue('.program-card', 'border-radius');
+  const bl = getCSSPropertyValue('.program-card', 'border-bottom-left-radius');
+  const br = getCSSPropertyValue('.program-card', 'border-bottom-right-radius');
+  if (!radius && !bl && !br) {
+    throw new Error(
+      'The .program-card rule should have border-radius set.\n\n' +
+      'In Step 6, add border-radius: 0 0 0.5rem 0.5rem; to the .program-card rule.\n' +
+      'The four values go clockwise: top-left, top-right, bottom-right, bottom-left.\n' +
+      'So 0 0 0.5rem 0.5rem keeps the top flat (where the red accent line sits)\n' +
+      'and rounds only the bottom corners.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+test('The .panel rule should have border-radius set', () => {
+  const radius = getCSSPropertyValue('.panel', 'border-radius');
+  const bl = getCSSPropertyValue('.panel', 'border-bottom-left-radius');
+  const br = getCSSPropertyValue('.panel', 'border-bottom-right-radius');
+  if (!radius && !bl && !br) {
+    throw new Error(
+      'The .panel rule should have border-radius set.\n\n' +
+      'In Step 6, add border-radius: 0 0 0.5rem 0.5rem; to the .panel rule.\n' +
+      'This rounds only the bottom corners, matching the .program-card style.\n' +
+      'The top stays flat where the red border-top accent line sits.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+test('The .program-card rule should have box-shadow set', () => {
+  const shadow = getCSSPropertyValue('.program-card', 'box-shadow');
+  if (!shadow) {
+    throw new Error(
+      'The .program-card rule should have box-shadow set.\n\n' +
+      'In Step 7, add box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); to the .program-card rule.\n' +
+      'The four values are: x-offset y-offset blur-radius color.\n' +
+      '0 2px 8px creates a slight downward shadow with soft edges,\n' +
+      'making the cards appear gently elevated above the page.'
+    );
+  }
+  expect(shadow).toBeTruthy();
+});
+
+test('The .program-card rule should have aspect-ratio set to 1', () => {
+  const ratio = getCSSPropertyValue('.program-card', 'aspect-ratio');
+  if (!ratio || ratio.replace(/\s/g, '') !== '1') {
+    throw new Error(
+      `The .program-card aspect-ratio is "${ratio || 'not set'}" but should be 1.\n\n` +
+      'In Step 8, add aspect-ratio: 1; to the .program-card rule.\n' +
+      'This forces every card to be a perfect square, regardless of content length.\n' +
+      'The .featured rule already has aspect-ratio: auto which overrides this,\n' +
+      'so only the regular cards become square.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+// ============================================
+// Part 6: :nth-child & :focus-visible
+// ============================================
+
+test('tbody tr:nth-child(odd) should have a background-color set', () => {
+  const color = getCSSPropertyValue('tbody tr:nth-child(odd)', 'background-color');
+  if (!color) {
+    throw new Error(
+      'No background-color found on tbody tr:nth-child(odd).\n\n' +
+      'In Step 9, find the tbody tr:nth-child(even) rule and change "even" to "odd".\n' +
+      'This shifts the striping to highlight rows 1, 3, 5... instead of 2, 4, 6...\n' +
+      'Even is shorthand for 2n, and odd is shorthand for 2n+1.\n' +
+      'A single keyword change shifts the entire striping pattern.'
+    );
+  }
+  expect(color).toBeTruthy();
+});
+
+test('nav a:focus-visible should have an outline set', () => {
+  const outline = getCSSPropertyValue('nav a:focus-visible', 'outline');
+  if (!outline) {
+    throw new Error(
+      'No outline found on nav a:focus-visible.\n\n' +
+      'In Step 10, add a new CSS rule:\n' +
+      'nav a:focus-visible {\n' +
+      '    outline: 2px solid var(--ut-white);\n' +
+      '    outline-offset: 4px;\n' +
+      '}\n' +
+      ':focus-visible fires only for keyboard navigation, not mouse clicks.\n' +
+      'Keyboard users see a clear indicator; mouse users see nothing cluttering the nav.'
+    );
+  }
+  expect(outline).toBeTruthy();
+});
+
+test('.skip-link:focus-visible should have styles that make it visible', () => {
+  const left = getCSSPropertyValue('.skip-link:focus-visible', 'left');
+  if (!left || left === '-9999px') {
+    throw new Error(
+      'No styles found on .skip-link:focus-visible.\n\n' +
+      'In Step 11, find the .skip-link:focus rule and rename the selector\n' +
+      'from .skip-link:focus to .skip-link:focus-visible.\n' +
+      'Do not change any of the property values inside the rule — just update the selector.\n' +
+      ':focus-visible ensures the skip link appears only for keyboard users,\n' +
+      'preventing a visible outline flash when the page is clicked.'
+    );
+  }
+  expect(true).toBe(true);
+});

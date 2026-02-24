@@ -1,0 +1,283 @@
+/* CSS Custom Properties */
+:root {
+    --ut-navy: #003058;
+    --ut-red: #BA1C21;
+    --ut-white: #ffffff;
+    --ut-light-gray: #f2f2f2;
+    --ut-panel-gray: #f7f7f7;
+}
+
+/* Box Sizing */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Utah Tech inspired colors */
+body {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(640px, 1fr) 280px minmax(0, 1fr);
+    column-gap: 1.5rem;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--ut-navy);
+    background-color: var(--ut-white);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header — radial gradient spotlight */
+header {
+    padding: 1rem;
+    background: radial-gradient(circle at 50% 50%, #fff 0%, #eee 70%);
+    text-align: center;
+}
+
+header img {
+    margin-bottom: 8px;
+}
+
+/* h1 gradient text */
+h1 {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(to right, var(--ut-navy), var(--ut-red));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+h2, h3, h4 {
+    color: var(--ut-red);
+    margin-top: 0;
+}
+
+/* Nav */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--ut-navy);
+    color: var(--ut-white);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* Hero section — dark blue cinematic gradient layered over campus photo */
+#welcome {
+    background: linear-gradient(to bottom, rgba(0, 48, 88, 0.3) 0%, rgba(0, 20, 60, 0.78) 100%),
+                url("https://se1400.github.io/labs/assets/campus.jpg") center / cover no-repeat;
+    display: grid;
+    grid-template-columns: subgrid;
+    align-items: end;
+}
+
+/* Overlay — blurs the campus photo behind it; text inside stays sharp */
+.hero-overlay {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    color: var(--ut-white);
+    backdrop-filter: blur(3px);
+}
+
+/* Content sits at the bottom of the hero, on the dark fade */
+.hero-content {
+    grid-column: 2 / 4;
+    padding: 2rem 1.5rem;
+}
+
+.hero-overlay h2 {
+    color: inherit;
+}
+
+/* Full-width elements span all four columns */
+header, nav, #welcome, footer {
+    grid-column: 1 / -1;
+}
+
+/* Main and sidebar share the same row and top padding */
+main, .sidebar {
+    grid-row: 4;
+    padding-top: 1.5rem;
+}
+
+main { grid-column: 2; }
+
+.sidebar {
+    grid-column: 3;
+    align-self: start;
+}
+
+/* Reusable panel class */
+.panel {
+    background-color: var(--ut-panel-gray);
+    padding: 1rem 1.5rem;
+    border-top: 3px solid var(--ut-red);
+    margin-bottom: 1.5rem;
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+/* Programs grid inside #colleges */
+.programs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+#colleges figure {
+    grid-column: 1 / -1;
+    margin: 0;
+    position: relative;
+}
+
+#colleges figure img {
+    width: 100%;
+    height: auto;
+    border-radius: 0.25rem;
+}
+
+#colleges figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: var(--ut-white);
+    padding: 0.5rem;
+    border-radius: 0 0 0.25rem 0.25rem;
+}
+
+/* Program cards */
+.program-card {
+    background-color: var(--ut-white);
+    border: 1px solid var(--ut-light-gray);
+    border-top: 3px solid var(--ut-red);
+    padding: 1rem;
+    border-radius: 0 0 0.5rem 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    aspect-ratio: 1;
+}
+
+/* Featured card — conic gradient background */
+.featured {
+    grid-column: span 2;
+    aspect-ratio: auto;
+    background: conic-gradient(from 200deg at 0% 100%, #dce8f0, var(--ut-white) 40%, #f5e8e8 80%, var(--ut-white));
+}
+
+/* Key dates styling */
+.key-dates dl {
+    margin: 0;
+}
+
+.key-dates dt {
+    font-weight: bold;
+    color: var(--ut-red);
+}
+
+.key-dates dt:not(:first-child) {
+    margin-top: 0.5rem;
+}
+
+.key-dates dd {
+    margin-left: 0;
+}
+
+/* Footer */
+footer {
+    padding: 1rem;
+    background-color: var(--ut-navy);
+    color: var(--ut-white);
+    text-align: center;
+}
+
+footer a:link, footer a:visited {
+    color: var(--ut-white);
+}
+
+footer a:hover {
+    color: hsl(0, 65%, 51%);
+}
+
+address {
+    font-style: normal;
+    line-height: 1.4;
+}
+
+/* Table styling */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 12px;
+}
+
+th, td {
+    border: 1px solid var(--ut-navy);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+}
+
+th {
+    background-color: var(--ut-navy);
+    color: var(--ut-white);
+}
+
+tbody tr:nth-child(odd) {
+    background-color: var(--ut-light-gray);
+}
+
+/* Pre tag styling */
+pre {
+    margin: 0;
+    font-family: inherit;
+}
+
+/* Link styling - LoVe HAte order */
+a:link { color: var(--ut-red); }
+a:visited { color: #8B1518; }
+a:hover { color: hsl(0, 65%, 51%); }
+a:active { color: var(--ut-navy); }
+
+/* Nav link styling */
+nav a:link, nav a:visited { color: var(--ut-white); text-decoration: none; }
+nav a:hover { color: #cccccc; }
+
+/* Nav focus-visible for keyboard users */
+nav a:focus-visible {
+    outline: 2px solid var(--ut-white);
+    outline-offset: 4px;
+    border-radius: 2px;
+}
+
+/* Skip link (accessibility) */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+}
+
+.skip-link:focus-visible {
+    left: 0;
+    top: 0;
+    background: var(--ut-navy);
+    color: var(--ut-white);
+    padding: 8px;
+    z-index: 100;
+    outline: 2px solid var(--ut-white);
+    outline-offset: -4px;
+}
+
+/* Footer image filter */
+footer img {
+    filter: grayscale(100%);
+}
+
+footer img:hover {
+    filter: grayscale(0%);
+}
