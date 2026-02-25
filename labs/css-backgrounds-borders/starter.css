@@ -158,6 +158,7 @@ main { grid-column: 2; }
 
 .featured {
     grid-column: span 2;
+    aspect-ratio: auto;
 }
 
 /* Key dates styling */
