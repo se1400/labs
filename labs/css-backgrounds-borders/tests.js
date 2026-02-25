@@ -145,7 +145,11 @@ test('The .hero-overlay should have a backdrop-filter with blur()', () => {
 // ============================================
 
 test('The h1 rule should have a background with a linear-gradient', () => {
-  const bg = getCSSPropertyValue('h1', 'background');
+  // Some browsers cannot serialize the `background` shorthand when `background-clip: text`
+  // is also set in the same rule (text is a non-standard extension value). Fall back to
+  // checking background-image, which always receives the gradient value as a longhand.
+  const bg = getCSSPropertyValue('h1', 'background') ||
+             getCSSPropertyValue('h1', 'background-image');
   if (!bg || !bg.includes('linear-gradient')) {
     throw new Error(
       'The h1 rule should have a background property containing linear-gradient(...).\n\n' +
@@ -294,7 +298,10 @@ test('The .program-card rule should have aspect-ratio set to 1', () => {
 // ============================================
 
 test('tbody tr:nth-child(odd) should have a background-color set', () => {
-  const color = getCSSPropertyValue('tbody tr:nth-child(odd)', 'background-color');
+  // Chrome normalizes :nth-child(odd) to :nth-child(2n+1) in selectorText,
+  // so check both forms to avoid a false failure.
+  const color = getCSSPropertyValue('tbody tr:nth-child(odd)', 'background-color') ||
+                getCSSPropertyValue('tbody tr:nth-child(2n+1)', 'background-color');
   if (!color) {
     throw new Error(
       'No background-color found on tbody tr:nth-child(odd).\n\n' +
