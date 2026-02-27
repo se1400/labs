@@ -145,12 +145,14 @@ test('The .hero-overlay should have a backdrop-filter with blur()', () => {
 // ============================================
 
 test('The h1 rule should have a background with a linear-gradient', () => {
-  // Some browsers cannot serialize the `background` shorthand when `background-clip: text`
-  // is also set in the same rule (text is a non-standard extension value). Fall back to
-  // checking background-image, which always receives the gradient value as a longhand.
-  const bg = getCSSPropertyValue('h1', 'background') ||
-             getCSSPropertyValue('h1', 'background-image');
-  if (!bg || !bg.includes('linear-gradient')) {
+  // When background shorthand uses var() AND background-clip: text is also set,
+  // Chrome stores the shorthand as a "pending-substitution value" — both
+  // getPropertyValue('background') and getPropertyValue('background-image') return ''.
+  // Using getComputedStyle on the actual element bypasses this entirely: vars are
+  // resolved and background-image always reflects the correct computed value.
+  const h1 = document.querySelector('h1');
+  const bg = h1 ? window.getComputedStyle(h1).getPropertyValue('background-image') : '';
+  if (!bg || bg === 'none' || !bg.includes('linear-gradient')) {
     throw new Error(
       'The h1 rule should have a background property containing linear-gradient(...).\n\n' +
       'In Step 4, add to the h1 rule:\n' +
