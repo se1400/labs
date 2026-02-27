@@ -145,14 +145,26 @@ test('The .hero-overlay should have a backdrop-filter with blur()', () => {
 // ============================================
 
 test('The h1 rule should have a background with a linear-gradient', () => {
-  // When background shorthand uses var() AND background-clip: text is also set,
-  // Chrome stores the shorthand as a "pending-substitution value" — both
-  // getPropertyValue('background') and getPropertyValue('background-image') return ''.
-  // Using getComputedStyle on the actual element bypasses this entirely: vars are
-  // resolved and background-image always reflects the correct computed value.
+  // background shorthand with var() + background-clip: text blocks getPropertyValue()
+  // (pending-substitution) and may block getComputedStyle() (Chrome may skip computing
+  // background-image when background-clip: text + color: transparent leaves nothing
+  // to paint). Reading rule.cssText is the most reliable fallback — it contains the
+  // raw CSS text regardless of how Chrome normalizes property values internally.
+  let ruleHasGradient = false;
+  for (let sheet of document.styleSheets) {
+    try {
+      for (let rule of sheet.cssRules) {
+        if (rule.selectorText && rule.selectorText.trim() === 'h1') {
+          ruleHasGradient = !!(rule.cssText && rule.cssText.includes('linear-gradient'));
+        }
+      }
+    } catch (e) {}
+  }
   const h1 = document.querySelector('h1');
-  const bg = h1 ? window.getComputedStyle(h1).getPropertyValue('background-image') : '';
-  if (!bg || bg === 'none' || !bg.includes('linear-gradient')) {
+  const computedBg = h1 ? window.getComputedStyle(h1).getPropertyValue('background-image') : '';
+  const found = ruleHasGradient ||
+                (computedBg && computedBg !== 'none' && computedBg.includes('linear-gradient'));
+  if (!found) {
     throw new Error(
       'The h1 rule should have a background property containing linear-gradient(...).\n\n' +
       'In Step 4, add to the h1 rule:\n' +
