@@ -185,7 +185,7 @@ Both types use the **wrapping technique** for labels instead of the `for`/`id` t
 
 ### Part 6: CSS
 
-Now that your form HTML is complete, open your **CSS file**. Find the comment near the bottom that marks the start of Lab 13 and add all new rules below it.
+Now that your form HTML is complete, open your **CSS file**. Find the comment near the bottom that marks the start of the HTML Forms section and add all new rules below it.
 
 11. Create a CSS rule targeting `form`. Give it `display: flex`, `flex-direction: column`, and `gap: 1.5rem`. This switches the form to a flexbox column layout, which stacks each direct child — the fieldsets and the personal statement group — vertically with consistent spacing between them.
 
@@ -193,9 +193,11 @@ Now that your form HTML is complete, open your **CSS file**. Find the comment ne
 
 12. Create a rule targeting `fieldset`. Give it `border: 1px solid var(--ut-light-gray)`, `border-radius: 0.25rem`, and `padding: 1rem 1.5rem`. Also add `display: flex`, `flex-direction: column`, and `gap: 1rem` to stack the form groups inside each fieldset vertically.
 
-    Create a rule targeting `legend`. Give it `font-weight: bold`, `color: var(--ut-navy)`, and `padding: 0 0.5rem`. The padding nudges the legend text slightly away from the fieldset border so it doesn't feel cramped.
+    Create a rule targeting `legend`. Give it `font-weight: bold`, `color: var(--ut-navy)`, `padding: 0 0.5rem`, and `font-size: 1.05rem`. The padding nudges the legend text slightly away from the fieldset border so it doesn't feel cramped, and the slightly larger font size helps legends stand out as group headings.
 
-    Create a rule targeting `form label`. Give it `font-weight: 600` and `font-size: 0.9rem`. Making labels slightly smaller and bolder helps users quickly scan the form and find each field.
+    Create a rule targeting `form label`. Give it `font-weight: 600`, `font-size: 0.9rem`, and `color: var(--ut-navy)`. Making labels slightly smaller and bolder helps users quickly scan the form and find each field.
+
+    Create a rule targeting `.field-hint`. Give it `font-size: 0.85rem`, `color: #555`, and `margin: 0`. This styles the hint paragraphs you added for the first name and personal statement fields — smaller, gray text that provides guidance without competing visually with the labels and inputs.
 
 13. Create a rule whose selector covers three things separated by commas: `input:not([type="radio"]):not([type="checkbox"])`, `select`, and `textarea`. Inside that rule, add:
     - `padding: 0.5rem 0.75rem`
@@ -207,13 +209,17 @@ Now that your form HTML is complete, open your **CSS file**. Find the comment ne
 
     Create a separate rule targeting just `textarea` and set `resize: vertical`. This lets users drag the textarea taller if they need more room, but prevents them from dragging it wider, which would break the page layout.
 
-    Create a rule targeting `button[type="submit"]`. Give it `background-color: var(--ut-red)`, `color: var(--ut-white)`, `border: none`, `padding: 0.75rem 2rem`, `font-size: 1rem`, `font-weight: bold`, `border-radius: 0.25rem`, and `cursor: pointer`. Then create a second rule targeting `button[type="submit"]:hover` and give it a slightly darker background color to signal to users that the button is clickable.
+    Create a rule targeting `button[type="submit"]`. Give it `background-color: var(--ut-red)`, `color: var(--ut-white)`, `border: none`, `padding: 0.75rem 2rem`, `font-size: 1rem`, `font-weight: bold`, `border-radius: 0.25rem`, `cursor: pointer`, and `align-self: flex-start`. Then create a second rule targeting `button[type="submit"]:hover` and give it a slightly darker background color to signal to users that the button is clickable.
 
     > **Why `:not([type="radio"]):not([type="checkbox"])`?** Radio buttons and checkboxes are small clickable targets that work best at their natural browser size. Adding `width: 100%` or extra padding to them would stretch them awkwardly across the page and make them harder to use.
 
     > **Why `font-family: inherit` on inputs?** Browsers apply their own default system font to form controls, which is often different from the font used on the rest of the page. Setting `font-family: inherit` tells each input to use the same font as its parent, keeping the typography consistent throughout.
 
-14. Add three rules using CSS pseudo-classes to give users real-time visual feedback as they fill out the form.
+    > **Why `align-self: flex-start`?** The form uses `flex-direction: column`, which stretches children to full width by default. Adding `align-self: flex-start` to the button keeps it at its natural size instead of stretching it across the entire form width.
+
+14. Create a rule whose selector targets `input:not([type="radio"]):not([type="checkbox"]):focus`, `select:focus`, and `textarea:focus` (comma-separated). Give it `outline: 2px solid var(--ut-navy)`, `outline-offset: 1px`, and `border-color: var(--ut-navy)`. This provides a clear visual indicator when a user clicks or tabs into a form field — essential for keyboard users who need to see which field they're currently in.
+
+15. Add three rules using CSS pseudo-classes to give users real-time visual feedback as they fill out the form.
 
     **Required field indicator:** Create a rule whose selector covers `input:required:not([type="radio"]):not([type="checkbox"])`, `select:required`, and `textarea:required` (comma-separated). Give it `border-left: 3px solid var(--ut-navy)`. This adds a slightly thicker navy left border to every required field — a subtle visual cue that the field must be filled in.
 
@@ -240,6 +246,7 @@ Now that your form HTML is complete, open your **CSS file**. Find the comment ne
 | `type="checkbox"` | Areas of interest (multiple choices allowed) |
 | `<textarea>` | Personal statement multi-line text field |
 | `<button type="submit">` | Form submit button |
+| `:focus` | Visible outline when a field is active |
+| `:required` | Visual indicator for required fields |
 | `:user-invalid` | Error state after user interaction |
 | `:valid:not(:placeholder-shown)` | Success state when field has a valid value |
-| `:required` | Visual indicator for required fields |

@@ -529,13 +529,78 @@ test('The form rule should have display: flex and flex-direction: column', () =>
   expect(true).toBe(true);
 });
 
+test('The .form-group rule should have display: flex and flex-direction: column', () => {
+  const formGroup = document.querySelector('#apply .form-group');
+  if (!formGroup) {
+    throw new Error('No .form-group element found — complete the HTML steps first before testing CSS.');
+  }
+  const computed = window.getComputedStyle(formGroup);
+  const display = computed.getPropertyValue('display');
+  const direction = computed.getPropertyValue('flex-direction');
+  if (display !== 'flex') {
+    throw new Error(
+      `The .form-group has display: "${display}" but should be display: flex.\n\n` +
+      'In Step 11, add a CSS rule for .form-group with display: flex.\n' +
+      'This stacks the label directly above its input inside each form group.'
+    );
+  }
+  if (direction !== 'column') {
+    throw new Error(
+      `The .form-group has flex-direction: "${direction}" but should be flex-direction: column.\n\n` +
+      'In Step 11, add flex-direction: column to the .form-group rule.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+test('The fieldset rule should have display: flex and a border', () => {
+  const fieldset = document.querySelector('#apply form fieldset');
+  if (!fieldset) {
+    throw new Error('No fieldset found — complete the HTML steps first before testing CSS.');
+  }
+  const computed = window.getComputedStyle(fieldset);
+  const display = computed.getPropertyValue('display');
+  const direction = computed.getPropertyValue('flex-direction');
+  if (display !== 'flex') {
+    throw new Error(
+      `The fieldset has display: "${display}" but should be display: flex.\n\n` +
+      'In Step 12, add a CSS rule for fieldset with display: flex.\n' +
+      'This enables flexbox layout to stack the form groups vertically inside each fieldset.'
+    );
+  }
+  if (direction !== 'column') {
+    throw new Error(
+      `The fieldset has flex-direction: "${direction}" but should be flex-direction: column.\n\n` +
+      'In Step 12, add flex-direction: column to the fieldset rule.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
+test('The legend rule should have font-weight: bold', () => {
+  const legend = document.querySelector('#apply form legend');
+  if (!legend) {
+    throw new Error('No legend found — complete the HTML steps first before testing CSS.');
+  }
+  const computed = window.getComputedStyle(legend);
+  const fontWeight = computed.getPropertyValue('font-weight');
+  // Browsers normalize "bold" to "700"
+  if (fontWeight !== '700' && fontWeight !== 'bold') {
+    throw new Error(
+      `The legend has font-weight: "${fontWeight}" but should be font-weight: bold.\n\n` +
+      'In Step 12, add a CSS rule for legend with font-weight: bold.\n' +
+      'This makes the fieldset headings stand out from the regular label text.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
 test('Text inputs, select, and textarea should have width: 100%', () => {
   // Check via stylesheet inspection. We check several selectors because students
   // may write the rule differently. We require an exact '100%' value to avoid
   // false positives — width.includes('100') would also match '100px' or '1000px'.
   const inputSelector = 'input:not([type="radio"]):not([type="checkbox"])';
-  const width = findCSSProperty(inputSelector, 'width') ||
-                findCSSProperty('input', 'width');
+  const width = findCSSProperty(inputSelector, 'width');
   const selectWidth = findCSSProperty('select', 'width');
   const textareaWidth = findCSSProperty('textarea', 'width');
   const hasWidth = (width === '100%') ||
@@ -594,6 +659,28 @@ test('button[type="submit"] should have a background-color set', () => {
   expect(true).toBe(true);
 });
 
+test('A :required rule should exist with a border-left style', () => {
+  // Check for a CSS rule targeting :required on inputs/select/textarea.
+  // The description asks for border-left: 3px solid var(--ut-navy).
+  // We check via cssText since border-left with var() may cause pending-substitution
+  // in getPropertyValue for the shorthand.
+  const hasBorderLeft = findRuleContaining(':required', 'border-left') ||
+                        findRuleContainingCSSText(':required', 'border-left');
+  if (!hasBorderLeft) {
+    throw new Error(
+      'No CSS rule with :required found that sets a border-left.\n\n' +
+      'In Step 15, add a rule for required fields:\n' +
+      'input:required:not([type="radio"]):not([type="checkbox"]),\n' +
+      'select:required,\n' +
+      'textarea:required {\n' +
+      '    border-left: 3px solid var(--ut-navy);\n' +
+      '}\n' +
+      'This adds a thicker left border to required fields as a visual indicator.'
+    );
+  }
+  expect(true).toBe(true);
+});
+
 test('A :user-invalid rule should exist with border-color or background-color', () => {
   // Scan all stylesheet rules for any rule whose selectorText contains :user-invalid.
   // We use a substring search because the rule may group selectors:
@@ -608,7 +695,7 @@ test('A :user-invalid rule should exist with border-color or background-color', 
   if (!borderColor && !bgColor) {
     throw new Error(
       'No CSS rule with :user-invalid found in your stylesheet.\n\n' +
-      'In Step 14, add a rule for input:user-invalid and textarea:user-invalid:\n' +
+      'In Step 15, add a rule for input:user-invalid and textarea:user-invalid:\n' +
       'input:user-invalid, textarea:user-invalid {\n' +
       '    border-color: var(--ut-red);\n' +
       '    background-color: #fff5f5;\n' +
