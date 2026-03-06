@@ -378,13 +378,22 @@ test('A <datalist> should exist and be linked to an input via the list attribute
     );
   }
   const datalistId = datalist.id;
-  const linkedInput = datalistId ? document.querySelector(`input[list="${datalistId}"]`) : null;
+  if (!datalistId) {
+    throw new Error(
+      'The <datalist> element is missing an id attribute.\n\n' +
+      'In Step 6, add id="referral-options" to the datalist:\n' +
+      '<datalist id="referral-options">...\n' +
+      'The id must match the list attribute on the referral input so the browser\n' +
+      'knows which datalist to show.'
+    );
+  }
+  const linkedInput = document.querySelector(`input[list="${datalistId}"]`);
   if (!linkedInput) {
     throw new Error(
-      `A <datalist> exists with id="${datalistId}" but no input has list="${datalistId}".\n\n` +
-      'In Step 6, the referral input needs a list attribute that matches the datalist id:\n' +
+      `A <datalist id="${datalistId}"> exists but no input has list="${datalistId}".\n\n` +
+      'In Step 6, add list="referral-options" to the referral input:\n' +
       '<input type="text" id="referral" name="referral" list="referral-options" ...>\n' +
-      '<datalist id="referral-options">...'
+      'The input\'s list attribute must exactly match the datalist\'s id.'
     );
   }
   const options = datalist.querySelectorAll('option');
@@ -521,19 +530,17 @@ test('The form rule should have display: flex and flex-direction: column', () =>
 });
 
 test('Text inputs, select, and textarea should have width: 100%', () => {
-  // Check via getComputedStyle on the email input — a text-type input that should
-  // inherit width: 100%. If students applied width correctly, the computed width
-  // should match the parent container's width (within a small tolerance).
-  // We test by checking the stylesheet rule rather than computed value, because
-  // computed pixel values can vary by viewport and are not reliably "100%".
+  // Check via stylesheet inspection. We check several selectors because students
+  // may write the rule differently. We require an exact '100%' value to avoid
+  // false positives — width.includes('100') would also match '100px' or '1000px'.
   const inputSelector = 'input:not([type="radio"]):not([type="checkbox"])';
   const width = findCSSProperty(inputSelector, 'width') ||
                 findCSSProperty('input', 'width');
   const selectWidth = findCSSProperty('select', 'width');
   const textareaWidth = findCSSProperty('textarea', 'width');
-  const hasWidth = (width && (width === '100%' || width.includes('100'))) ||
-                   (selectWidth && selectWidth === '100%') ||
-                   (textareaWidth && textareaWidth === '100%');
+  const hasWidth = (width === '100%') ||
+                   (selectWidth === '100%') ||
+                   (textareaWidth === '100%');
   if (!hasWidth) {
     throw new Error(
       'No width: 100% found on text inputs, select, or textarea.\n\n' +
@@ -549,19 +556,36 @@ test('Text inputs, select, and textarea should have width: 100%', () => {
 });
 
 test('button[type="submit"] should have a background-color set', () => {
-  // Check via getComputedStyle — browsers compute background-color even for
-  // shorthand declarations, making this reliable across all writing styles.
-  const button = document.querySelector('button[type="submit"]');
-  if (!button) {
-    throw new Error('No submit button found — complete Step 10 first.');
+  // Check via stylesheet inspection rather than getComputedStyle. Browsers apply
+  // UA/system styles to <button> elements (e.g. system appearance colors) which
+  // would cause getComputedStyle to return a non-transparent value even before the
+  // student adds any CSS, producing a false positive.
+  // We look for any rule whose selector targets the submit button and whose
+  // cssText includes 'background-color'. The cssText check handles both plain
+  // values and var() references (which cause pending-substitution in getPropertyValue).
+  let buttonHasBg = false;
+  for (let sheet of document.styleSheets) {
+    try {
+      for (let rule of sheet.cssRules) {
+        if (!rule.selectorText) continue;
+        const selectors = rule.selectorText.split(',').map(s => s.trim());
+        // Accept both quoted and unquoted attribute selector forms:
+        // button[type="submit"] or button[type=submit]
+        const targetsButton = selectors.some(s =>
+          s === 'button[type="submit"]' || s === 'button[type=submit]' || s === 'button'
+        );
+        if (targetsButton) {
+          const val = rule.style.getPropertyValue('background-color').trim();
+          if (val || (rule.cssText && rule.cssText.includes('background-color'))) {
+            buttonHasBg = true;
+          }
+        }
+      }
+    } catch (e) {}
   }
-  const computed = window.getComputedStyle(button);
-  const bg = computed.getPropertyValue('background-color');
-  // Default button background is rgba(0,0,0,0) or transparent in most browsers.
-  const isDefault = !bg || bg === 'rgba(0, 0, 0, 0)' || bg === 'transparent';
-  if (isDefault) {
+  if (!buttonHasBg) {
     throw new Error(
-      'The submit button has no background-color set (it is still the browser default).\n\n' +
+      'No background-color found on button[type="submit"] in your stylesheet.\n\n' +
       'In Step 13, add a CSS rule for button[type="submit"] and set:\n' +
       'background-color: var(--ut-red);\n' +
       'This gives the submit button Utah Tech\'s red color so it stands out on the form.'
