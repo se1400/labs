@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Utah Tech University</title>
+    <link rel="stylesheet" href="starter.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <a href="#main" class="skip-link">Skip to main content</a>
+
+    <header id="top">
+        <img src="https://se1400.github.io/labs/assets/logo.svg" alt="Utah Tech University Logo" width="200">
+        <h1>Utah Tech University</h1>
+        <p>Active Learning. Active Life.</p>
+    </header>
+
+    <nav>
+        <a href="#welcome">Home</a>
+        <a href="#apply">Admissions</a>
+        <a href="#colleges">Academics</a>
+        <a href="#tuition">Tuition</a>
+        <a href="#visit">Campus Life</a>
+    </nav>
+
+    <section id="welcome">
+        <div class="hero-overlay">
+            <div class="hero-content">
+                <h2>Welcome to Utah Tech</h2>
+                <p>Utah Tech University is located in St. George, Utah. Our campus sits at the base of beautiful red rock cliffs in Southern Utah.</p>
+                <p>We are committed to <strong>active learning</strong> and helping students <em>succeed</em>.</p>
+                <p>With 300+ degrees of sunshine per year and a 20:1 student-faculty ratio<sup>1</sup>, Utah Tech offers an ideal learning environment.</p>
+                <video controls width="320">
+                    <source src="https://se1400.github.io/labs/assets/video.mp4" type="video/mp4">
+                    <track src="https://se1400.github.io/labs/assets/video.vtt" kind="captions" srclang="en" label="English">
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <main id="main">
+        <section class="panel" id="colleges">
+            <h3>Our Colleges</h3>
+            <div class="programs-grid">
+                <figure>
+                    <picture>
+                        <source srcset="https://se1400.github.io/labs/assets/campus-large.jpg" media="(min-width: 1200px)">
+                        <source srcset="https://se1400.github.io/labs/assets/campus-medium.jpg" media="(min-width: 600px)">
+                        <img src="https://se1400.github.io/labs/assets/campus-small.jpg" alt="Aerial view of Utah Tech University campus" width="480">
+                    </picture>
+                    <figcaption>Utah Tech University campus in St. George, Utah</figcaption>
+                </figure>
+                <div class="program-card featured">
+                    <h4>Science, Engineering &amp; Technology</h4>
+                    <p>Computer Science, Software Engineering, Biology, Cybersecurity, and more.</p>
+                </div>
+                <div class="program-card">
+                    <h4>Health Sciences</h4>
+                    <p>Nursing, Pre-Med, Public Health, and allied health programs.</p>
+                </div>
+                <div class="program-card">
+                    <h4>Humanities &amp; Social Sciences</h4>
+                    <p>English, History, Psychology, and Communication.</p>
+                </div>
+                <div class="program-card">
+                    <h4>Education</h4>
+                    <p>Early Childhood, Elementary, and Secondary Education programs.</p>
+                </div>
+                <div class="program-card">
+                    <h4>The Arts</h4>
+                    <p>Music, Theatre, Visual Arts, and Digital Media.</p>
+                </div>
+                <div class="program-card">
+                    <h4>Business &amp; Communication</h4>
+                    <p>Accounting, Marketing, Management, and Multimedia.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel" id="apply">
+            <h3>Apply to Utah Tech</h3>
+
+            <form action="/apply" method="post">
+
+                <fieldset>
+                    <legend>Personal Information</legend>
+
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input type="text" id="first-name" name="first-name"
+                               autocomplete="given-name"
+                               required
+                               aria-describedby="name-hint">
+                        <p id="name-hint" class="field-hint">Enter your name as it appears on your government-issued ID.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <input type="text" id="last-name" name="last-name"
+                               autocomplete="family-name"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email"
+                               autocomplete="email"
+                               placeholder="you@example.com"
+                               required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone"
+                               autocomplete="tel"
+                               placeholder="555-555-5555"
+                               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                               title="Format: 555-555-5555"
+                               required>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Academic Background</legend>
+
+                    <div class="form-group">
+                        <label for="major">Intended Major</label>
+                        <select id="major" name="major" required>
+                            <option value="">-- Select a major --</option>
+                            <optgroup label="Science, Engineering &amp; Technology">
+                                <option value="cs">Computer Science</option>
+                                <option value="se">Software Engineering</option>
+                                <option value="bio">Biology</option>
+                                <option value="cyber">Cybersecurity</option>
+                            </optgroup>
+                            <optgroup label="Health Sciences">
+                                <option value="nursing">Nursing</option>
+                                <option value="public-health">Public Health</option>
+                            </optgroup>
+                            <optgroup label="Humanities &amp; Social Sciences">
+                                <option value="english">English</option>
+                                <option value="psych">Psychology</option>
+                                <option value="comm">Communication</option>
+                            </optgroup>
+                            <optgroup label="Business &amp; Communication">
+                                <option value="accounting">Accounting</option>
+                                <option value="marketing">Marketing</option>
+                            </optgroup>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gpa">High School GPA</label>
+                        <input type="number" id="gpa" name="gpa"
+                               min="0" max="4.0" step="0.1"
+                               placeholder="3.5">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="start-date">Expected Start Date</label>
+                        <input type="date" id="start-date" name="start-date"
+                               min="2025-08-01" max="2027-12-31">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="referral">How did you hear about Utah Tech?</label>
+                        <input type="text" id="referral" name="referral"
+                               list="referral-options"
+                               placeholder="Start typing or choose an option...">
+                        <datalist id="referral-options">
+                            <option value="High School Counselor">
+                            <option value="Social Media">
+                            <option value="Friend or Family">
+                            <option value="College Fair">
+                            <option value="Online Search">
+                            <option value="Campus Visit">
+                        </datalist>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Attendance Preference</legend>
+                    <label><input type="radio" name="attendance" value="on-campus" checked> On Campus</label>
+                    <label><input type="radio" name="attendance" value="online"> Online</label>
+                    <label><input type="radio" name="attendance" value="hybrid"> Hybrid</label>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Areas of Interest</legend>
+                    <label><input type="checkbox" name="interests" value="research"> Research Opportunities</label>
+                    <label><input type="checkbox" name="interests" value="internships"> Internships</label>
+                    <label><input type="checkbox" name="interests" value="athletics"> Athletics</label>
+                    <label><input type="checkbox" name="interests" value="study-abroad"> Study Abroad</label>
+                    <label><input type="checkbox" name="interests" value="clubs"> Student Clubs</label>
+                </fieldset>
+
+                <div class="form-group">
+                    <label for="statement">Personal Statement</label>
+                    <textarea id="statement" name="statement" rows="6"
+                              placeholder="Tell us about yourself, your goals, and why you want to attend Utah Tech University..."
+                              minlength="100"
+                              aria-describedby="statement-hint"></textarea>
+                    <p id="statement-hint" class="field-hint">Minimum 100 characters. Tell us what makes you a great fit for Utah Tech.</p>
+                </div>
+
+                <button type="submit">Submit Application</button>
+
+            </form>
+        </section>
+
+        <section class="panel" id="tuition">
+            <h3>Tuition &amp; Fees</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th colspan="3">Tuition Per Credit Hour</th>
+                    </tr>
+                    <tr>
+                        <th>Program</th>
+                        <th>Resident</th>
+                        <th>Non-Resident</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="2">Campus</td>
+                        <td>Undergraduate: $227</td>
+                        <td>$725</td>
+                    </tr>
+                    <tr>
+                        <td>Graduate: $445</td>
+                        <td>$662</td>
+                    </tr>
+                    <tr>
+                        <td>Online</td>
+                        <td>$260</td>
+                        <td>$260</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <aside class="sidebar">
+        <section id="visit" class="panel">
+            <h4>Visit Campus</h4>
+            <p>Schedule a tour today!<br>
+            Call us at <a href="tel:+14356527500">(435) 652-7500</a><br>
+            Email us at <a href="mailto:admissions@utahtech.edu?subject=Campus Tour Question">admissions@utahtech.edu</a></p>
+        </section>
+
+        <div class="panel">
+            <h4>Quick Facts</h4>
+            <ul>
+                <li><strong>12,000+</strong> students enrolled</li>
+                <li><strong>300+</strong> days of sunshine/year</li>
+                <li><strong>20:1</strong> student-faculty ratio</li>
+                <li><strong>150+</strong> programs of study</li>
+            </ul>
+        </div>
+
+        <div class="key-dates panel">
+            <h4>Key Dates</h4>
+            <dl>
+                <dt>Mar 1</dt>
+                <dd>Priority Application Deadline</dd>
+                <dt>Apr 15</dt>
+                <dd>FAFSA Priority Deadline</dd>
+                <dt>Aug 25</dt>
+                <dd>Fall Semester Begins</dd>
+            </dl>
+        </div>
+    </aside>
+
+    <footer>
+        <hr>
+        <img src="https://se1400.github.io/labs/assets/seal.png" alt="Utah Tech University Seal" width="80">
+        <p>&copy; <span id="year"></span> Utah Tech University</p>
+        <address>
+<pre>225 S 700 E
+St. George, UT 84770</pre>
+        </address>
+        <a href="#top">Back to Top</a>
+    </footer>
+
+    <script>
+        document.querySelector('#year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
