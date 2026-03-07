@@ -1,5 +1,7 @@
-// Helper: Get a CSS property value from a rule matching the exact selector
+// Helper: Get a CSS property value from the last rule matching the exact selector
+// (last match mirrors CSS cascade — later rules override earlier ones)
 const getCSSPropertyValue = (selector, property) => {
+  let result = null;
   for (let sheet of document.styleSheets) {
     try {
       for (let rule of sheet.cssRules) {
@@ -10,12 +12,12 @@ const getCSSPropertyValue = (selector, property) => {
           ruleSelectors.every(s => targetSelectors.includes(s));
         if (rule.selectorText && selectorMatch) {
           const value = rule.style.getPropertyValue(property).trim();
-          if (value) return value;
+          if (value) result = value;
         }
       }
     } catch (e) {}
   }
-  return null;
+  return result;
 };
 
 // Helper: Search all stylesheet rules for any rule whose selectorText contains
@@ -289,7 +291,9 @@ test('The .programs-grid children should have animation-timeline: view()', () =>
       'No animation-timeline: view() found on the programs-grid children.\n\n' +
       'In Step 4, add animation-timeline set to view() in the .programs-grid > * rule.\n' +
       'This switches the animation from time-based to scroll-based, so the cards\n' +
-      'animate as they scroll into the viewport.'
+      'animate as they scroll into the viewport.\n\n' +
+      'Note: This test requires Chrome or Edge. Safari and Firefox may not support\n' +
+      'animation-timeline yet, which can cause this test to fail even with correct CSS.'
     );
   }
 });
@@ -301,7 +305,9 @@ test('The .programs-grid children should have an animation-range set', () => {
       'No animation-range found on the programs-grid children.\n\n' +
       'In Step 4, add animation-range to the .programs-grid > * rule. Set it to\n' +
       'control when the entrance animation starts and finishes as each element\n' +
-      'scrolls into the viewport. Check the description for the exact values.'
+      'scrolls into the viewport. Check the description for the exact values.\n\n' +
+      'Note: This test requires Chrome or Edge. Safari and Firefox may not support\n' +
+      'animation-range yet, which can cause this test to fail even with correct CSS.'
     );
   }
 });
