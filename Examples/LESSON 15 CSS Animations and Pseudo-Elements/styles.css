@@ -497,22 +497,42 @@ footer img:hover {
     animation: fadeSlideIn 0.6s ease-out 0.2s both;
 }
 
-/* Step 2: Bouncing scroll arrow */
+/* Step 2: Scroll indicator */
 @keyframes bounce {
     from {
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
     to {
-        transform: translateY(12px);
+        transform: translateY(4px) scale(1.1);
     }
 }
 
 .scroll-arrow {
-    text-align: center;
-    font-size: 2rem;
-    color: var(--ut-white);
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 0;
     animation: bounce 0.8s ease-in-out infinite alternate;
-    padding-bottom: 1rem;
+}
+
+.scroll-arrow::after {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid var(--ut-white);
+    border-bottom: 2px solid var(--ut-white);
+    transform: rotate(45deg);
+    margin-top: -4px;
 }
 
 /* Step 3: Pulsing submit button glow */

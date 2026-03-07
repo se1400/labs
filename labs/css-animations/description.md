@@ -70,25 +70,36 @@ When the page loads, the hero heading and paragraphs should slide up from below 
 
 **Try it out:** Save your file and refresh your browser. The hero heading should slide up and fade in first, followed by the paragraphs a fraction of a second later. If the text appears instantly with no animation, double-check that your `@keyframes` name matches exactly what you wrote in the `animation` property.
 
-### Step 2: Bouncing Scroll Arrow
+### Step 2: Scroll Indicator
 
-You'll add a bouncing arrow at the bottom of the hero section that invites users to scroll down. This is a common UI pattern on websites with large hero banners — a gentle, repeating animation that signals there's more content below.
+You'll add a scroll indicator at the bottom of the hero section — a small frosted-glass circle with a bouncing chevron inside it. This is a common UI pattern on websites with large hero banners — a gentle, repeating animation that signals there's more content below. You'll also get your first taste of pseudo-elements here (Steps 5 and 6 will explore them further).
 
 #### Part A: HTML Change
 
-Open your **HTML file** and find the `#welcome` section. This section contains a single child: the `.hero-overlay` div (which itself contains `.hero-content`). After the `.hero-overlay`'s closing `</div>` tag — but still inside the `</section>` tag — add a new `<div>` with the class `scroll-arrow`. The arrow div is a sibling of `.hero-overlay`, not nested inside it. Set `aria-hidden` to `true` (this is purely decorative, so screen readers should skip it). For the content, type the HTML entity `&#8595;` — this renders a downward arrow character (↓).
+Open your **HTML file** and find the `#welcome` section. This section contains a single child: the `.hero-overlay` div (which itself contains `.hero-content`). After the `.hero-overlay`'s closing `</div>` tag — but still inside the `</section>` tag — add a new `<div>` with the class `scroll-arrow`. The arrow div is a sibling of `.hero-overlay`, not nested inside it. Set `aria-hidden` to `true` (this is purely decorative, so screen readers should skip it). Leave the div empty — the chevron arrow will be created entirely with CSS.
 
 #### Part B: CSS Changes
 
-1. Create a `@keyframes` rule named `bounce`. In the `from` block, set `transform` to `translateY(0)`. In the `to` block, set `transform` to `translateY(12px)`. This defines a simple up-and-down motion of 12 pixels.
+1. Create a `@keyframes` rule named `bounce`. In the `from` block, set `transform` to `translateY(0) scale(1)`. In the `to` block, set `transform` to `translateY(4px) scale(1.1)`. This defines a gentle downward bounce with a subtle grow effect — the circle moves down 4 pixels and grows 10% larger, then reverses.
 
-2. Add a rule for `.scroll-arrow`. First, set the basic styling: `text-align` to `center`, `font-size` to `2rem`, and `color` to `var(--ut-white)`. Then set `animation` using the shorthand — the values in order are: the name `bounce`, a duration of `0.8s`, the timing function `ease-in-out`, the iteration count `infinite`, and the direction `alternate`. Finally, add `padding-bottom` set to `1rem` so the arrow doesn't sit flush against the bottom edge.
+2. Add a rule for `.scroll-arrow`. This styles the circle container, so take it one group at a time:
+   - **Center it:** Set `grid-column` to `1 / -1` and `justify-self` to `center`. This makes the circle span the full grid width and then center itself horizontally.
+   - **Size it:** Set `width` and `height` both to `44px`.
+   - **Frost it:** Set `background` to `rgba(255, 255, 255, 0.12)` for a subtle semi-transparent white, `backdrop-filter` to `blur(8px)` for a frosted-glass effect, and `border` to `1px solid rgba(255, 255, 255, 0.2)` for a faint white edge.
+   - **Round it:** Set `border-radius` to `50%` to make it a perfect circle.
+   - **Center the chevron inside:** Set `display` to `flex`, `align-items` to `center`, and `justify-content` to `center`.
+   - **Finishing touches:** Set `margin-bottom` to `1rem` and `font-size` to `0`.
+   - **Animate it:** Set `animation` using the shorthand — the values in order are: the name `bounce`, a duration of `0.8s`, the timing function `ease-in-out`, the iteration count `infinite`, and the direction `alternate`.
 
-   The `alternate` direction makes the arrow bounce up and down smoothly — it moves down on the first cycle, then back up on the next, creating a natural bouncing rhythm.
+3. Add a rule for `.scroll-arrow::after`. A `::after` pseudo-element creates a virtual element at the end of its parent — entirely through CSS, with no HTML needed. This is how you'll draw the chevron arrow inside the circle:
+   - **Make it exist:** Set `content` to an empty string (two quotation marks with nothing between them). Without this, the pseudo-element won't render at all.
+   - **Size it:** Set `display` to `block`, `width` to `10px`, and `height` to `10px`.
+   - **Shape it:** Set `border-right` to `2px solid var(--ut-white)` and `border-bottom` to `2px solid var(--ut-white)`. These two borders form an "L" shape. Then set `transform` to `rotate(45deg)` — this rotates the "L" so it points downward like a chevron (∨).
+   - **Adjust it:** Set `margin-top` to `-4px` to visually center the chevron within the circle.
 
-> **Why `ease-in-out`?** The arrow should slow down at the top and bottom of each bounce and speed up in the middle — like a ball at the peak of its arc. `linear` would move at a constant speed, which looks mechanical.
+> **Why `ease-in-out`?** The circle should slow down at the top and bottom of each bounce and speed up in the middle — like a ball at the peak of its arc. `linear` would move at a constant speed, which looks mechanical.
 
-**Try it out:** Save both files and refresh. At the bottom of the hero section, you should see a white downward arrow gently bouncing up and down. If it doesn't appear, check that your HTML entity `&#8595;` is inside the `.scroll-arrow` div and that the div is inside the `#welcome` section.
+**Try it out:** Save both files and refresh. At the bottom of the hero section, you should see a small frosted circle with a white chevron gently bouncing inside it. If nothing appears, make sure your `::after` rule includes `content: ""` — this is the most common mistake with pseudo-elements.
 
 ### Step 3: Pulsing Submit Button Glow
 
@@ -130,7 +141,7 @@ Traditionally, this required JavaScript. Modern CSS provides `animation-timeline
 
 ### Step 5: Animated Nav Underline with ::after
 
-Right now, the nav links change color when you hover over them (from white to gray). You'll replace that color change with something more sophisticated: an underline that grows from one side of the link to the other. This underline is built entirely with a `::after` pseudo-element — no extra HTML needed.
+Right now, the nav links change color when you hover over them (from white to gray). You'll replace that color change with something more sophisticated: an underline that grows from one side of the link to the other. This underline is built entirely with a `::after` pseudo-element — no extra HTML needed. You already used `::after` in Step 2 to create the chevron arrow; this time you'll combine it with `position: absolute` and a transition to create a hover animation.
 
 1. Add a rule for `nav a` and set `position` to `relative`. This is necessary because the underline pseudo-element will be positioned absolutely — and absolute positioning is relative to the nearest positioned ancestor. Without this, the underline would position itself relative to the page instead of the link.
 
@@ -207,7 +218,7 @@ You're almost done! In the previous lab, you added a `prefers-reduced-motion` me
 | Step | What you built | Key CSS concepts |
 |---|---|---|
 | 1 | Hero slide-in entrance | `@keyframes` with `from`/`to`, `animation` shorthand, `fill-mode: both` |
-| 2 | Bouncing scroll arrow | `@keyframes bounce`, `translateY()`, `infinite alternate` |
+| 2 | Scroll indicator | `@keyframes bounce`, `::after` chevron, `infinite alternate` |
 | 3 | Pulsing button glow | `infinite`, `alternate`, `box-shadow` animation |
 | 4 | Scroll-driven card entrance | Percentage keyframes, `animation-timeline: view()`, `animation-range` |
 | 5 | Animated nav underline | `::after`, `content: ""`, `scaleX()`, `transform-origin` |

@@ -124,7 +124,7 @@ test('The .hero-content p should have the fadeSlideIn animation with a delay', (
 });
 
 // ============================================
-// Step 2: Bouncing Scroll Arrow
+// Step 2: Scroll Indicator
 // ============================================
 
 test('A <div> with class "scroll-arrow" should exist inside the #welcome section', () => {
@@ -140,9 +140,9 @@ test('A <div> with class "scroll-arrow" should exist inside the #welcome section
     }
     throw new Error(
       'No element with class "scroll-arrow" found.\n\n' +
-      'In Step 2 Part A, add a div with the class "scroll-arrow" inside the\n' +
+      'In Step 2 Part A, add an empty div with the class "scroll-arrow" inside the\n' +
       '#welcome section, after the .hero-overlay closing tag. Set aria-hidden\n' +
-      'to "true" and use the HTML entity &#8595; for the arrow character.'
+      'to "true". Leave the div empty — the chevron is created with CSS.'
     );
   }
 });
@@ -168,8 +168,8 @@ test('A @keyframes rule named "bounce" should exist', () => {
     throw new Error(
       'No @keyframes rule named "bounce" found.\n\n' +
       'In Step 2 Part B, create a @keyframes rule called bounce. Define a "from"\n' +
-      'block with translateY(0) and a "to" block with translateY(12px) to create\n' +
-      'the bouncing motion.'
+      'block with translateY(0) scale(1) and a "to" block with translateY(4px)\n' +
+      'scale(1.1) to create a gentle bouncing motion with a subtle grow effect.'
     );
   }
 });
@@ -197,8 +197,29 @@ test('The .scroll-arrow should have a bounce animation with infinite alternate',
       'The .scroll-arrow animation is not set up correctly.\n\n' +
       'In Step 2 Part B, add an animation to .scroll-arrow that uses the bounce\n' +
       'keyframes. The animation should loop forever (infinite) and alternate\n' +
-      'direction so the arrow bounces up and down.\n\n' +
+      'direction so the circle bounces up and down.\n\n' +
       'Issues found:\n- ' + issues.join('\n- ')
+    );
+  }
+});
+
+test('The .scroll-arrow::after should exist to create the chevron', () => {
+  const arrow = document.querySelector('.scroll-arrow');
+  if (!arrow) {
+    throw new Error('No .scroll-arrow element found. Complete Step 2 Part A first.');
+  }
+  const hasAfterRule = findRuleContainingCSSText('.scroll-arrow::after', 'content');
+  const afterStyle = window.getComputedStyle(arrow, '::after');
+  const content = afterStyle.getPropertyValue('content');
+  // content should be '""' or '' (empty string) — not 'none' (which means no ::after)
+  const hasContent = hasAfterRule || (content && content !== 'none');
+
+  if (!hasContent) {
+    throw new Error(
+      'No .scroll-arrow::after rule found with a content property.\n\n' +
+      'In Step 2 Part B, create a .scroll-arrow::after rule. Set content to an\n' +
+      'empty string (required for pseudo-elements to render), then style it as\n' +
+      'a chevron using border-right and border-bottom with transform: rotate(45deg).'
     );
   }
 });
