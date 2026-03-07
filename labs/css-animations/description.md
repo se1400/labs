@@ -1,6 +1,6 @@
 # CSS Animations and Pseudo-Elements
 
-In this lab you'll make the Utah Tech University website come alive with motion that plays automatically — no hovering required. Right now, the page loads and everything appears instantly. By the end of this lab, the hero text will slide into view, program cards will cascade in one by one, the submit button will pulse with a glowing light, and a bouncing arrow will invite users to scroll down. You'll also learn to generate decorative content with CSS pseudo-elements: an animated underline that grows beneath nav links, a large drop cap letter, styled list markers, custom placeholder text, and branded text selection colors.
+In this lab you'll make the Utah Tech University website come alive with motion that plays automatically — no hovering required. Right now, the page loads and everything appears instantly. By the end of this lab, the hero text will slide into view, a bouncing arrow will invite users to scroll down, the submit button will pulse with a glowing light, and program cards will cascade in as you scroll. You'll also learn to generate decorative content with CSS pseudo-elements: an animated underline that grows beneath nav links, a large drop cap letter, styled list markers, custom placeholder text, and branded text selection colors.
 
 **<a href="https://se1400.github.io/labs/labs/css-animations/example.jpg" target="_blank">View completed example</a>** — Since animations play on page load and on hover, a static screenshot can't show everything. Build each step and refresh your page to see your animations in action.
 
@@ -70,7 +70,41 @@ When the page loads, the hero heading and paragraphs should slide up from below 
 
 **Try it out:** Save your file and refresh your browser. The hero heading should slide up and fade in first, followed by the paragraphs a fraction of a second later. If the text appears instantly with no animation, double-check that your `@keyframes` name matches exactly what you wrote in the `animation` property.
 
-### Step 2: Scroll-Driven Card and Figure Entrance
+### Step 2: Bouncing Scroll Arrow
+
+You'll add a bouncing arrow at the bottom of the hero section that invites users to scroll down. This is a common UI pattern on websites with large hero banners — a gentle, repeating animation that signals there's more content below.
+
+#### Part A: HTML Change
+
+Open your **HTML file** and find the `#welcome` section. Inside it, after the closing `</div>` of the `.hero-overlay` div but still inside the `</section>` tag, add a new `<div>` with the class `scroll-arrow`. Set `aria-hidden` to `true` (this is purely decorative, so screen readers should skip it). For the content, type the HTML entity `&#8595;` — this renders a downward arrow character (↓).
+
+#### Part B: CSS Changes
+
+1. Create a `@keyframes` rule named `bounce`. In the `from` block, set `transform` to `translateY(0)`. In the `to` block, set `transform` to `translateY(12px)`. This defines a simple up-and-down motion of 12 pixels.
+
+2. Add a rule for `.scroll-arrow`. Set `text-align` to `center`, `font-size` to `2rem`, and `color` to `var(--ut-white)`. Then set `animation` to use `bounce` with a duration of `0.8s`, timing function `ease-in-out`, iteration count `infinite`, and direction `alternate`. Finally, add `padding-bottom` set to `1rem` so the arrow doesn't sit flush against the bottom edge.
+
+   The `alternate` direction makes the arrow bounce up and down smoothly — it moves down on the first cycle, then back up on the next, creating a natural bouncing rhythm.
+
+> **Why `ease-in-out`?** The arrow should feel like a ball bouncing gently — slowing down at the top and bottom of each bounce, speeding up in the middle. `linear` would make it move at a constant speed, which looks mechanical. `ease-in-out` gives it a natural, organic feel.
+
+**Try it out:** Save both files and refresh. At the bottom of the hero section, you should see a white downward arrow gently bouncing up and down. If it doesn't appear, check that your HTML entity `&#8595;` is inside the `.scroll-arrow` div and that the div is inside the `#welcome` section.
+
+### Step 3: Pulsing Submit Button Glow
+
+The submit button should have a continuously pulsing glow — a breathing effect where a red shadow grows and shrinks rhythmically. This draws attention to the call-to-action without requiring any user interaction.
+
+1. Create a `@keyframes` rule named `pulse`. In the `from` block, set `box-shadow` to `0 0 4px rgba(186, 28, 33, 0.3)` — a small, subtle red glow. In the `to` block, set `box-shadow` to `0 0 20px rgba(186, 28, 33, 0.6)` — a larger, more intense glow.
+
+2. Add a new rule for `button[type="submit"]`. Set `animation` to use the name `pulse`, a duration of `1.2s`, the timing function `ease-in-out`, an iteration count of `infinite`, and a direction of `alternate`.
+
+   The `infinite` keyword makes the animation loop forever. The `alternate` direction means each cycle reverses: the glow grows (forward), then shrinks (backward), then grows again — creating a natural breathing rhythm.
+
+> **Why `ease-in-out`?** Think of someone breathing — the motion starts slow, speeds up in the middle, then slows down again at each end. `ease-in-out` creates exactly that feeling, making the pulse feel natural and calming rather than robotic.
+
+**Try it out:** Scroll to the form section and look at the submit button. It should have a soft red glow that smoothly pulses in and out. The button should still lift on hover (from the previous lab's transition). If the glow isn't visible, make sure your `box-shadow` values use `rgba` with the parentheses and commas in the right places.
+
+### Step 4: Scroll-Driven Card and Figure Entrance
 
 The campus photo and program cards should slide into view as the user scrolls down to them — not when the page first loads. This is called a **scroll-driven animation**: instead of playing on a timer, the animation's progress is tied to how far the element has entered the viewport.
 
@@ -91,40 +125,6 @@ Traditionally, this required JavaScript. Modern CSS provides `animation-timeline
 > **What about older browsers?** If a browser doesn't support `animation-timeline: view()`, it simply ignores that property and the `animation-range` property. The animation falls back to time-based playback using the 0.4s duration — the cards animate in on page load instead. This is called **graceful degradation**: the page still works and still looks good, just without the scroll-triggered entrance.
 
 **Try it out:** Save your file and scroll down slowly to the "Our Colleges" section. As each card enters the bottom of your viewport, it should slide up and fade in. Scroll back up and then down again — the animation replays each time the cards re-enter the viewport. If nothing animates, make sure you have all three properties in the same rule: `animation`, `animation-timeline`, and `animation-range`.
-
-### Step 3: Pulsing Submit Button Glow
-
-The submit button should have a continuously pulsing glow — a breathing effect where a red shadow grows and shrinks rhythmically. This draws attention to the call-to-action without requiring any user interaction.
-
-1. Create a `@keyframes` rule named `pulse`. In the `from` block, set `box-shadow` to `0 0 4px rgba(186, 28, 33, 0.3)` — a small, subtle red glow. In the `to` block, set `box-shadow` to `0 0 20px rgba(186, 28, 33, 0.6)` — a larger, more intense glow.
-
-2. Add a new rule for `button[type="submit"]`. Set `animation` to use the name `pulse`, a duration of `1.2s`, the timing function `ease-in-out`, an iteration count of `infinite`, and a direction of `alternate`.
-
-   The `infinite` keyword makes the animation loop forever. The `alternate` direction means each cycle reverses: the glow grows (forward), then shrinks (backward), then grows again — creating a natural breathing rhythm.
-
-> **Why `ease-in-out`?** Think of someone breathing — the motion starts slow, speeds up in the middle, then slows down again at each end. `ease-in-out` creates exactly that feeling, making the pulse feel natural and calming rather than robotic.
-
-**Try it out:** Scroll to the form section and look at the submit button. It should have a soft red glow that smoothly pulses in and out. The button should still lift on hover (from the previous lab's transition). If the glow isn't visible, make sure your `box-shadow` values use `rgba` with the parentheses and commas in the right places.
-
-### Step 4: Bouncing Scroll Arrow
-
-You'll add a bouncing arrow at the bottom of the hero section that invites users to scroll down. This is a common UI pattern on websites with large hero banners — a gentle, repeating animation that signals there's more content below.
-
-#### Part A: HTML Change
-
-Open your **HTML file** and find the `#welcome` section. Inside it, after the closing `</div>` of the `.hero-overlay` div but still inside the `</section>` tag, add a new `<div>` with the class `scroll-arrow`. Set `aria-hidden` to `true` (this is purely decorative, so screen readers should skip it). For the content, type the HTML entity `&#8595;` — this renders a downward arrow character (↓).
-
-#### Part B: CSS Changes
-
-1. Create a `@keyframes` rule named `bounce`. In the `from` block, set `transform` to `translateY(0)`. In the `to` block, set `transform` to `translateY(12px)`. This defines a simple up-and-down motion of 12 pixels.
-
-2. Add a rule for `.scroll-arrow`. Set `text-align` to `center`, `font-size` to `2rem`, and `color` to `var(--ut-white)`. Then set `animation` to use `bounce` with a duration of `0.8s`, timing function `ease-in-out`, iteration count `infinite`, and direction `alternate`. Finally, add `padding-bottom` set to `1rem` so the arrow doesn't sit flush against the bottom edge.
-
-   The `alternate` direction makes the arrow bounce up and down smoothly — it moves down on the first cycle, then back up on the next, creating a natural bouncing rhythm.
-
-> **Why `ease-in-out`?** The arrow should feel like a ball bouncing gently — slowing down at the top and bottom of each bounce, speeding up in the middle. `linear` would make it move at a constant speed, which looks mechanical. `ease-in-out` gives it a natural, organic feel.
-
-**Try it out:** Save both files and refresh. At the bottom of the hero section, you should see a white downward arrow gently bouncing up and down. If it doesn't appear, check that your HTML entity `&#8595;` is inside the `.scroll-arrow` div and that the div is inside the `#welcome` section.
 
 ### Step 5: Animated Nav Underline with ::after
 
@@ -184,7 +184,7 @@ When a user selects (highlights) text on the page, the browser uses its default 
 
 ### Step 7: Reduced Motion (Comprehensive)
 
-In the previous lab, you added a `prefers-reduced-motion` media query that set `transition-duration` and `animation-duration` to near-zero. Now that you've added looping animations (the pulsing button and bouncing arrow), you also need to stop them from repeating.
+In the previous lab, you added a `prefers-reduced-motion` media query that set `transition-duration` and `animation-duration` to near-zero. Now that you've added looping animations (the bouncing arrow and pulsing button), you also need to stop them from repeating.
 
 1. Find the existing `@media (prefers-reduced-motion: reduce)` block at the bottom of the starter CSS. Inside the `*, *::before, *::after` rule, add `animation-iteration-count` set to `1 !important`.
 
@@ -199,9 +199,9 @@ In the previous lab, you added a `prefers-reduced-motion` media query that set `
 | Step | What you built | Key CSS concepts |
 |---|---|---|
 | 1 | Hero slide-in entrance | `@keyframes` with `from`/`to`, `animation` shorthand, `fill-mode: both` |
-| 2 | Scroll-driven card entrance | Percentage keyframes, `animation-timeline: view()`, `animation-range` |
+| 2 | Bouncing scroll arrow | `@keyframes bounce`, `translateY()`, `infinite alternate` |
 | 3 | Pulsing button glow | `infinite`, `alternate`, `box-shadow` animation |
-| 4 | Bouncing scroll arrow | `@keyframes bounce`, `translateY()`, `infinite alternate` |
+| 4 | Scroll-driven card entrance | Percentage keyframes, `animation-timeline: view()`, `animation-range` |
 | 5 | Animated nav underline | `::after`, `content: ""`, `scaleX()`, `transform-origin` |
 | 6 | Typographic pseudo-elements | `::first-letter`, `::marker`, `::placeholder`, `::selection` |
 | 7 | Reduced motion update | `animation-iteration-count: 1 !important` |

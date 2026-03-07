@@ -122,61 +122,81 @@ test('The .hero-content p should have the fadeSlideIn animation with a delay', (
 });
 
 // ============================================
-// Step 2: Staggered Card & Figure Entrance
+// Step 2: Bouncing Scroll Arrow
 // ============================================
 
-test('A @keyframes rule named "cardEntrance" should exist', () => {
-  const kf = findKeyframesRule('cardEntrance');
+test('A <div> with class "scroll-arrow" should exist inside the #welcome section', () => {
+  const arrow = document.querySelector('#welcome .scroll-arrow');
+  if (!arrow) {
+    const arrowAnywhere = document.querySelector('.scroll-arrow');
+    if (arrowAnywhere) {
+      throw new Error(
+        'A .scroll-arrow element exists but it is not inside the #welcome section.\n\n' +
+        'In Step 2 Part A, the scroll-arrow div should be inside the #welcome section,\n' +
+        'after the .hero-overlay div.'
+      );
+    }
+    throw new Error(
+      'No element with class "scroll-arrow" found.\n\n' +
+      'In Step 2 Part A, add a div with the class "scroll-arrow" inside the\n' +
+      '#welcome section, after the .hero-overlay closing tag. Set aria-hidden\n' +
+      'to "true" and use the HTML entity &#8595; for the arrow character.'
+    );
+  }
+});
+
+test('The scroll arrow should have aria-hidden="true"', () => {
+  const arrow = document.querySelector('.scroll-arrow');
+  if (!arrow) {
+    throw new Error('No .scroll-arrow element found. Complete Step 2 Part A first.');
+  }
+  const ariaHidden = arrow.getAttribute('aria-hidden');
+  if (ariaHidden !== 'true') {
+    throw new Error(
+      'The scroll arrow is missing aria-hidden="true".\n\n' +
+      'In Step 2 Part A, the scroll-arrow div needs aria-hidden="true" because\n' +
+      'it is purely decorative — screen readers should skip it.'
+    );
+  }
+});
+
+test('A @keyframes rule named "bounce" should exist', () => {
+  const kf = findKeyframesRule('bounce');
   if (!kf) {
     throw new Error(
-      'No @keyframes rule named "cardEntrance" found.\n\n' +
-      'In Step 2, create a @keyframes rule called cardEntrance. Use percentage-based\n' +
-      'stops (0% and 100%) to define the animation from invisible and shifted down\n' +
-      'to fully visible at the natural position.'
+      'No @keyframes rule named "bounce" found.\n\n' +
+      'In Step 2 Part B, create a @keyframes rule called bounce. Define a "from"\n' +
+      'block with translateY(0) and a "to" block with translateY(12px) to create\n' +
+      'the bouncing motion.'
     );
   }
 });
 
-test('The .programs-grid children should have the cardEntrance animation', () => {
-  // Check if .programs-grid > * or a similar selector has the animation
-  const hasWildcard = findRuleContainingCSSText('.programs-grid > *', 'cardEntrance') ||
-                      findRuleContainingCSSText('.programs-grid >', 'cardEntrance');
-  // Also check if the figure or program-card directly has it
-  const figureHas = elementHasAnimation('.programs-grid > figure', 'cardEntrance') ||
-                    elementHasAnimation('#colleges figure', 'cardEntrance');
-  const cardHas = elementHasAnimation('.program-card', 'cardEntrance');
-
-  if (!hasWildcard && !figureHas && !cardHas) {
-    throw new Error(
-      'The programs-grid children do not have the cardEntrance animation.\n\n' +
-      'In Step 2, add a rule targeting .programs-grid > * (every direct child of the\n' +
-      'programs grid). Set the animation property to use cardEntrance with an\n' +
-      'appropriate duration, timing function, and fill mode of "both".'
-    );
+test('The .scroll-arrow should have a bounce animation with infinite alternate', () => {
+  const arrow = document.querySelector('.scroll-arrow');
+  if (!arrow) {
+    throw new Error('No .scroll-arrow element found. Complete Step 2 Part A first.');
   }
-});
+  const computed = window.getComputedStyle(arrow);
+  const animName = computed.getPropertyValue('animation-name');
+  const iterCount = computed.getPropertyValue('animation-iteration-count');
+  const direction = computed.getPropertyValue('animation-direction');
 
-test('The .programs-grid children should have animation-timeline: view()', () => {
-  const hasTimeline = findRuleContainingCSSText('.programs-grid', 'animation-timeline') ||
-                      findRuleContainingCSSText('.programs-grid', 'view()');
-  if (!hasTimeline) {
-    throw new Error(
-      'No animation-timeline: view() found on the programs-grid children.\n\n' +
-      'In Step 2, add animation-timeline set to view() in the .programs-grid > * rule.\n' +
-      'This switches the animation from time-based to scroll-based, so the cards\n' +
-      'animate as they scroll into the viewport.'
-    );
-  }
-});
+  const hasBounce = animName && animName.includes('bounce');
+  const isInfinite = iterCount && iterCount.includes('infinite');
+  const isAlternate = direction && direction.includes('alternate');
 
-test('The .programs-grid children should have an animation-range set', () => {
-  const hasRange = findRuleContainingCSSText('.programs-grid', 'animation-range');
-  if (!hasRange) {
+  if (!hasBounce || !isInfinite || !isAlternate) {
+    const issues = [];
+    if (!hasBounce) issues.push('animation-name should reference the bounce keyframes');
+    if (!isInfinite) issues.push('animation-iteration-count should be infinite');
+    if (!isAlternate) issues.push('animation-direction should be alternate');
     throw new Error(
-      'No animation-range found on the programs-grid children.\n\n' +
-      'In Step 2, add animation-range to the .programs-grid > * rule. Set it to\n' +
-      'control when the entrance animation starts and finishes as each element\n' +
-      'scrolls into the viewport. Check the description for the exact values.'
+      'The .scroll-arrow animation is not set up correctly.\n\n' +
+      'In Step 2 Part B, add an animation to .scroll-arrow that uses the bounce\n' +
+      'keyframes. The animation should loop forever (infinite) and alternate\n' +
+      'direction so the arrow bounces up and down.\n\n' +
+      'Issues found:\n- ' + issues.join('\n- ')
     );
   }
 });
@@ -227,81 +247,61 @@ test('The button[type="submit"] should have an infinite alternate animation', ()
 });
 
 // ============================================
-// Step 4: Bouncing Scroll Arrow
+// Step 4: Scroll-Driven Card & Figure Entrance
 // ============================================
 
-test('A <div> with class "scroll-arrow" should exist inside the #welcome section', () => {
-  const arrow = document.querySelector('#welcome .scroll-arrow');
-  if (!arrow) {
-    const arrowAnywhere = document.querySelector('.scroll-arrow');
-    if (arrowAnywhere) {
-      throw new Error(
-        'A .scroll-arrow element exists but it is not inside the #welcome section.\n\n' +
-        'In Step 4 Part A, the scroll-arrow div should be inside the #welcome section,\n' +
-        'after the .hero-overlay div.'
-      );
-    }
-    throw new Error(
-      'No element with class "scroll-arrow" found.\n\n' +
-      'In Step 4 Part A, add a div with the class "scroll-arrow" inside the\n' +
-      '#welcome section, after the .hero-overlay closing tag. Set aria-hidden\n' +
-      'to "true" and use the HTML entity &#8595; for the arrow character.'
-    );
-  }
-});
-
-test('The scroll arrow should have aria-hidden="true"', () => {
-  const arrow = document.querySelector('.scroll-arrow');
-  if (!arrow) {
-    throw new Error('No .scroll-arrow element found. Complete Step 4 Part A first.');
-  }
-  const ariaHidden = arrow.getAttribute('aria-hidden');
-  if (ariaHidden !== 'true') {
-    throw new Error(
-      'The scroll arrow is missing aria-hidden="true".\n\n' +
-      'In Step 4 Part A, the scroll-arrow div needs aria-hidden="true" because\n' +
-      'it is purely decorative — screen readers should skip it.'
-    );
-  }
-});
-
-test('A @keyframes rule named "bounce" should exist', () => {
-  const kf = findKeyframesRule('bounce');
+test('A @keyframes rule named "cardEntrance" should exist', () => {
+  const kf = findKeyframesRule('cardEntrance');
   if (!kf) {
     throw new Error(
-      'No @keyframes rule named "bounce" found.\n\n' +
-      'In Step 4 Part B, create a @keyframes rule called bounce. Define a "from"\n' +
-      'block with translateY(0) and a "to" block with translateY(12px) to create\n' +
-      'the bouncing motion.'
+      'No @keyframes rule named "cardEntrance" found.\n\n' +
+      'In Step 4, create a @keyframes rule called cardEntrance. Use percentage-based\n' +
+      'stops (0% and 100%) to define the animation from invisible and shifted down\n' +
+      'to fully visible at the natural position.'
     );
   }
 });
 
-test('The .scroll-arrow should have a bounce animation with infinite alternate', () => {
-  const arrow = document.querySelector('.scroll-arrow');
-  if (!arrow) {
-    throw new Error('No .scroll-arrow element found. Complete Step 4 Part A first.');
-  }
-  const computed = window.getComputedStyle(arrow);
-  const animName = computed.getPropertyValue('animation-name');
-  const iterCount = computed.getPropertyValue('animation-iteration-count');
-  const direction = computed.getPropertyValue('animation-direction');
+test('The .programs-grid children should have the cardEntrance animation', () => {
+  // Check if .programs-grid > * or a similar selector has the animation
+  const hasWildcard = findRuleContainingCSSText('.programs-grid > *', 'cardEntrance') ||
+                      findRuleContainingCSSText('.programs-grid >', 'cardEntrance');
+  // Also check if the figure or program-card directly has it
+  const figureHas = elementHasAnimation('.programs-grid > figure', 'cardEntrance') ||
+                    elementHasAnimation('#colleges figure', 'cardEntrance');
+  const cardHas = elementHasAnimation('.program-card', 'cardEntrance');
 
-  const hasBounce = animName && animName.includes('bounce');
-  const isInfinite = iterCount && iterCount.includes('infinite');
-  const isAlternate = direction && direction.includes('alternate');
-
-  if (!hasBounce || !isInfinite || !isAlternate) {
-    const issues = [];
-    if (!hasBounce) issues.push('animation-name should reference the bounce keyframes');
-    if (!isInfinite) issues.push('animation-iteration-count should be infinite');
-    if (!isAlternate) issues.push('animation-direction should be alternate');
+  if (!hasWildcard && !figureHas && !cardHas) {
     throw new Error(
-      'The .scroll-arrow animation is not set up correctly.\n\n' +
-      'In Step 4 Part B, add an animation to .scroll-arrow that uses the bounce\n' +
-      'keyframes. The animation should loop forever (infinite) and alternate\n' +
-      'direction so the arrow bounces up and down.\n\n' +
-      'Issues found:\n- ' + issues.join('\n- ')
+      'The programs-grid children do not have the cardEntrance animation.\n\n' +
+      'In Step 4, add a rule targeting .programs-grid > * (every direct child of the\n' +
+      'programs grid). Set the animation property to use cardEntrance with an\n' +
+      'appropriate duration, timing function, and fill mode of "both".'
+    );
+  }
+});
+
+test('The .programs-grid children should have animation-timeline: view()', () => {
+  const hasTimeline = findRuleContainingCSSText('.programs-grid', 'animation-timeline') ||
+                      findRuleContainingCSSText('.programs-grid', 'view()');
+  if (!hasTimeline) {
+    throw new Error(
+      'No animation-timeline: view() found on the programs-grid children.\n\n' +
+      'In Step 4, add animation-timeline set to view() in the .programs-grid > * rule.\n' +
+      'This switches the animation from time-based to scroll-based, so the cards\n' +
+      'animate as they scroll into the viewport.'
+    );
+  }
+});
+
+test('The .programs-grid children should have an animation-range set', () => {
+  const hasRange = findRuleContainingCSSText('.programs-grid', 'animation-range');
+  if (!hasRange) {
+    throw new Error(
+      'No animation-range found on the programs-grid children.\n\n' +
+      'In Step 4, add animation-range to the .programs-grid > * rule. Set it to\n' +
+      'control when the entrance animation starts and finishes as each element\n' +
+      'scrolls into the viewport. Check the description for the exact values.'
     );
   }
 });

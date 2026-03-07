@@ -497,22 +497,22 @@ footer img:hover {
     animation: fadeSlideIn 0.6s ease-out 0.2s both;
 }
 
-/* Step 2: Scroll-driven card and figure entrance */
-@keyframes cardEntrance {
-    0% {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    100% {
-        opacity: 1;
+/* Step 2: Bouncing scroll arrow */
+@keyframes bounce {
+    from {
         transform: translateY(0);
+    }
+    to {
+        transform: translateY(12px);
     }
 }
 
-.programs-grid > * {
-    animation: cardEntrance 0.4s ease-out both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 40%;
+.scroll-arrow {
+    text-align: center;
+    font-size: 2rem;
+    color: var(--ut-white);
+    animation: bounce 0.8s ease-in-out infinite alternate;
+    padding-bottom: 1rem;
 }
 
 /* Step 3: Pulsing submit button glow */
@@ -529,22 +529,22 @@ button[type="submit"] {
     animation: pulse 1.2s ease-in-out infinite alternate;
 }
 
-/* Step 4: Bouncing scroll arrow */
-@keyframes bounce {
-    from {
-        transform: translateY(0);
+/* Step 4: Scroll-driven card and figure entrance */
+@keyframes cardEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
     }
-    to {
-        transform: translateY(12px);
+    100% {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-.scroll-arrow {
-    text-align: center;
-    font-size: 2rem;
-    color: var(--ut-white);
-    animation: bounce 0.8s ease-in-out infinite alternate;
-    padding-bottom: 1rem;
+.programs-grid > * {
+    animation: cardEntrance 0.4s ease-out both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
 }
 
 /* Step 5: Animated nav underline with ::after */
