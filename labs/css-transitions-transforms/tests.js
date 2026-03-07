@@ -18,24 +18,6 @@ const getCSSPropertyValue = (selector, property) => {
   return null;
 };
 
-// Helper: Find a CSS property on a selector that may appear in a grouped rule.
-const findCSSProperty = (selector, property) => {
-  const trimmed = selector.trim();
-  for (let sheet of document.styleSheets) {
-    try {
-      for (let rule of sheet.cssRules) {
-        if (!rule.selectorText) continue;
-        const ruleSelectors = rule.selectorText.split(',').map(s => s.trim());
-        if (ruleSelectors.includes(trimmed)) {
-          const value = rule.style.getPropertyValue(property).trim();
-          if (value) return value;
-        }
-      }
-    } catch (e) {}
-  }
-  return null;
-};
-
 // Helper: Search all stylesheet rules for any rule whose selectorText contains
 // a given substring AND whose raw cssText contains a given property string.
 const findRuleContainingCSSText = (selectorSubstring, propertySubstring) => {
@@ -99,14 +81,18 @@ const ruleContainsCSSText = (selector, substring) => {
 // ============================================
 
 test('The nav a rule should have a transition property that includes "color"', () => {
-  // Check for transition in cssText since browsers may split shorthand
-  const hasTransition = ruleContainsCSSText('nav a', 'transition') &&
-                        ruleContainsCSSText('nav a', 'color');
-  // Fallback: check longhand transition-property
+  // Check longhand transition-property for "color" or "all"
   const transitionProp = getCSSPropertyValue('nav a', 'transition-property');
-  const hasLonghand = transitionProp && transitionProp.includes('color');
+  const hasLonghand = transitionProp && (transitionProp.includes('color') || transitionProp === 'all');
 
-  if (!hasTransition && !hasLonghand) {
+  // Fallback: check cssText for transition shorthand containing "color" or "all"
+  let hasShorthand = false;
+  if (ruleContainsCSSText('nav a', 'transition')) {
+    // Accept transition: color ... or transition: all ...
+    hasShorthand = ruleContainsCSSText('nav a', 'color') || ruleContainsCSSText('nav a', 'all');
+  }
+
+  if (!hasLonghand && !hasShorthand) {
     throw new Error(
       'No transition found on the "nav a" rule.\n\n' +
       'In Step 1, add a "nav a" rule with:\n' +
@@ -179,9 +165,11 @@ test('The #colleges figure rule should have overflow: hidden', () => {
 });
 
 test('The #colleges figure img rule should have a transition on transform', () => {
-  const hasTransition = findRuleContainingCSSText('#colleges figure img', 'transition') &&
-                        findRuleContainingCSSText('#colleges figure img', 'transform');
-  if (!hasTransition) {
+  const hasTransitionKeyword = findRuleContainingCSSText('#colleges figure img', 'transition');
+  // Accept transition: transform ... or transition: all ...
+  const hasTransformOrAll = findRuleContainingCSSText('#colleges figure img', 'transform') ||
+                            findRuleContainingCSSText('#colleges figure img', 'all');
+  if (!hasTransitionKeyword || !hasTransformOrAll) {
     throw new Error(
       'No transition on transform found for "#colleges figure img".\n\n' +
       'In Step 3, add to the existing #colleges figure img rule:\n' +
@@ -210,8 +198,6 @@ test('The #colleges figure:hover img rule should have transform: scale(1.05)', (
 // ============================================
 
 test('The button[type="submit"] rule should have a transition property', () => {
-  const hasTransition = findRuleContainingCSSText('button[type="submit"]', 'transition');
-  // Exclude hover rule
   let foundOnBase = false;
   for (let sheet of document.styleSheets) {
     try {
@@ -252,8 +238,6 @@ test('The button[type="submit"]:hover rule should have a transform with translat
 // ============================================
 
 test('The footer img rule should have a transition that includes transform', () => {
-  const hasTransition = findRuleContainingCSSText('footer img', 'transition');
-  // Make sure it's the base rule, not :hover
   let foundOnBase = false;
   for (let sheet of document.styleSheets) {
     try {
@@ -407,10 +391,7 @@ test('The .flip-card-back should have transform: rotateY(180deg)', () => {
   if (!back) {
     throw new Error('No .flip-card-back element found. Complete the HTML changes in Step 6 first.');
   }
-  const computed = window.getComputedStyle(back);
-  const transform = computed.getPropertyValue('transform');
-  // rotateY(180deg) gets computed as a matrix. matrix(-1, 0, 0, 1, 0, 0) or matrix3d
-  // We can also check the CSS rule directly
+  // Check the CSS rule directly (computed transform would be a matrix, not readable)
   const ruleTransform = getCSSPropertyValue('.flip-card-back', 'transform');
   const hasRotate = (ruleTransform && ruleTransform.includes('rotateY')) ||
                     findRuleContainingCSSText('.flip-card-back', 'rotateY');

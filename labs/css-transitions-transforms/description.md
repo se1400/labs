@@ -8,6 +8,8 @@ In this lab you'll add interactive motion to the Utah Tech University website us
 
 **Note:** The starter file includes the complete Utah Tech page from the previous lab — all the HTML structure, forms, and CSS styling are already in place. You'll only be adding CSS rules (and a small HTML modification for the flip card).
 
+**Where to add your CSS:** Some steps ask you to add properties to an **existing** rule (like `.program-card`). You can either scroll up and add the property directly inside that rule, or create a new rule with the same selector below the section marker at the bottom of `starter.css`. Both approaches work — CSS merges properties from multiple rules with the same selector. New rules go below the `/* CSS Transitions and Transforms — add your CSS below */` comment.
+
 ## Key Concepts
 
 Before you begin, here's a quick reference for the CSS properties you'll use:
