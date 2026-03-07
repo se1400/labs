@@ -156,29 +156,27 @@ test('The .programs-grid children should have the cardEntrance animation', () =>
   }
 });
 
-test('The programs-grid children should have staggered animation-delay values', () => {
-  // Check for at least 3 nth-child rules with animation-delay
-  let nthChildCount = 0;
-  for (let sheet of document.styleSheets) {
-    try {
-      for (let rule of sheet.cssRules) {
-        if (!rule.selectorText) continue;
-        if (rule.selectorText.includes('nth-child') &&
-            rule.selectorText.includes('.programs-grid') &&
-            rule.cssText.includes('animation-delay')) {
-          nthChildCount++;
-        }
-      }
-    } catch (e) {}
-  }
-
-  if (nthChildCount < 3) {
+test('The .programs-grid children should have animation-timeline: view()', () => {
+  const hasTimeline = findRuleContainingCSSText('.programs-grid', 'animation-timeline') ||
+                      findRuleContainingCSSText('.programs-grid', 'view()');
+  if (!hasTimeline) {
     throw new Error(
-      'Not enough staggered animation-delay rules found for the programs-grid children.\n\n' +
-      'In Step 2, add separate rules for .programs-grid > :nth-child(1) through\n' +
-      ':nth-child(7), each with a slightly increasing animation-delay value.\n' +
-      'The first child (the campus photo) should have no delay, and each subsequent\n' +
-      'child should wait a little longer. Found ' + nthChildCount + ' rules, need at least 3.'
+      'No animation-timeline: view() found on the programs-grid children.\n\n' +
+      'In Step 2, add animation-timeline set to view() in the .programs-grid > * rule.\n' +
+      'This switches the animation from time-based to scroll-based, so the cards\n' +
+      'animate as they scroll into the viewport.'
+    );
+  }
+});
+
+test('The .programs-grid children should have an animation-range set', () => {
+  const hasRange = findRuleContainingCSSText('.programs-grid', 'animation-range');
+  if (!hasRange) {
+    throw new Error(
+      'No animation-range found on the programs-grid children.\n\n' +
+      'In Step 2, add animation-range to the .programs-grid > * rule. Set it to\n' +
+      'control when the entrance animation starts and finishes as each element\n' +
+      'scrolls into the viewport. Check the description for the exact values.'
     );
   }
 });

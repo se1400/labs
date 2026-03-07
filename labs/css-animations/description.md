@@ -70,21 +70,27 @@ When the page loads, the hero heading and paragraphs should slide up from below 
 
 **Try it out:** Save your file and refresh your browser. The hero heading should slide up and fade in first, followed by the paragraphs a fraction of a second later. If the text appears instantly with no animation, double-check that your `@keyframes` name matches exactly what you wrote in the `animation` property.
 
-### Step 2: Staggered Card and Figure Entrance
+### Step 2: Scroll-Driven Card and Figure Entrance
 
-The campus photo and program cards should cascade into view one after another, like a wave rippling across the page. This step teaches you how to combine an animation with `animation-delay` and `nth-child` selectors to stagger the timing.
+The campus photo and program cards should slide into view as the user scrolls down to them — not when the page first loads. This is called a **scroll-driven animation**: instead of playing on a timer, the animation's progress is tied to how far the element has entered the viewport.
 
-1. Create a new `@keyframes` rule named `cardEntrance`. Use percentage-based stops this time: at `0%`, set `opacity` to `0` and `transform` to `translateY(30px)`. At `100%`, set `opacity` to `1` and `transform` to `translateY(0)`.
+Traditionally, this required JavaScript. Modern CSS provides `animation-timeline: view()`, which tells the browser to drive the animation based on the element's visibility in the viewport instead of clock time. Each card enters the viewport at a slightly different scroll position, so they naturally stagger without needing explicit delays.
+
+1. Create a new `@keyframes` rule named `cardEntrance`. Use percentage-based stops: at `0%`, set `opacity` to `0` and `transform` to `translateY(30px)`. At `100%`, set `opacity` to `1` and `transform` to `translateY(0)`.
 
 2. Add a rule targeting `.programs-grid > *` (every direct child of the programs grid — the figure and all program cards). Set the `animation` property to use `cardEntrance` with a duration of `0.4s`, timing function `ease-out`, and fill mode `both`.
 
-3. Now add seven separate rules to stagger the timing. Target `.programs-grid > :nth-child(1)` and set `animation-delay` to `0s`. Target `:nth-child(2)` and set it to `0.1s`. Continue with `:nth-child(3)` at `0.15s`, `:nth-child(4)` at `0.2s`, `:nth-child(5)` at `0.25s`, `:nth-child(6)` at `0.3s`, and `:nth-child(7)` at `0.35s`.
+   The duration serves as a fallback for browsers that don't yet support scroll-driven animations — in those browsers, the cards will simply animate on page load over 0.4 seconds.
 
-   The first child is the campus photo figure. Children 2 through 7 are the six program cards. Each one waits slightly longer than the previous, creating a cascading wave effect.
+3. In the same rule, add `animation-timeline` set to `view()`. This switches the animation from time-based to scroll-based. The animation will play as the element scrolls into the viewport.
 
-> **Why does `both` matter here?** Without `both`, each card would be fully visible during its delay period, then suddenly jump to opacity 0 when the animation starts, then fade in. The `both` fill mode ensures each card starts at the `0%` keyframe styles (invisible and shifted down) even before its animation begins.
+4. Also in the same rule, add `animation-range` set to `entry 0% entry 40%`. This means the animation starts when the element first begins entering the viewport (entry 0%) and completes when the element is 40% visible (entry 40%). The remaining 60% of scrolling keeps the element fully visible.
 
-**Try it out:** Refresh the page and scroll to the "Our Colleges" section. The campus photo should appear first, then each card should slide in one at a time with a slight delay between them. If all cards appear at once, check that your `nth-child` selectors include the colon and parentheses, and that they target `.programs-grid > :nth-child(N)` with the `>` combinator.
+> **Why does this work without staggering?** Each card sits at a different vertical position on the page. As you scroll, each card enters the viewport at a slightly different moment — the card at the top of the grid enters first, and each card below it enters a fraction of a second later. The scroll position naturally creates the cascade effect, no `animation-delay` or `nth-child` rules needed.
+
+> **What about older browsers?** If a browser doesn't support `animation-timeline: view()`, it simply ignores that property and the `animation-range` property. The animation falls back to time-based playback using the 0.4s duration — the cards animate in on page load instead. This is called **graceful degradation**: the page still works and still looks good, just without the scroll-triggered entrance.
+
+**Try it out:** Save your file and scroll down slowly to the "Our Colleges" section. As each card enters the bottom of your viewport, it should slide up and fade in. Scroll back up and then down again — the animation replays each time the cards re-enter the viewport. If nothing animates, make sure you have all three properties in the same rule: `animation`, `animation-timeline`, and `animation-range`.
 
 ### Step 3: Pulsing Submit Button Glow
 
@@ -197,7 +203,7 @@ In the previous lab, you added a `prefers-reduced-motion` media query that set `
 | Step | What you built | Key CSS concepts |
 |---|---|---|
 | 1 | Hero slide-in entrance | `@keyframes` with `from`/`to`, `animation` shorthand, `fill-mode: both` |
-| 2 | Staggered card cascade | Percentage keyframes, `animation-delay`, `nth-child()` |
+| 2 | Scroll-driven card entrance | Percentage keyframes, `animation-timeline: view()`, `animation-range` |
 | 3 | Pulsing button glow | `infinite`, `alternate`, `box-shadow` animation |
 | 4 | CSS loading spinner | `@keyframes spin`, `rotate(360deg)`, `linear`, border trick |
 | 5 | Animated nav underline | `::after`, `content: ""`, `scaleX()`, `transform-origin` |
