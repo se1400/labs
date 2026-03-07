@@ -1,12 +1,12 @@
 # CSS Animations and Pseudo-Elements
 
-In this lab you'll make the Utah Tech University website come alive with motion that plays automatically — no hovering required. Right now, the page loads and everything appears instantly. By the end of this lab, the hero text will slide into view, program cards will cascade in one by one, the submit button will pulse with a glowing light, and a spinning loading indicator will appear next to it. You'll also learn to generate decorative content with CSS pseudo-elements: an animated underline that grows beneath nav links, a large drop cap letter, styled list markers, custom placeholder text, and branded text selection colors.
+In this lab you'll make the Utah Tech University website come alive with motion that plays automatically — no hovering required. Right now, the page loads and everything appears instantly. By the end of this lab, the hero text will slide into view, program cards will cascade in one by one, the submit button will pulse with a glowing light, and a bouncing arrow will invite users to scroll down. You'll also learn to generate decorative content with CSS pseudo-elements: an animated underline that grows beneath nav links, a large drop cap letter, styled list markers, custom placeholder text, and branded text selection colors.
 
 **<a href="https://se1400.github.io/labs/labs/css-animations/example.jpg" target="_blank">View completed example</a>** — Since animations play on page load and on hover, a static screenshot can't show everything. Build each step and refresh your page to see your animations in action.
 
 **Objective:** Follow the instructions below and get all the tests to pass to complete the lab.
 
-**Note:** The starter file includes the complete Utah Tech page from the previous lab — all the HTML structure, forms, transitions, transforms, and flip card are already in place. You'll be adding CSS rules (and a small HTML modification for the spinner) below the comment at the bottom of the CSS file.
+**Note:** The starter file includes the complete Utah Tech page from the previous lab — all the HTML structure, forms, transitions, transforms, and flip card are already in place. You'll be adding CSS rules (and a small HTML addition for the scroll arrow) below the comment at the bottom of the CSS file.
 
 **Where to add your CSS:** Add all new rules below the `/* CSS Animations and Pseudo-Elements — add your CSS below */` comment at the bottom of your CSS file.
 
@@ -106,29 +106,25 @@ The submit button should have a continuously pulsing glow — a breathing effect
 
 **Try it out:** Scroll to the form section and look at the submit button. It should have a soft red glow that smoothly pulses in and out. The button should still lift on hover (from the previous lab's transition). If the glow isn't visible, make sure your `box-shadow` values use `rgba` with the parentheses and commas in the right places.
 
-### Step 4: CSS Spinner
+### Step 4: Bouncing Scroll Arrow
 
-You'll build a pure-CSS loading spinner — a spinning circle that appears next to the submit button. This is a pattern you'll see on virtually every website, and it requires no images or JavaScript.
+You'll add a bouncing arrow at the bottom of the hero section that invites users to scroll down. This is a common UI pattern on websites with large hero banners — a gentle, repeating animation that signals there's more content below.
 
 #### Part A: HTML Change
 
-Open your **HTML file** and find the submit button near the bottom of the form. Currently it sits alone. You need to wrap it in a container and add the spinner element.
-
-1. Add a new `<div>` with the class `form-actions` around the submit button. Inside this div, after the button, add a `<div>` with the class `spinner`. This spinner div also needs two accessibility attributes: set `aria-label` to `Loading` and `role` to `status`. The spinner div should be empty — it has no text content.
-
-   The `role="status"` and `aria-label` attributes tell screen readers that this element represents a loading indicator, since the visual spinner is meaningless without context.
+Open your **HTML file** and find the `#welcome` section. Inside it, after the closing `</div>` of the `.hero-overlay` div but still inside the `</section>` tag, add a new `<div>` with the class `scroll-arrow`. Set `aria-hidden` to `true` (this is purely decorative, so screen readers should skip it). For the content, type the HTML entity `&#8595;` — this renders a downward arrow character (↓).
 
 #### Part B: CSS Changes
 
-1. Add a rule for `.form-actions`. Set `display` to `flex`, `align-items` to `center`, and `gap` to `1rem`. This places the button and spinner side by side with space between them.
+1. Create a `@keyframes` rule named `bounce`. In the `from` block, set `transform` to `translateY(0)`. In the `to` block, set `transform` to `translateY(12px)`. This defines a simple up-and-down motion of 12 pixels.
 
-2. Create a `@keyframes` rule named `spin`. It only needs a `to` block that sets `transform` to `rotate(360deg)`. You don't need a `from` block — the browser starts from the element's current rotation (0 degrees) by default.
+2. Add a rule for `.scroll-arrow`. Set `text-align` to `center`, `font-size` to `2rem`, and `color` to `var(--ut-white)`. Then set `animation` to use `bounce` with a duration of `0.8s`, timing function `ease-in-out`, iteration count `infinite`, and direction `alternate`. Finally, add `padding-bottom` set to `1rem` so the arrow doesn't sit flush against the bottom edge.
 
-3. Add a rule for `.spinner`. Set `width` and `height` both to `40px`. Set `border` to `4px solid #e2e8f0` — this creates a light gray circle. Then set `border-top-color` to `var(--ut-red)` — this overrides just the top segment of the border to red, creating the colored arc that appears to spin. Set `border-radius` to `50%` to make the square element into a circle. Finally, set `animation` to use `spin` with a duration of `0.8s`, timing function `linear`, and iteration count `infinite`.
+   The `alternate` direction makes the arrow bounce up and down smoothly — it moves down on the first cycle, then back up on the next, creating a natural bouncing rhythm.
 
-> **Why `linear` instead of `ease`?** A spinner should rotate at a constant speed — like a wheel turning. `ease` would make it slow down and speed up on each rotation, which would look stuttery and unnatural for a loading indicator. `linear` keeps the speed perfectly even.
+> **Why `ease-in-out`?** The arrow should feel like a ball bouncing gently — slowing down at the top and bottom of each bounce, speeding up in the middle. `linear` would make it move at a constant speed, which looks mechanical. `ease-in-out` gives it a natural, organic feel.
 
-**Try it out:** Save both files and refresh. Next to the submit button, you should see a small circle with a red arc spinning continuously. If nothing appears, make sure you added `content` is not needed here (it's a real element, not a pseudo-element) but do check that `border-radius: 50%` is set to make it circular.
+**Try it out:** Save both files and refresh. At the bottom of the hero section, you should see a white downward arrow gently bouncing up and down. If it doesn't appear, check that your HTML entity `&#8595;` is inside the `.scroll-arrow` div and that the div is inside the `#welcome` section.
 
 ### Step 5: Animated Nav Underline with ::after
 
@@ -188,15 +184,15 @@ When a user selects (highlights) text on the page, the browser uses its default 
 
 ### Step 7: Reduced Motion (Comprehensive)
 
-In the previous lab, you added a `prefers-reduced-motion` media query that set `transition-duration` and `animation-duration` to near-zero. Now that you've added looping animations (the pulsing button and spinning indicator), you also need to stop them from repeating.
+In the previous lab, you added a `prefers-reduced-motion` media query that set `transition-duration` and `animation-duration` to near-zero. Now that you've added looping animations (the pulsing button and bouncing arrow), you also need to stop them from repeating.
 
 1. Find the existing `@media (prefers-reduced-motion: reduce)` block at the bottom of the starter CSS. Inside the `*, *::before, *::after` rule, add `animation-iteration-count` set to `1 !important`.
 
-   This ensures that looping animations like the spinner and pulse play only once instead of forever — effectively stopping them after a single cycle. Combined with the near-zero `animation-duration` that's already there, animations will appear to complete instantly and then stop.
+   This ensures that looping animations like the bouncing arrow and pulsing button play only once instead of forever — effectively stopping them after a single cycle. Combined with the near-zero `animation-duration` that's already there, animations will appear to complete instantly and then stop.
 
-> **Why is this important?** Continuously moving elements — especially looping spinners and pulsing glows — are among the most commonly reported accessibility barriers. Users with vestibular disorders or motion sensitivity may experience dizziness or nausea. By adding this single line, you ensure your page is comfortable for everyone.
+> **Why is this important?** Continuously moving elements — especially looping bounces and pulsing glows — are among the most commonly reported accessibility barriers. Users with vestibular disorders or motion sensitivity may experience dizziness or nausea. By adding this single line, you ensure your page is comfortable for everyone.
 
-**Try it out:** On macOS, go to System Settings, then Accessibility, then Display, and enable "Reduce motion." On Windows, go to Settings, then Accessibility, then Visual Effects, and turn off "Animation effects." With reduced motion enabled, the spinner should stop spinning and the button should stop pulsing. Turn it back off to see your animations again.
+**Try it out:** On macOS, go to System Settings, then Accessibility, then Display, and enable "Reduce motion." On Windows, go to Settings, then Accessibility, then Visual Effects, and turn off "Animation effects." With reduced motion enabled, the scroll arrow should stop bouncing and the button should stop pulsing. Turn it back off to see your animations again.
 
 ## Summary
 
@@ -205,7 +201,7 @@ In the previous lab, you added a `prefers-reduced-motion` media query that set `
 | 1 | Hero slide-in entrance | `@keyframes` with `from`/`to`, `animation` shorthand, `fill-mode: both` |
 | 2 | Scroll-driven card entrance | Percentage keyframes, `animation-timeline: view()`, `animation-range` |
 | 3 | Pulsing button glow | `infinite`, `alternate`, `box-shadow` animation |
-| 4 | CSS loading spinner | `@keyframes spin`, `rotate(360deg)`, `linear`, border trick |
+| 4 | Bouncing scroll arrow | `@keyframes bounce`, `translateY()`, `infinite alternate` |
 | 5 | Animated nav underline | `::after`, `content: ""`, `scaleX()`, `transform-origin` |
 | 6 | Typographic pseudo-elements | `::first-letter`, `::marker`, `::placeholder`, `::selection` |
 | 7 | Reduced motion update | `animation-iteration-count: 1 !important` |

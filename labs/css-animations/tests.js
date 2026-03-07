@@ -227,87 +227,80 @@ test('The button[type="submit"] should have an infinite alternate animation', ()
 });
 
 // ============================================
-// Step 4: CSS Spinner
+// Step 4: Bouncing Scroll Arrow
 // ============================================
 
-test('A <div> with class "spinner" should exist inside a .form-actions container', () => {
-  const spinner = document.querySelector('.form-actions .spinner');
-  if (!spinner) {
-    const spinnerAnywhere = document.querySelector('.spinner');
-    const formActions = document.querySelector('.form-actions');
-    if (!formActions) {
+test('A <div> with class "scroll-arrow" should exist inside the #welcome section', () => {
+  const arrow = document.querySelector('#welcome .scroll-arrow');
+  if (!arrow) {
+    const arrowAnywhere = document.querySelector('.scroll-arrow');
+    if (arrowAnywhere) {
       throw new Error(
-        'No .form-actions container found.\n\n' +
-        'In Step 4 Part A, wrap the submit button in a new div with the class\n' +
-        '"form-actions". Then add the spinner div inside that same container,\n' +
-        'after the button.'
-      );
-    }
-    if (!spinnerAnywhere) {
-      throw new Error(
-        'No element with class "spinner" found.\n\n' +
-        'In Step 4 Part A, add a div with the class "spinner" inside the\n' +
-        '.form-actions container, after the submit button. The div should\n' +
-        'also have role="status" and aria-label="Loading" for accessibility.'
+        'A .scroll-arrow element exists but it is not inside the #welcome section.\n\n' +
+        'In Step 4 Part A, the scroll-arrow div should be inside the #welcome section,\n' +
+        'after the .hero-overlay div.'
       );
     }
     throw new Error(
-      'A .spinner element exists but it is not inside a .form-actions container.\n\n' +
-      'Make sure the spinner div is inside the .form-actions div, after the submit button.'
+      'No element with class "scroll-arrow" found.\n\n' +
+      'In Step 4 Part A, add a div with the class "scroll-arrow" inside the\n' +
+      '#welcome section, after the .hero-overlay closing tag. Set aria-hidden\n' +
+      'to "true" and use the HTML entity &#8595; for the arrow character.'
     );
   }
 });
 
-test('The spinner should have role="status" and aria-label for accessibility', () => {
-  const spinner = document.querySelector('.spinner');
-  if (!spinner) {
-    throw new Error('No .spinner element found. Complete Step 4 Part A first.');
+test('The scroll arrow should have aria-hidden="true"', () => {
+  const arrow = document.querySelector('.scroll-arrow');
+  if (!arrow) {
+    throw new Error('No .scroll-arrow element found. Complete Step 4 Part A first.');
   }
-  const role = spinner.getAttribute('role');
-  const ariaLabel = spinner.getAttribute('aria-label');
-  if (role !== 'status' || !ariaLabel) {
+  const ariaHidden = arrow.getAttribute('aria-hidden');
+  if (ariaHidden !== 'true') {
     throw new Error(
-      'The spinner is missing accessibility attributes.\n\n' +
-      'In Step 4 Part A, the spinner div needs role="status" and an aria-label\n' +
-      'attribute (like "Loading") so screen readers can announce that loading\n' +
-      'is in progress.'
+      'The scroll arrow is missing aria-hidden="true".\n\n' +
+      'In Step 4 Part A, the scroll-arrow div needs aria-hidden="true" because\n' +
+      'it is purely decorative — screen readers should skip it.'
     );
   }
 });
 
-test('A @keyframes rule named "spin" should exist', () => {
-  const kf = findKeyframesRule('spin');
+test('A @keyframes rule named "bounce" should exist', () => {
+  const kf = findKeyframesRule('bounce');
   if (!kf) {
     throw new Error(
-      'No @keyframes rule named "spin" found.\n\n' +
-      'In Step 4 Part B, create a @keyframes rule called spin. It only needs a "to"\n' +
-      'block that rotates the element one full revolution (360 degrees). The browser\n' +
-      'starts from 0 degrees by default.'
+      'No @keyframes rule named "bounce" found.\n\n' +
+      'In Step 4 Part B, create a @keyframes rule called bounce. Define a "from"\n' +
+      'block with translateY(0) and a "to" block with translateY(12px) to create\n' +
+      'the bouncing motion.'
     );
   }
 });
 
-test('The .spinner should be styled as a spinning circle', () => {
-  const spinner = document.querySelector('.spinner');
-  if (!spinner) {
-    throw new Error('No .spinner element found. Complete Step 4 Part A first.');
+test('The .scroll-arrow should have a bounce animation with infinite alternate', () => {
+  const arrow = document.querySelector('.scroll-arrow');
+  if (!arrow) {
+    throw new Error('No .scroll-arrow element found. Complete Step 4 Part A first.');
   }
-  const computed = window.getComputedStyle(spinner);
-  const borderRadius = computed.getPropertyValue('border-radius');
+  const computed = window.getComputedStyle(arrow);
   const animName = computed.getPropertyValue('animation-name');
+  const iterCount = computed.getPropertyValue('animation-iteration-count');
+  const direction = computed.getPropertyValue('animation-direction');
 
-  const isCircle = borderRadius && borderRadius.includes('50%');
-  const hasSpin = animName && animName.includes('spin');
+  const hasBounce = animName && animName.includes('bounce');
+  const isInfinite = iterCount && iterCount.includes('infinite');
+  const isAlternate = direction && direction.includes('alternate');
 
-  if (!isCircle || !hasSpin) {
+  if (!hasBounce || !isInfinite || !isAlternate) {
     const issues = [];
-    if (!isCircle) issues.push('border-radius should be 50% to make it circular');
-    if (!hasSpin) issues.push('animation should use the spin keyframes');
+    if (!hasBounce) issues.push('animation-name should reference the bounce keyframes');
+    if (!isInfinite) issues.push('animation-iteration-count should be infinite');
+    if (!isAlternate) issues.push('animation-direction should be alternate');
     throw new Error(
-      'The .spinner is not fully styled.\n\n' +
-      'In Step 4 Part B, the .spinner rule needs border-radius: 50% to make it a\n' +
-      'circle, and an animation property that uses the spin keyframes with linear\n' +
-      'timing and infinite iteration count.\n\n' +
+      'The .scroll-arrow animation is not set up correctly.\n\n' +
+      'In Step 4 Part B, add an animation to .scroll-arrow that uses the bounce\n' +
+      'keyframes. The animation should loop forever (infinite) and alternate\n' +
+      'direction so the arrow bounces up and down.\n\n' +
       'Issues found:\n- ' + issues.join('\n- ')
     );
   }
@@ -430,7 +423,7 @@ test('The prefers-reduced-motion media query should include animation-iteration-
       'In Step 7, find the existing prefers-reduced-motion media query at the bottom\n' +
       'of the starter CSS. Inside the *, *::before, *::after rule, add\n' +
       'animation-iteration-count set to 1 with !important. This stops looping\n' +
-      'animations (like the spinner and pulse) from repeating forever.'
+      'animations (like the bouncing arrow and pulse) from repeating forever.'
     );
   }
 });
