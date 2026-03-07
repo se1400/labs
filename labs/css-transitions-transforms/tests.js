@@ -95,9 +95,9 @@ test('The nav a rule should have a transition property that includes "color"', (
   if (!hasLonghand && !hasShorthand) {
     throw new Error(
       'No transition found on the "nav a" rule.\n\n' +
-      'In Step 1, add a "nav a" rule with:\n' +
-      '  transition: color 0.2s ease-out;\n\n' +
-      'This animates the color change smoothly when users hover over nav links.'
+      'In Step 1, create a rule that targets nav a and add a transition property.\n' +
+      'The transition should animate the color property over 0.2s using ease-out timing.\n\n' +
+      'Format: transition: property duration timing-function;'
     );
   }
 });
@@ -111,9 +111,9 @@ test('The .program-card rule should have a transition property', () => {
   if (!hasTransition) {
     throw new Error(
       'No transition found on the ".program-card" rule.\n\n' +
-      'In Step 2, add a transition to the existing .program-card rule:\n' +
-      '  transition: transform 0.2s ease, box-shadow 0.2s ease;\n\n' +
-      'This enables smooth animation when the card lifts on hover.'
+      'In Step 2, add a transition property to the .program-card rule that animates\n' +
+      'both transform and box-shadow (each over 0.2s with ease timing).\n' +
+      'Separate multiple transitions with a comma.'
     );
   }
 });
@@ -123,10 +123,9 @@ test('The .program-card:hover rule should have transform: translateY(-6px)', () 
   if (!transform || !transform.includes('translateY')) {
     throw new Error(
       'No transform found on the ".program-card:hover" rule.\n\n' +
-      'In Step 2, add a new .program-card:hover rule with:\n' +
-      '  transform: translateY(-6px);\n' +
-      '  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);\n\n' +
-      'translateY(-6px) lifts the card up 6 pixels on hover.'
+      'In Step 2, add a .program-card:hover rule with a transform property.\n' +
+      'Use translateY() with a negative value to move the card up on hover.\n' +
+      'Check the description for the exact value.'
     );
   }
 });
@@ -136,9 +135,9 @@ test('The .program-card:hover rule should have an enhanced box-shadow', () => {
   if (!shadow) {
     throw new Error(
       'No box-shadow found on the ".program-card:hover" rule.\n\n' +
-      'In Step 2, add box-shadow to the .program-card:hover rule:\n' +
-      '  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);\n\n' +
-      'This deeper shadow makes the card look like it\'s floating above the page.'
+      'In Step 2, add a box-shadow to the .program-card:hover rule.\n' +
+      'This larger shadow makes the card look like it\'s floating higher above the page.\n' +
+      'Check the description for the exact value.'
     );
   }
 });
@@ -157,9 +156,8 @@ test('The #colleges figure rule should have overflow: hidden', () => {
   if (!overflow.includes('hidden')) {
     throw new Error(
       'The #colleges figure does not have overflow: hidden.\n\n' +
-      'In Step 3, add to the existing #colleges figure rule:\n' +
-      '  overflow: hidden;\n\n' +
-      'This clips the zoomed image so it doesn\'t spill outside the frame.'
+      'In Step 3, find the #colleges figure rule and add overflow: hidden.\n' +
+      'This clips the zoomed image so it stays inside the frame when it scales up.'
     );
   }
 });
@@ -172,9 +170,9 @@ test('The #colleges figure img rule should have a transition on transform', () =
   if (!hasTransitionKeyword || !hasTransformOrAll) {
     throw new Error(
       'No transition on transform found for "#colleges figure img".\n\n' +
-      'In Step 3, add to the existing #colleges figure img rule:\n' +
-      '  transition: transform 0.4s ease;\n\n' +
-      'This animates the zoom effect smoothly.'
+      'In Step 3, find the #colleges figure img rule and add a transition property\n' +
+      'that animates transform over 0.4s with ease timing.\n' +
+      'This makes the zoom effect animate smoothly instead of snapping.'
     );
   }
 });
@@ -184,11 +182,9 @@ test('The #colleges figure:hover img rule should have transform: scale(1.05)', (
   if (!transform || !transform.includes('scale')) {
     throw new Error(
       'No transform: scale() found on "#colleges figure:hover img".\n\n' +
-      'In Step 3, add a new rule:\n' +
-      '#colleges figure:hover img {\n' +
-      '    transform: scale(1.05);\n' +
-      '}\n\n' +
-      'scale(1.05) enlarges the image to 105% on hover.'
+      'In Step 3, create a new rule targeting #colleges figure:hover img.\n' +
+      'Inside it, add a transform property using scale() to enlarge the image\n' +
+      'slightly (e.g., 105%) when the figure is hovered.'
     );
   }
 });
@@ -212,10 +208,10 @@ test('The button[type="submit"] rule should have a transition property', () => {
   }
   if (!foundOnBase) {
     throw new Error(
-      'No transition found on the "button[type=\\"submit\\"]" rule.\n\n' +
-      'In Step 4, add a transition to the existing button[type="submit"] rule:\n' +
-      '  transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;\n\n' +
-      'This transitions the background color, lift, and shadow smoothly.'
+      'No transition found on the button[type="submit"] rule.\n\n' +
+      'In Step 4, find the button[type="submit"] rule and add a transition property\n' +
+      'that animates background-color, transform, and box-shadow (each over 0.2s\n' +
+      'with ease timing). Separate them with commas.'
     );
   }
 });
@@ -224,11 +220,10 @@ test('The button[type="submit"]:hover rule should have a transform with translat
   const transform = getCSSPropertyValue('button[type="submit"]:hover', 'transform');
   if (!transform || !transform.includes('translateY')) {
     throw new Error(
-      'No transform: translateY() found on "button[type=\\"submit\\"]:hover".\n\n' +
-      'In Step 4, add to the existing button[type="submit"]:hover rule:\n' +
-      '  transform: translateY(-3px);\n' +
-      '  box-shadow: 0 4px 12px rgba(186, 28, 33, 0.4);\n\n' +
-      'This lifts the button up 3 pixels on hover.'
+      'No transform: translateY() found on button[type="submit"]:hover.\n\n' +
+      'In Step 4, find the existing button[type="submit"]:hover rule and add a\n' +
+      'transform property using translateY() with a small negative value to lift\n' +
+      'the button up. Check the description for the exact values.'
     );
   }
 });
@@ -253,9 +248,9 @@ test('The footer img rule should have a transition that includes transform', () 
   if (!foundOnBase) {
     throw new Error(
       'No transition found on the "footer img" rule.\n\n' +
-      'In Step 5, add to the existing footer img rule:\n' +
-      '  transition: transform 0.6s ease-in-out, filter 0.3s ease;\n\n' +
-      'This animates both the spin and the grayscale-to-color effect.'
+      'In Step 5, find the existing footer img rule and add a transition property\n' +
+      'that animates both transform and filter. Check the description for the\n' +
+      'exact durations and timing functions for each.'
     );
   }
 });
@@ -265,9 +260,8 @@ test('The footer img:hover rule should have transform: rotate(360deg)', () => {
   if (!transform || !transform.includes('rotate')) {
     throw new Error(
       'No transform: rotate() found on "footer img:hover".\n\n' +
-      'In Step 5, add to the existing footer img:hover rule:\n' +
-      '  transform: rotate(360deg);\n\n' +
-      'This spins the university seal one full revolution on hover.'
+      'In Step 5, find the existing footer img:hover rule and add a transform\n' +
+      'property using rotate() to spin the seal one full revolution (360 degrees).'
     );
   }
 });
@@ -281,8 +275,9 @@ test('The featured card should have the flip-card class', () => {
   if (!card) {
     throw new Error(
       'No element found with classes "program-card flip-card featured".\n\n' +
-      'In Step 6, add the class "flip-card" to the featured program card div:\n' +
-      '<div class="program-card flip-card featured">'
+      'In Step 6 Part A, find the featured program card in your HTML and add\n' +
+      'the class "flip-card" to it. The div should have all three classes:\n' +
+      'program-card, flip-card, and featured.'
     );
   }
 });
@@ -304,11 +299,11 @@ test('The flip card should contain .flip-card-inner, .flip-card-front, and .flip
   if (missing.length > 0) {
     throw new Error(
       `Missing element(s) inside the flip card: ${missing.join(', ')}\n\n` +
-      'In Step 6, wrap the card content in this structure:\n' +
-      '<div class="flip-card-inner">\n' +
-      '    <div class="flip-card-front"><!-- front content --></div>\n' +
-      '    <div class="flip-card-back"><!-- back content --></div>\n' +
-      '</div>'
+      'In Step 6 Part A, the flip card needs three nested divs inside it:\n' +
+      '1. A div with class "flip-card-inner" (wraps everything)\n' +
+      '2. Inside that, a div with class "flip-card-front" (the visible side)\n' +
+      '3. Also inside flip-card-inner, a div with class "flip-card-back" (the hidden side)\n\n' +
+      'The front and back should be siblings inside flip-card-inner, not nested in each other.'
     );
   }
 });
@@ -318,9 +313,9 @@ test('The .flip-card rule should have perspective set', () => {
   if (!perspective) {
     throw new Error(
       'No perspective found on the ".flip-card" rule.\n\n' +
-      'In Step 6, add a .flip-card rule with:\n' +
-      '  perspective: 800px;\n\n' +
-      'This sets up the 3D viewing angle for the card flip.'
+      'In Step 6 Part B item 1, create a .flip-card rule and add the perspective\n' +
+      'property. This sets up the 3D viewing distance for the card flip.\n' +
+      'Check the description for the value.'
     );
   }
 });
@@ -335,9 +330,9 @@ test('The .flip-card-inner rule should have transform-style: preserve-3d', () =>
   if (transformStyle !== 'preserve-3d') {
     throw new Error(
       'The .flip-card-inner does not have transform-style: preserve-3d.\n\n' +
-      'In Step 6, add to the .flip-card-inner rule:\n' +
-      '  transform-style: preserve-3d;\n\n' +
-      'Without this, the front and back faces are flattened into 2D and the flip won\'t work.'
+      'In Step 6 Part B item 2, add transform-style: preserve-3d to the\n' +
+      '.flip-card-inner rule. Without this, the browser flattens everything\n' +
+      'into 2D and the flip effect breaks completely.'
     );
   }
 });
@@ -347,9 +342,10 @@ test('The .flip-card-inner rule should have a transition on transform', () => {
   if (!hasTransition) {
     throw new Error(
       'No transition found on the ".flip-card-inner" rule.\n\n' +
-      'In Step 6, add to the .flip-card-inner rule:\n' +
-      '  transition: transform 0.6s ease-in-out;\n\n' +
-      'This animates the flip rotation smoothly.'
+      'In Step 6 Part B item 2, add a transition property to .flip-card-inner\n' +
+      'that animates transform. This is what makes the flip animate smoothly\n' +
+      'instead of snapping instantly. Check the description for the duration\n' +
+      'and timing function.'
     );
   }
 });
@@ -359,10 +355,9 @@ test('The .flip-card:hover .flip-card-inner rule should have transform: rotateY(
   if (!transform || !transform.includes('rotateY')) {
     throw new Error(
       'No transform: rotateY(180deg) found on ".flip-card:hover .flip-card-inner".\n\n' +
-      'In Step 6, add a hover rule:\n' +
-      '.flip-card:hover .flip-card-inner {\n' +
-      '    transform: rotateY(180deg);\n' +
-      '}'
+      'In Step 6 Part B item 3, create a rule for .flip-card:hover .flip-card-inner\n' +
+      'and add a transform using rotateY() to rotate it 180 degrees.\n' +
+      'This is the hover trigger that flips the card around.'
     );
   }
 });
@@ -379,9 +374,10 @@ test('The .flip-card-front and .flip-card-back should have backface-visibility: 
   if (frontBfv !== 'hidden' || backBfv !== 'hidden') {
     throw new Error(
       'The flip card faces do not have backface-visibility: hidden.\n\n' +
-      'In Step 6, add to the .flip-card-front, .flip-card-back rule:\n' +
-      '  backface-visibility: hidden;\n\n' +
-      'This hides each face when it\'s rotated away from the viewer.'
+      'In Step 6 Part B item 4, create a grouped rule for both .flip-card-front\n' +
+      'and .flip-card-back. Add backface-visibility: hidden to it.\n' +
+      'This hides each face when it\'s rotated away from the viewer — without it,\n' +
+      'you\'d see a backwards mirror image bleeding through.'
     );
   }
 });
@@ -398,9 +394,9 @@ test('The .flip-card-back should have transform: rotateY(180deg)', () => {
   if (!hasRotate) {
     throw new Error(
       'The .flip-card-back does not have transform: rotateY(180deg).\n\n' +
-      'In Step 6, add to the .flip-card-back rule:\n' +
-      '  transform: rotateY(180deg);\n\n' +
-      'This pre-rotates the back face so it appears correctly when the card flips.'
+      'In Step 6 Part B item 6, add a transform to the .flip-card-back rule\n' +
+      'using rotateY() to pre-rotate it 180 degrees. The back face needs to\n' +
+      'start flipped so it faces the right way when the card rotates on hover.'
     );
   }
 });
@@ -414,13 +410,9 @@ test('A @media (prefers-reduced-motion: reduce) rule should exist with transitio
   if (!hasRule) {
     throw new Error(
       'No @media (prefers-reduced-motion: reduce) rule found with transition-duration.\n\n' +
-      'In Step 7, add at the end of your CSS:\n' +
-      '@media (prefers-reduced-motion: reduce) {\n' +
-      '    *, *::before, *::after {\n' +
-      '        transition-duration: 0.01ms !important;\n' +
-      '        animation-duration: 0.01ms !important;\n' +
-      '    }\n' +
-      '}\n\n' +
+      'In Step 7, add a @media (prefers-reduced-motion: reduce) block at the end\n' +
+      'of your CSS. Inside it, target all elements (*, *::before, *::after) and set\n' +
+      'transition-duration and animation-duration to nearly zero with !important.\n' +
       'This disables animations for users who prefer reduced motion.'
     );
   }
