@@ -284,6 +284,14 @@ test('The .programs-grid children should have the cardEntrance animation', () =>
 });
 
 test('The .programs-grid children should have animation-timeline: view()', () => {
+  // Safari and Firefox do not support scroll-driven animations yet —
+  // they drop animation-timeline from the CSSOM entirely, so this test
+  // cannot detect the property even when the student's CSS is correct.
+  const isChromium = /Chrome\//.test(navigator.userAgent) || /Edg\//.test(navigator.userAgent);
+  if (!isChromium) {
+    // Auto-pass in unsupported browsers so students aren't penalised
+    return;
+  }
   const hasTimeline = findRuleContainingCSSText('.programs-grid', 'animation-timeline') ||
                       findRuleContainingCSSText('.programs-grid', 'view()');
   if (!hasTimeline) {
@@ -291,23 +299,24 @@ test('The .programs-grid children should have animation-timeline: view()', () =>
       'No animation-timeline: view() found on the programs-grid children.\n\n' +
       'In Step 4, add animation-timeline set to view() in the .programs-grid > * rule.\n' +
       'This switches the animation from time-based to scroll-based, so the cards\n' +
-      'animate as they scroll into the viewport.\n\n' +
-      'Note: This test requires Chrome or Edge. Safari and Firefox may not support\n' +
-      'animation-timeline yet, which can cause this test to fail even with correct CSS.'
+      'animate as they scroll into the viewport.'
     );
   }
 });
 
 test('The .programs-grid children should have an animation-range set', () => {
+  // Same browser limitation as animation-timeline above
+  const isChromium = /Chrome\//.test(navigator.userAgent) || /Edg\//.test(navigator.userAgent);
+  if (!isChromium) {
+    return;
+  }
   const hasRange = findRuleContainingCSSText('.programs-grid', 'animation-range');
   if (!hasRange) {
     throw new Error(
       'No animation-range found on the programs-grid children.\n\n' +
       'In Step 4, add animation-range to the .programs-grid > * rule. Set it to\n' +
       'control when the entrance animation starts and finishes as each element\n' +
-      'scrolls into the viewport. Check the description for the exact values.\n\n' +
-      'Note: This test requires Chrome or Edge. Safari and Firefox may not support\n' +
-      'animation-range yet, which can cause this test to fail even with correct CSS.'
+      'scrolls into the viewport. Check the description for the exact values.'
     );
   }
 });

@@ -20,11 +20,11 @@ A **CSS animation** is proactive — it runs on its own schedule, starting autom
 
 ### How @keyframes Works
 
-Every animation starts with a `@keyframes` rule. You give your animation a name (like `fadeIn` or `bounce`) and list the styles the element should have at specific points during the animation.
+Every animation starts with a `@keyframes` rule. You give your animation a name (like `fadeIn` or `bounce`) and list the styles the element should have at specific points during the animation. The structure looks different from a normal CSS rule — instead of a selector, you write `@keyframes` followed by your chosen name, then curly braces. Inside those outer braces, you write inner blocks (like `from { ... }` and `to { ... }`) that each contain the CSS properties for that moment in the animation.
 
-The simplest form uses `from` (the start, same as 0%) and `to` (the end, same as 100%). For example, a fade-in animation would set opacity to 0 at the start and opacity to 1 at the end.
+The simplest form uses `from` (the start, same as 0%) and `to` (the end, same as 100%). For example, a fade-in animation would set opacity to 0 in the `from` block and opacity to 1 in the `to` block.
 
-For animations with more than two states, you use percentage values. You can add as many percentage stops as you need — 0%, 25%, 50%, 75%, 100%, or any values in between. The percentages represent progress through the animation, not clock time.
+For animations with more than two states, you use percentage values instead of `from`/`to`. You can add as many percentage stops as you need — 0%, 25%, 50%, 75%, 100%, or any values in between. The percentages represent progress through the animation, not clock time.
 
 ### The animation Shorthand
 
@@ -56,15 +56,15 @@ Other pseudo-elements style specific parts of existing content: `::first-letter`
 
 ### Step 1: Hero Entrance Animation
 
-When the page loads, the hero heading and paragraphs should slide up from below and fade into view — instead of appearing instantly.
+When the page loads, the hero heading and paragraphs should slide up from below and fade into view — instead of appearing instantly. This is your first animation, and you'll build it in three small pieces: define the animation sequence, then apply it to the heading, then apply it to the paragraphs.
 
-1. Below the `/* CSS Animations and Pseudo-Elements — add your CSS below */` comment, create a `@keyframes` rule. Name it `fadeSlideIn`. Inside it, define two stops: a `from` block that sets `opacity` to `0` and `transform` to `translateY(30px)`, and a `to` block that sets `opacity` to `1` and `transform` to `translateY(0)`.
+1. Below the `/* CSS Animations and Pseudo-Elements — add your CSS below */` comment, create a `@keyframes` rule named `fadeSlideIn`. Inside it, define two stops: a `from` block that sets `opacity` to `0` and `transform` to `translateY(30px)`, and a `to` block that sets `opacity` to `1` and `transform` to `translateY(0)`.
 
    This defines the animation sequence: the element starts invisible and shifted 30 pixels down, then fades in while sliding up to its natural position.
 
-2. Add a rule for `.hero-content h2`. Set its `animation` property using the shorthand: the name `fadeSlideIn`, a duration of `0.6s`, the timing function `ease-out`, and a fill mode of `both`.
+2. Add a rule for `.hero-content h2`. Set its `animation` property using the shorthand. The values go in this order, separated by spaces: the name `fadeSlideIn`, a duration of `0.6s`, the timing function `ease-out`, and the fill mode `both`.
 
-3. Add a rule for `.hero-content p`. Apply the same animation, but add a delay of `0.2s` between the duration and the fill mode. This makes the paragraphs wait a moment after the heading appears, creating a cascading entrance effect.
+3. Add a rule for `.hero-content p`. Apply the same animation with the same values, but add a delay of `0.2s` between the duration and the fill mode. Remember: when the browser sees two time values, the first is always the duration and the second is the delay. This makes the paragraphs wait a moment after the heading appears, creating a cascading entrance effect.
 
 > **Why `ease-out`?** The text should feel like it's arriving with momentum — it starts moving quickly and gently decelerates to a stop. This mimics how objects naturally slow down, making the entrance feel organic rather than mechanical.
 
@@ -82,7 +82,7 @@ Open your **HTML file** and find the `#welcome` section. This section contains a
 
 1. Create a `@keyframes` rule named `bounce`. In the `from` block, set `transform` to `translateY(0)`. In the `to` block, set `transform` to `translateY(12px)`. This defines a simple up-and-down motion of 12 pixels.
 
-2. Add a rule for `.scroll-arrow`. Set `text-align` to `center`, `font-size` to `2rem`, and `color` to `var(--ut-white)`. Then set `animation` to use `bounce` with a duration of `0.8s`, timing function `ease-in-out`, iteration count `infinite`, and direction `alternate`. Finally, add `padding-bottom` set to `1rem` so the arrow doesn't sit flush against the bottom edge.
+2. Add a rule for `.scroll-arrow`. First, set the basic styling: `text-align` to `center`, `font-size` to `2rem`, and `color` to `var(--ut-white)`. Then set `animation` using the shorthand — the values in order are: the name `bounce`, a duration of `0.8s`, the timing function `ease-in-out`, the iteration count `infinite`, and the direction `alternate`. Finally, add `padding-bottom` set to `1rem` so the arrow doesn't sit flush against the bottom edge.
 
    The `alternate` direction makes the arrow bounce up and down smoothly — it moves down on the first cycle, then back up on the next, creating a natural bouncing rhythm.
 
@@ -96,7 +96,7 @@ The submit button should have a continuously pulsing glow — a breathing effect
 
 1. Create a `@keyframes` rule named `pulse`. In the `from` block, set `box-shadow` to `0 0 4px rgba(186, 28, 33, 0.3)` — a small, subtle red glow. In the `to` block, set `box-shadow` to `0 0 20px rgba(186, 28, 33, 0.6)` — a larger, more intense glow. The numbers `186, 28, 33` are the Utah Tech red color expressed as RGB values, and the last number (`0.3` or `0.6`) controls the opacity of the shadow.
 
-2. Add a new rule for `button[type="submit"]`. Set `animation` to use the name `pulse`, a duration of `1.2s`, the timing function `ease-in-out`, an iteration count of `infinite`, and a direction of `alternate`.
+2. Add a new rule for `button[type="submit"]`. Set `animation` using the shorthand — the values in order are: the name `pulse`, a duration of `1.2s`, the timing function `ease-in-out`, an iteration count of `infinite`, and a direction of `alternate`.
 
    The `infinite` keyword makes the animation loop forever. The `alternate` direction means each cycle reverses: the glow grows (forward), then shrinks (backward), then grows again — creating a natural breathing rhythm.
 
@@ -109,6 +109,8 @@ The submit button should have a continuously pulsing glow — a breathing effect
 The campus photo and program cards should slide into view as the user scrolls down to them — not when the page first loads. This is called a **scroll-driven animation**: instead of playing on a timer, the animation's progress is tied to how far the element has entered the viewport.
 
 Traditionally, this required JavaScript. Modern CSS provides `animation-timeline: view()`, which tells the browser to drive the animation based on the element's visibility in the viewport instead of clock time. Each card enters the viewport at a slightly different scroll position, so they naturally stagger without needing explicit delays.
+
+> **Browser note:** Scroll-driven animations currently work in **Chrome** and **Edge** only. If you're using Safari or Firefox, the scroll effect won't be visible, but the tests will still pass — they automatically detect your browser and skip the unsupported checks. Your CSS is still correct; those browsers just haven't added support yet.
 
 1. Create a new `@keyframes` rule named `cardEntrance`. This time, use percentage-based stops instead of `from`/`to` — they work the same way (`0%` equals `from`, `100%` equals `to`), but percentages let you add intermediate stops later if needed. At `0%`, set `opacity` to `0` and `transform` to `translateY(30px)`. At `100%`, set `opacity` to `1` and `transform` to `translateY(0)`.
 
@@ -132,7 +134,13 @@ Right now, the nav links change color when you hover over them (from white to gr
 
 1. Add a rule for `nav a` and set `position` to `relative`. This is necessary because the underline pseudo-element will be positioned absolutely — and absolute positioning is relative to the nearest positioned ancestor. Without this, the underline would position itself relative to the page instead of the link.
 
-2. Add a rule for `nav a::after`. Inside it, set `content` to an empty string (two quotation marks with nothing between them). This is required — without it, the pseudo-element won't render at all. Set `position` to `absolute`, `bottom` to `-4px`, and `left` to `0`. Set `width` to `100%` and `height` to `2px`. Set `background` to `var(--ut-white)`. Set `transform` to `scaleX(0)` — this collapses the underline to zero width, making it invisible. Set `transform-origin` to `right`. Finally, set `transition` to animate `transform` over `0.3s` with `ease` timing.
+2. Add a rule for `nav a::after`. This rule has several properties, so take it one group at a time:
+   - **Make it exist:** Set `content` to an empty string (two quotation marks with nothing between them). This is required — without it, the pseudo-element won't render at all.
+   - **Position it:** Set `position` to `absolute`, `bottom` to `-4px`, and `left` to `0`.
+   - **Size it:** Set `width` to `100%` and `height` to `2px`.
+   - **Color it:** Set `background` to `var(--ut-white)`.
+   - **Hide it (for now):** Set `transform` to `scaleX(0)` — this collapses the underline to zero width, making it invisible. Set `transform-origin` to `right`.
+   - **Animate it:** Set `transition` to animate `transform` over `0.3s` with `ease` timing.
 
 3. Add a rule for `nav a:hover::after`. Set `transform` to `scaleX(1)` and `transform-origin` to `left`.
 
@@ -146,13 +154,13 @@ Right now, the nav links change color when you hover over them (from white to gr
 
 ### Step 6: Typographic Polish with Pseudo-Elements
 
-In this step, you'll add four small but impactful visual refinements using different pseudo-elements. Each one is just a few lines of CSS, but together they give the page a polished, professional feel.
+In this step, you'll add four small but impactful visual refinements using different pseudo-elements. Each part is only one or two lines of CSS, so this step goes quickly. Together, these details give the page a polished, professional feel.
 
 #### Part A: Drop Cap
 
 A **drop cap** is a large, decorative first letter at the start of a paragraph — a classic typographic technique used in books, magazines, and newspapers for centuries.
 
-1. Add a rule targeting `.hero-content p:first-of-type::first-letter`. This selector chains two things together: `p:first-of-type` picks the first paragraph inside `.hero-content`, and `::first-letter` targets only that paragraph's opening letter. Set `float` to `left`, `font-size` to `3.5rem`, `font-weight` to `700`, `line-height` to `0.85`, `margin-right` to `0.1em`, and `color` to `var(--ut-white)`.
+1. Add a rule targeting `.hero-content p:first-of-type::first-letter`. This selector might look complex, but read it from left to right: start inside `.hero-content`, find the `p:first-of-type` (the first paragraph), then target its `::first-letter`. Set `float` to `left`, `font-size` to `3.5rem`, `font-weight` to `700`, `line-height` to `0.85`, `margin-right` to `0.1em`, and `color` to `var(--ut-white)`.
 
    The `float: left` makes the surrounding text wrap around the large letter. The `line-height` of `0.85` pulls it up slightly so it aligns with the top of the text.
 
@@ -184,9 +192,9 @@ When a user selects (highlights) text on the page, the browser uses its default 
 
 ### Step 7: Reduced Motion (Comprehensive)
 
-In the previous lab, you added a `prefers-reduced-motion` media query that set `transition-duration` and `animation-duration` to near-zero. Now that you've added looping animations (the bouncing arrow and pulsing button), you also need to stop them from repeating.
+You're almost done! In the previous lab, you added a `prefers-reduced-motion` media query that set `transition-duration` and `animation-duration` to near-zero. Now that you've added looping animations (the bouncing arrow and pulsing button), you also need to stop them from repeating.
 
-1. Find the existing `@media (prefers-reduced-motion: reduce)` block at the bottom of the starter CSS. Inside the `*, *::before, *::after` rule, add `animation-iteration-count` set to `1 !important`.
+1. Find the existing `@media (prefers-reduced-motion: reduce)` block near the bottom of the starter CSS (above the comment where you've been adding your new rules). Inside the `*, *::before, *::after` rule that's already there, add one new property: `animation-iteration-count` set to `1 !important`.
 
    This ensures that looping animations like the bouncing arrow and pulsing button play only once instead of forever — effectively stopping them after a single cycle. Combined with the near-zero `animation-duration` that's already there, animations will appear to complete instantly and then stop.
 
