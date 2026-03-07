@@ -58,7 +58,7 @@ Other pseudo-elements style specific parts of existing content: `::first-letter`
 
 When the page loads, the hero heading and paragraphs should slide up from below and fade into view — instead of appearing instantly.
 
-1. At the top of your new CSS section, create a `@keyframes` rule. Name it `fadeSlideIn`. Inside it, define two stops: a `from` block that sets `opacity` to `0` and `transform` to `translateY(30px)`, and a `to` block that sets `opacity` to `1` and `transform` to `translateY(0)`.
+1. Below the `/* CSS Animations and Pseudo-Elements — add your CSS below */` comment, create a `@keyframes` rule. Name it `fadeSlideIn`. Inside it, define two stops: a `from` block that sets `opacity` to `0` and `transform` to `translateY(30px)`, and a `to` block that sets `opacity` to `1` and `transform` to `translateY(0)`.
 
    This defines the animation sequence: the element starts invisible and shifted 30 pixels down, then fades in while sliding up to its natural position.
 
@@ -76,7 +76,7 @@ You'll add a bouncing arrow at the bottom of the hero section that invites users
 
 #### Part A: HTML Change
 
-Open your **HTML file** and find the `#welcome` section. Inside it, after the closing `</div>` of the `.hero-overlay` div but still inside the `</section>` tag, add a new `<div>` with the class `scroll-arrow`. Set `aria-hidden` to `true` (this is purely decorative, so screen readers should skip it). For the content, type the HTML entity `&#8595;` — this renders a downward arrow character (↓).
+Open your **HTML file** and find the `#welcome` section. This section contains a single child: the `.hero-overlay` div (which itself contains `.hero-content`). After the `.hero-overlay`'s closing `</div>` tag — but still inside the `</section>` tag — add a new `<div>` with the class `scroll-arrow`. The arrow div is a sibling of `.hero-overlay`, not nested inside it. Set `aria-hidden` to `true` (this is purely decorative, so screen readers should skip it). For the content, type the HTML entity `&#8595;` — this renders a downward arrow character (↓).
 
 #### Part B: CSS Changes
 
@@ -86,7 +86,7 @@ Open your **HTML file** and find the `#welcome` section. Inside it, after the cl
 
    The `alternate` direction makes the arrow bounce up and down smoothly — it moves down on the first cycle, then back up on the next, creating a natural bouncing rhythm.
 
-> **Why `ease-in-out`?** The arrow should feel like a ball bouncing gently — slowing down at the top and bottom of each bounce, speeding up in the middle. `linear` would make it move at a constant speed, which looks mechanical. `ease-in-out` gives it a natural, organic feel.
+> **Why `ease-in-out`?** The arrow should slow down at the top and bottom of each bounce and speed up in the middle — like a ball at the peak of its arc. `linear` would move at a constant speed, which looks mechanical.
 
 **Try it out:** Save both files and refresh. At the bottom of the hero section, you should see a white downward arrow gently bouncing up and down. If it doesn't appear, check that your HTML entity `&#8595;` is inside the `.scroll-arrow` div and that the div is inside the `#welcome` section.
 
@@ -94,7 +94,7 @@ Open your **HTML file** and find the `#welcome` section. Inside it, after the cl
 
 The submit button should have a continuously pulsing glow — a breathing effect where a red shadow grows and shrinks rhythmically. This draws attention to the call-to-action without requiring any user interaction.
 
-1. Create a `@keyframes` rule named `pulse`. In the `from` block, set `box-shadow` to `0 0 4px rgba(186, 28, 33, 0.3)` — a small, subtle red glow. In the `to` block, set `box-shadow` to `0 0 20px rgba(186, 28, 33, 0.6)` — a larger, more intense glow.
+1. Create a `@keyframes` rule named `pulse`. In the `from` block, set `box-shadow` to `0 0 4px rgba(186, 28, 33, 0.3)` — a small, subtle red glow. In the `to` block, set `box-shadow` to `0 0 20px rgba(186, 28, 33, 0.6)` — a larger, more intense glow. The numbers `186, 28, 33` are the Utah Tech red color expressed as RGB values, and the last number (`0.3` or `0.6`) controls the opacity of the shadow.
 
 2. Add a new rule for `button[type="submit"]`. Set `animation` to use the name `pulse`, a duration of `1.2s`, the timing function `ease-in-out`, an iteration count of `infinite`, and a direction of `alternate`.
 
@@ -110,7 +110,7 @@ The campus photo and program cards should slide into view as the user scrolls do
 
 Traditionally, this required JavaScript. Modern CSS provides `animation-timeline: view()`, which tells the browser to drive the animation based on the element's visibility in the viewport instead of clock time. Each card enters the viewport at a slightly different scroll position, so they naturally stagger without needing explicit delays.
 
-1. Create a new `@keyframes` rule named `cardEntrance`. Use percentage-based stops: at `0%`, set `opacity` to `0` and `transform` to `translateY(30px)`. At `100%`, set `opacity` to `1` and `transform` to `translateY(0)`.
+1. Create a new `@keyframes` rule named `cardEntrance`. This time, use percentage-based stops instead of `from`/`to` — they work the same way (`0%` equals `from`, `100%` equals `to`), but percentages let you add intermediate stops later if needed. At `0%`, set `opacity` to `0` and `transform` to `translateY(30px)`. At `100%`, set `opacity` to `1` and `transform` to `translateY(0)`.
 
 2. Add a rule targeting `.programs-grid > *` (every direct child of the programs grid — the figure and all program cards). Set the `animation` property to use `cardEntrance` with a duration of `0.4s`, timing function `ease-out`, and fill mode `both`.
 
@@ -138,7 +138,7 @@ Right now, the nav links change color when you hover over them (from white to gr
 
    Here's what this does: in the default state, the underline is scaled to zero width from the right side. On hover, it scales to full width from the left side. This creates a smooth growing effect from left to right. When you move your cursor away, it shrinks back from left to right (because the default `transform-origin` is `right`).
 
-4. Find the existing `nav a:hover` rule in the starter CSS (it sets `color` to `#cccccc`). Change the color value to `var(--ut-white)` so the link stays white on hover — the underline is now the hover indicator instead of a color change.
+4. This sub-step is different — instead of adding a new rule, you'll **edit an existing rule** in the starter CSS above the comment line. Find the existing `nav a:hover` rule (it currently sets `color` to `#cccccc`). Change the color value to `var(--ut-white)` so the link stays white on hover — the underline is now the hover indicator instead of a color change.
 
 > **Why use `scaleX` instead of changing `width`?** Animating `width` forces the browser to recalculate the layout of surrounding elements on every frame — an expensive operation. Animating `transform: scaleX()` is handled entirely by the GPU, making it silky smooth even on slower devices. This is the same performance principle from the previous lab.
 
@@ -152,7 +152,7 @@ In this step, you'll add four small but impactful visual refinements using diffe
 
 A **drop cap** is a large, decorative first letter at the start of a paragraph — a classic typographic technique used in books, magazines, and newspapers for centuries.
 
-1. Add a rule targeting `.hero-content p:first-of-type::first-letter`. This selector means: find the first `<p>` element inside `.hero-content`, then target only its very first letter. Set `float` to `left`, `font-size` to `3.5rem`, `font-weight` to `700`, `line-height` to `0.85`, `margin-right` to `0.1em`, and `color` to `var(--ut-white)`.
+1. Add a rule targeting `.hero-content p:first-of-type::first-letter`. This selector chains two things together: `p:first-of-type` picks the first paragraph inside `.hero-content`, and `::first-letter` targets only that paragraph's opening letter. Set `float` to `left`, `font-size` to `3.5rem`, `font-weight` to `700`, `line-height` to `0.85`, `margin-right` to `0.1em`, and `color` to `var(--ut-white)`.
 
    The `float: left` makes the surrounding text wrap around the large letter. The `line-height` of `0.85` pulls it up slightly so it aligns with the top of the text.
 

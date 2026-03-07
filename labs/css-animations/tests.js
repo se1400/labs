@@ -343,6 +343,28 @@ test('The nav a::after rule should exist with content and transform: scaleX(0)',
   }
 });
 
+test('The nav a:hover color should be white (not gray)', () => {
+  const colorVal = getCSSPropertyValue('nav a:hover', 'color');
+  if (!colorVal) {
+    throw new Error(
+      'No nav a:hover rule with a color property found.\n\n' +
+      'In Step 5, the existing nav a:hover rule should still have a color set.\n' +
+      'Change the value from #cccccc to var(--ut-white).'
+    );
+  }
+  // #cccccc normalizes to rgb(204, 204, 204) in the CSSOM
+  const isGray = colorVal.includes('204') || colorVal.toLowerCase().includes('ccc');
+  if (isGray) {
+    throw new Error(
+      'The nav a:hover color is still set to gray (#cccccc).\n\n' +
+      'In Step 5 instruction 4, find the existing nav a:hover rule in the starter\n' +
+      'CSS (above the comment line) and change the color from #cccccc to\n' +
+      'var(--ut-white). The animated underline is now the hover indicator, so\n' +
+      'the link text should stay white on hover.'
+    );
+  }
+});
+
 test('The nav a:hover::after rule should have transform: scaleX(1)', () => {
   const hasHoverRule = findRuleContainingCSSText('nav a:hover::after', 'scaleX(1)') ||
                        findRuleContainingCSSText('nav a:hover::after', 'scaleX');
@@ -399,9 +421,10 @@ test('Part C: A ::placeholder rule should exist for form inputs', () => {
 });
 
 test('Part D: A ::selection rule should exist with custom colors', () => {
-  const hasRule = findRuleContainingCSSText('::selection', 'background') ||
-                  findRuleContainingCSSText('::selection', 'color');
-  if (!hasRule) {
+  const hasBg = findRuleContainingCSSText('::selection', 'background-color') ||
+                findRuleContainingCSSText('::selection', 'background:');
+  const hasColor = getCSSPropertyValue('::selection', 'color');
+  if (!hasBg && !hasColor) {
     throw new Error(
       'No ::selection rule found.\n\n' +
       'In Step 6 Part D, add a rule for ::selection and set a background-color\n' +
