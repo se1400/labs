@@ -135,38 +135,64 @@ test('The body grid-template-columns should be 1fr (single column) by default', 
   }
 });
 
-test('A @media (min-width: 768px) query should restore the multi-column body grid', () => {
-  const found = findMediaRule('min-width: 768px', 'body', 'grid-template-columns');
-  if (!found) {
+test('The body should not have column-gap in the base rule', () => {
+  const value = getCSSPropertyValue('body', 'column-gap');
+  if (value && value !== 'normal' && value !== '0px') {
     throw new Error(
-      'No @media (min-width: 768px) rule found with a body grid-template-columns.\n\n' +
-      'Below the comment line, add:\n' +
-      '@media (min-width: 768px) { body { grid-template-columns: ... } }\n' +
-      'This restores the multi-column layout for tablet and desktop screens.'
+      'The body base rule still has column-gap.\n\n' +
+      'In Step 1, remove column-gap from the body rule — it is not needed\n' +
+      'for a single-column layout. The column-gap will be restored inside\n' +
+      'the media query for desktop.'
     );
   }
 });
 
-test('A @media (min-width: 768px) query should place main and sidebar in their grid columns', () => {
-  const mainFound = findMediaRule('min-width: 768px', 'main', 'grid-column');
-  const sidebarFound = findMediaRule('min-width: 768px', '.sidebar', 'grid-column');
-  if (!mainFound || !sidebarFound) {
+test('The main element should not have grid-column in the base rule', () => {
+  const value = getCSSPropertyValue('main', 'grid-column');
+  if (value && value !== 'auto') {
     throw new Error(
-      'Inside your @media (min-width: 768px) query, add rules for main and .sidebar\n' +
-      'that assign them to specific grid columns. On mobile (single column), they\n' +
-      'flow naturally. On tablet+, they need explicit grid-column assignments to\n' +
-      'sit side by side.'
+      'The main element still has grid-column in the base rule.\n\n' +
+      'In Step 1, remove grid-column from the main rule.\n' +
+      'On mobile (single column), main should just flow naturally.\n' +
+      'The grid placement will be restored inside the media query.'
     );
   }
 });
 
-test('A @media (min-width: 1024px) query should exist for large desktop', () => {
+test('The .sidebar should not have grid-column in the base rule', () => {
+  const value = getCSSPropertyValue('.sidebar', 'grid-column');
+  if (value && value !== 'auto') {
+    throw new Error(
+      'The .sidebar still has grid-column in the base rule.\n\n' +
+      'In Step 1, remove grid-column: 3 from the .sidebar rule.\n' +
+      'On mobile (single column), the sidebar should flow naturally\n' +
+      'below the main content. The grid placement will be restored\n' +
+      'inside the media query for desktop.'
+    );
+  }
+});
+
+test('A @media (min-width: 1024px) query should restore the multi-column body grid', () => {
   const found = findMediaRule('min-width: 1024px', 'body', 'grid-template-columns');
   if (!found) {
     throw new Error(
-      'No @media (min-width: 1024px) rule found for the body grid.\n\n' +
-      'Add a second media query for large screens that increases the main column\n' +
-      'minimum width: grid-template-columns: minmax(0, 1fr) minmax(640px, 1fr) 280px minmax(0, 1fr)'
+      'No @media (min-width: 1024px) rule found with a body grid-template-columns.\n\n' +
+      'Below the comment line, add:\n' +
+      '@media (min-width: 1024px) { body { grid-template-columns: ... } }\n' +
+      'This restores the multi-column layout for desktop screens.'
+    );
+  }
+});
+
+test('The @media (min-width: 1024px) query should place main and sidebar in their grid columns', () => {
+  const mainFound = findMediaRule('min-width: 1024px', 'main', 'grid-column');
+  const sidebarFound = findMediaRule('min-width: 1024px', '.sidebar', 'grid-column');
+  if (!mainFound || !sidebarFound) {
+    throw new Error(
+      'Inside your @media (min-width: 1024px) query, add rules for main and .sidebar\n' +
+      'that assign them to specific grid columns. On mobile (single column), they\n' +
+      'flow naturally. On desktop, they need explicit grid-column assignments to\n' +
+      'sit side by side.'
     );
   }
 });
@@ -187,6 +213,20 @@ test('The .menu-toggle button should be visible on mobile (not display: none by 
   }
 });
 
+test('The .menu-toggle span elements should be styled as hamburger lines', () => {
+  const width = getCSSPropertyValue('.menu-toggle span', 'width');
+  const bg = getCSSPropertyValue('.menu-toggle span', 'background');
+  const bgColor = getCSSPropertyValue('.menu-toggle span', 'background-color');
+  if (!width || (!bg && !bgColor)) {
+    throw new Error(
+      'The .menu-toggle span elements need styling to look like hamburger lines.\n\n' +
+      'In Step 2, add a rule for .menu-toggle span with:\n' +
+      '  display: block, width: 24px, height: 2px\n' +
+      '  background: var(--ut-white), border-radius: 2px'
+    );
+  }
+});
+
 test('The nav should be hidden on mobile by default', () => {
   const value = getCSSPropertyValue('nav', 'display');
   if (!value || value !== 'none') {
@@ -203,34 +243,43 @@ test('The nav.nav-open rule should display the nav as a flex column', () => {
   if (!value || value !== 'flex') {
     throw new Error(
       'No nav.nav-open rule found with display: flex.\n\n' +
-      'Add a rule for nav.nav-open that sets display to flex and\n' +
-      'flex-direction to column. This shows the nav links in a\n' +
-      'vertical stack when the hamburger button is toggled.'
+      'Add a rule for nav.nav-open that sets display to flex.\n' +
+      'This shows the nav links when the hamburger button is toggled.'
     );
   }
 });
 
 test('The nav should be visible and horizontal on desktop (inside a media query)', () => {
-  const navFound = findMediaRule('min-width: 768px', 'nav', 'display');
-  const toggleFound = findMediaRule('min-width: 768px', '.menu-toggle', 'display');
+  const navFound = findMediaRule('min-width: 1024px', 'nav', 'display');
+  const toggleFound = findMediaRule('min-width: 1024px', '.menu-toggle', 'display');
   if (!navFound) {
     throw new Error(
-      'Inside your @media (min-width: 768px) query, add a rule for nav\n' +
+      'Inside your @media (min-width: 1024px) query, add a rule for nav\n' +
       'that sets display to flex (always visible) and flex-direction to row.\n' +
       'This overrides the mobile hidden state.'
     );
   }
   if (!toggleFound) {
     throw new Error(
-      'Inside your @media (min-width: 768px) query, add a rule for\n' +
+      'Inside your @media (min-width: 1024px) query, add a rule for\n' +
       '.menu-toggle that sets display to none. The hamburger button\n' +
       'should only be visible on mobile.'
     );
   }
 });
 
+test('The .menu-toggle should be in the full-width spanning selector', () => {
+  const found = findRuleContainingCSSText('.menu-toggle', 'grid-column');
+  if (!found) {
+    throw new Error(
+      'The .menu-toggle is not in a rule with grid-column: 1 / -1.\n\n' +
+      'In Step 2, add .menu-toggle to the existing full-width selector:\n' +
+      'header, .menu-toggle, nav, #welcome, footer { grid-column: 1 / -1; }'
+    );
+  }
+});
+
 test('The hamburger toggle JS should be connected (starter.js)', () => {
-  const script = document.querySelector('script[src="starter.js"]');
   const menuToggle = document.querySelector('.menu-toggle');
   const nav = document.querySelector('#main-nav');
   if (!menuToggle) {
@@ -318,6 +367,7 @@ test('The --space-fluid custom property should be defined with clamp()', () => {
 
 test('The .panel should use clamp() for padding', () => {
   const usesClampPadding = propertyUsesClamp('.panel', 'padding') ||
+    propertyUsesClamp('.panel', 'padding-top') ||
     propertyUsesClamp('.panel', 'padding-block') ||
     propertyUsesClamp('.panel', 'padding-inline');
   if (!usesClampPadding) {
@@ -326,6 +376,24 @@ test('The .panel should use clamp() for padding', () => {
       'In Step 3, update the .panel rule to use fluid padding with clamp().\n' +
       'For example: padding: clamp(0.75rem, 3vw, 1.5rem)\n' +
       'This makes the panel padding scale with the viewport width.'
+    );
+  }
+});
+
+test('The main and sidebar should use var(--space-fluid) for padding', () => {
+  const mainPadding = getCSSPropertyValue('main', 'padding');
+  const sidebarPadding = getCSSPropertyValue('.sidebar', 'padding');
+  // Also check if student used a combined "main, .sidebar" rule
+  const combinedPadding = getCSSPropertyValue('main, .sidebar', 'padding');
+  const fluidInCombined = combinedPadding && combinedPadding.includes('--space-fluid');
+  const mainUsesFluid = (mainPadding && mainPadding.includes('--space-fluid')) || fluidInCombined;
+  const sidebarUsesFluid = (sidebarPadding && sidebarPadding.includes('--space-fluid')) || fluidInCombined;
+  if (!mainUsesFluid || !sidebarUsesFluid) {
+    throw new Error(
+      'The main and .sidebar should use var(--space-fluid) for padding.\n\n' +
+      'In Step 3, update both rules to use your fluid custom property:\n' +
+      '  main { padding: var(--space-fluid); }\n' +
+      '  .sidebar { padding: var(--space-fluid); }'
     );
   }
 });
@@ -340,37 +408,35 @@ test('The .programs-grid should use auto-fill in grid-template-columns', () => {
     throw new Error(
       'The .programs-grid does not use auto-fill in grid-template-columns.\n\n' +
       'In Step 4, change the existing .programs-grid rule from auto-fit to auto-fill\n' +
-      'and increase the minimum from 180px to 250px:\n' +
-      'grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr))\n\n' +
-      'The min(250px, 100%) ensures cards never overflow on narrow screens.'
-    );
-  }
-});
-
-test('The .programs-grid should use a minimum of at least 220px in minmax()', () => {
-  const value = getCSSPropertyValue('.programs-grid', 'grid-template-columns');
-  if (!value) {
-    throw new Error('No grid-template-columns found on .programs-grid.');
-  }
-  // Extract the pixel value from minmax(...)
-  const minmaxMatch = value.match(/minmax\(\s*(?:min\()?\s*(\d+)px/);
-  if (!minmaxMatch || parseInt(minmaxMatch[1]) < 220) {
-    throw new Error(
-      'The .programs-grid minmax() minimum is too small.\n\n' +
-      'Increase the minimum column width to at least 250px so cards are readable\n' +
-      'on mobile. For example:\n' +
-      'grid-template-columns: repeat(auto-fill, minmax(min(250px, 100%), 1fr))'
+      'and update the minimum:\n' +
+      'grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr))\n\n' +
+      'The min(200px, 100%) ensures cards never overflow on narrow screens.'
     );
   }
 });
 
 test('The .programs-grid should use var(--space-fluid) for gap', () => {
-  const value = getCSSPropertyValue('.programs-grid', 'gap');
-  if (!value || !value.includes('--space-fluid')) {
+  const gap = getCSSPropertyValue('.programs-grid', 'gap');
+  const rowGap = getCSSPropertyValue('.programs-grid', 'row-gap');
+  const usesFluid = (gap && gap.includes('--space-fluid')) ||
+    (rowGap && rowGap.includes('--space-fluid'));
+  if (!usesFluid) {
     throw new Error(
       'The .programs-grid gap should use var(--space-fluid).\n\n' +
       'In Step 4, change the gap from a fixed value to var(--space-fluid)\n' +
       'so the grid spacing scales fluidly with the viewport.'
+    );
+  }
+});
+
+test('The .program-card should not have aspect-ratio: 1', () => {
+  const value = getCSSPropertyValue('.program-card', 'aspect-ratio');
+  if (value && (value === '1 / 1' || value === '1')) {
+    throw new Error(
+      'The .program-card still has aspect-ratio: 1 (square cards).\n\n' +
+      'In Step 4, remove aspect-ratio: 1 from the .program-card rule.\n' +
+      'On mobile, square cards are too tall for their content. Let the\n' +
+      'cards size naturally to fit their content instead.'
     );
   }
 });
@@ -384,9 +450,9 @@ test('The #welcome hero should use dvh for min-height', () => {
   if (!value || !value.includes('dvh')) {
     throw new Error(
       'The #welcome section does not use dvh for min-height.\n\n' +
-      'In Step 5, add min-height: 100dvh to the #welcome rule (with 100vh\n' +
-      'as a fallback above it). Dynamic viewport height (dvh) adjusts when\n' +
-      'mobile browser chrome appears and disappears.'
+      'In Step 5, add min-height with a dvh value to the #welcome rule\n' +
+      '(with a vh fallback above it). Dynamic viewport height (dvh) adjusts\n' +
+      'when mobile browser chrome appears and disappears.'
     );
   }
 });
@@ -403,6 +469,19 @@ test('An img rule should set max-width: 100% as a global reset', () => {
   }
 });
 
+test('The header img should have a max-width to prevent oversized logo on mobile', () => {
+  // Check computed style — the global img max-width: 100% helps, but
+  // header img should also be explicitly constrained
+  const value = getCSSPropertyValue('header img', 'max-width');
+  if (!value) {
+    throw new Error(
+      'The header img does not have a max-width set.\n\n' +
+      'In Step 5, add a max-width to the header img rule (e.g., max-width: 120px)\n' +
+      'so the logo does not take up too much space on mobile screens.'
+    );
+  }
+});
+
 test('The video element should be responsive (max-width: 100%)', () => {
   const value = getCSSPropertyValue('video', 'max-width');
   if (!value || value !== '100%') {
@@ -411,6 +490,18 @@ test('The video element should be responsive (max-width: 100%)', () => {
       'In Step 5, add a rule for video that sets max-width to 100% and\n' +
       'height to auto. The hero video currently has a fixed width="320"\n' +
       'attribute — max-width: 100% ensures it shrinks on narrow screens.'
+    );
+  }
+});
+
+test('The #welcome should not have grid-template-columns: subgrid in the base rule', () => {
+  const value = getCSSPropertyValue('#welcome', 'grid-template-columns');
+  if (value && value.includes('subgrid')) {
+    throw new Error(
+      'The #welcome section still has grid-template-columns: subgrid in the base rule.\n\n' +
+      'In Step 5, remove grid-template-columns: subgrid from the #welcome rule.\n' +
+      'On mobile (single column), subgrid inherits only one track. The subgrid\n' +
+      'layout will be restored inside the media query for desktop.'
     );
   }
 });
@@ -427,6 +518,21 @@ test('The campus figure image should use object-fit: cover', () => {
   }
 });
 
+test('The hero subgrid should be restored inside the desktop media query', () => {
+  const welcomeSubgrid = findMediaRule('min-width: 1024px', '#welcome', 'subgrid');
+  const heroContent = findMediaRule('min-width: 1024px', '.hero-content', 'grid-column');
+  if (!welcomeSubgrid || !heroContent) {
+    throw new Error(
+      'The hero subgrid layout is not restored in the desktop media query.\n\n' +
+      'Inside your @media (min-width: 1024px) query, add rules to restore\n' +
+      'the hero layout:\n' +
+      '  #welcome { display: grid; grid-template-columns: subgrid; align-items: end; }\n' +
+      '  .hero-overlay { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; }\n' +
+      '  .hero-content { grid-column: 2 / 4; }'
+    );
+  }
+});
+
 // ============================================
 // Step 6: Container Queries
 // ============================================
@@ -436,26 +542,37 @@ test('The .programs-grid should have container-type: inline-size', () => {
   if (!value || value !== 'inline-size') {
     throw new Error(
       'The .programs-grid does not have container-type: inline-size.\n\n' +
-      'In Step 6, add container-type: inline-size to the .programs-grid rule.\n' +
+      'In Step 4, add container-type: inline-size to the .programs-grid rule.\n' +
       'This declares it as a containment context, allowing child elements to\n' +
       'respond to the grid\'s width instead of the viewport width.'
     );
   }
 });
 
-test('A @container query should exist that targets program cards', () => {
-  const found = findContainerRule('min-width', '.program-card', null) ||
-    findContainerRule('min-width', '.featured', null);
+test('A @container query should exist that targets the featured card', () => {
+  const found = findContainerRule('min-width', '.featured', null);
   if (!found) {
     throw new Error(
-      'No @container query found targeting .program-card or .featured.\n\n' +
-      'In Step 6, add a @container query that changes card layout when\n' +
-      'the container is wide enough. For example:\n' +
-      '@container (min-width: 500px) {\n' +
-      '  .program-card { aspect-ratio: auto; }\n' +
+      'No @container query found targeting .featured.\n\n' +
+      'In Step 6, add a @container query that changes the featured card\n' +
+      'layout when the container is wide enough. For example:\n' +
+      '@container (min-width: 450px) {\n' +
       '  .featured { grid-column: span 2; }\n' +
       '}\n\n' +
-      'The cards will adapt based on the programs-grid width, not the viewport.'
+      'The featured card will span two columns only when the grid is wide enough.'
+    );
+  }
+});
+
+test('The .featured card should not use grid-column: span 2 in the base rule', () => {
+  const value = getCSSPropertyValue('.featured', 'grid-column');
+  if (value && value.includes('span 2')) {
+    throw new Error(
+      'The .featured card has grid-column: span 2 in the base (non-query) rule.\n\n' +
+      'On a single-column mobile grid, span 2 causes the card to overflow.\n' +
+      'In Step 6, remove grid-column: span 2 from the base .featured rule and\n' +
+      'move it inside your @container query so it only spans 2 columns when\n' +
+      'the grid is wide enough.'
     );
   }
 });
@@ -480,19 +597,6 @@ test('The table should be wrapped in a .table-wrapper div with overflow-x: auto'
       'Add a CSS rule for .table-wrapper with overflow-x set to auto.\n' +
       'This allows the table to scroll horizontally when it overflows\n' +
       'its container on narrow screens.'
-    );
-  }
-});
-
-test('The .featured card should not use grid-column: span 2 at mobile (base rule)', () => {
-  const value = getCSSPropertyValue('.featured', 'grid-column');
-  if (value && value.includes('span 2')) {
-    throw new Error(
-      'The .featured card has grid-column: span 2 in the base (non-media-query) rule.\n\n' +
-      'On a single-column mobile grid, span 2 causes the card to overflow.\n' +
-      'In Step 7, remove grid-column: span 2 from the base .featured rule and\n' +
-      'move it inside your @container query so it only spans 2 columns when\n' +
-      'the grid is wide enough.'
     );
   }
 });

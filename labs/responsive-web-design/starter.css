@@ -255,6 +255,7 @@ tbody tr:nth-child(odd) {
 pre {
     margin: 0;
     font-family: inherit;
+    white-space: pre-wrap;
 }
 
 /* Link styling - LoVe HAte order */
@@ -319,10 +320,11 @@ form {
 fieldset {
     border: 1px solid var(--ut-light-gray);
     border-radius: 0.25rem;
-    padding: 1rem 1.5rem;
+    padding: 1rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    min-width: 0;
 }
 
 legend {
@@ -434,6 +436,7 @@ footer img:hover {
     border: none;
     box-shadow: none;
     padding: 0;
+    min-height: 280px;
 }
 
 .flip-card-inner {
@@ -459,6 +462,7 @@ footer img:hover {
     border-top: 3px solid var(--ut-red);
     border-radius: 0 0 0.5rem 0.5rem;
     padding: 1rem;
+    overflow: hidden;
 }
 
 .flip-card-front {
