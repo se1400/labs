@@ -83,7 +83,7 @@ const findContainerRule = (conditionSubstring, selectorSubstring, propertySubstr
       for (let rule of sheet.cssRules) {
         // CSSContainerRule type number is 17 in Chrome
         if ((rule instanceof CSSContainerRule || rule.type === 17) &&
-            rule.conditionText && rule.conditionText.includes(conditionSubstring)) {
+            rule.conditionText && normalizeConditionText(rule.conditionText).includes(conditionSubstring)) {
           if (!selectorSubstring && !propertySubstring) return true;
           for (let innerRule of rule.cssRules) {
             const selectorMatch = !selectorSubstring || (innerRule.selectorText && innerRule.selectorText.includes(selectorSubstring));
