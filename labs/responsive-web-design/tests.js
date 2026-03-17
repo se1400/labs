@@ -54,8 +54,19 @@ const findMediaRule = (mediaSubstring, selectorSubstring, propertySubstring) => 
           if (!selectorSubstring && !propertySubstring) return true;
           for (let innerRule of rule.cssRules) {
             const selectorMatch = !selectorSubstring || (innerRule.selectorText && innerRule.selectorText.includes(selectorSubstring));
-            const propertyMatch = !propertySubstring || (innerRule.cssText && innerRule.cssText.includes(propertySubstring));
-            if (selectorMatch && propertyMatch) return true;
+            if (!selectorMatch) continue;
+            if (!propertySubstring) return true;
+            // Primary: check cssText for the property substring
+            if (innerRule.cssText && innerRule.cssText.includes(propertySubstring)) return true;
+            // Fallback: Chrome may serialize shorthands differently
+            // (e.g., grid-column + grid-row → grid-area in cssText)
+            if (innerRule.style) {
+              const val = innerRule.style.getPropertyValue(propertySubstring);
+              if (val && val.trim()) return true;
+              // Also check longhand variant (e.g., grid-column → grid-column-start)
+              const startVal = innerRule.style.getPropertyValue(propertySubstring + '-start');
+              if (startVal && startVal.trim()) return true;
+            }
           }
         }
       }
@@ -76,8 +87,15 @@ const findContainerRule = (conditionSubstring, selectorSubstring, propertySubstr
           if (!selectorSubstring && !propertySubstring) return true;
           for (let innerRule of rule.cssRules) {
             const selectorMatch = !selectorSubstring || (innerRule.selectorText && innerRule.selectorText.includes(selectorSubstring));
-            const propertyMatch = !propertySubstring || (innerRule.cssText && innerRule.cssText.includes(propertySubstring));
-            if (selectorMatch && propertyMatch) return true;
+            if (!selectorMatch) continue;
+            if (!propertySubstring) return true;
+            if (innerRule.cssText && innerRule.cssText.includes(propertySubstring)) return true;
+            if (innerRule.style) {
+              const val = innerRule.style.getPropertyValue(propertySubstring);
+              if (val && val.trim()) return true;
+              const startVal = innerRule.style.getPropertyValue(propertySubstring + '-start');
+              if (startVal && startVal.trim()) return true;
+            }
           }
         }
       }
