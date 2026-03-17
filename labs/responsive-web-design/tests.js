@@ -36,14 +36,21 @@ const findRuleContainingCSSText = (selectorSubstring, propertySubstring) => {
   return false;
 };
 
+// Helper: Normalize media condition text so both legacy and modern syntax match.
+// Chrome 104+ normalizes (min-width: Xpx) to (width >= Xpx) in the CSSOM.
+const normalizeConditionText = (ct) =>
+  ct.replace(/\(width\s*>=\s*/g, '(min-width: ')
+    .replace(/\(width\s*<=\s*/g, '(max-width: ');
+
 // Helper: Find a @media rule containing the given media text substring,
 // then optionally check if any rule inside it matches the selector and property.
 const findMediaRule = (mediaSubstring, selectorSubstring, propertySubstring) => {
   for (let sheet of document.styleSheets) {
     try {
       for (let rule of sheet.cssRules) {
-        if (rule.type === CSSRule.MEDIA_RULE &&
-            rule.conditionText && rule.conditionText.includes(mediaSubstring)) {
+        if (rule.type === CSSRule.MEDIA_RULE && rule.conditionText) {
+          const ct = normalizeConditionText(rule.conditionText);
+          if (!ct.includes(mediaSubstring)) continue;
           if (!selectorSubstring && !propertySubstring) return true;
           for (let innerRule of rule.cssRules) {
             const selectorMatch = !selectorSubstring || (innerRule.selectorText && innerRule.selectorText.includes(selectorSubstring));
