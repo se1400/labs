@@ -219,7 +219,7 @@ body.resizing .playground iframe {
   width: 4px;
   height: 32px;
   border-radius: 2px;
-  background: var(--border-color);
+  background: hsl(214, 40%, calc(50% * 1.6));
   transition: background 0.15s ease, height 0.15s ease;
 }
 
