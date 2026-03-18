@@ -203,6 +203,9 @@ const MODERN_CSS_PATTERNS = [
     // CSS custom properties (variables) — validator can't statically check these, always fires
     /dynamic nature.*CSS variables/i,
     /CSS variables are currently not statically checked/i,
+    // background-clip: text (CSS Backgrounds Level 4) and its required webkit prefix
+    /\bbackground-clip\b.*text.*deprecated/i,
+    /-webkit-background-clip.*vendor extension/i,
     // anchor positioning
     /\banchor\b.*is not a/i,
     // :has(), :is(), :where()
