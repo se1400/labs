@@ -245,7 +245,7 @@ function validateJS(jsCode) {
     try {
         // Wrap code in try-catch to handle various syntax patterns
         // This handles most common JavaScript syntax
-        const wrappedCode = `(function() { ${jsCode} })();`;
+        const wrappedCode = `(function() {\n${jsCode}\n})();`;
         new Function(wrappedCode);
 
         return {
