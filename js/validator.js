@@ -160,14 +160,63 @@ async function validateCSS(cssCode) {
             });
         }
 
+        // The W3C CSS validator (Jigsaw) lags behind modern CSS specs.
+        // Filter known false positives so valid cutting-edge CSS isn't marked invalid.
+        const filtered = filterModernCSSFalsePositives(errors);
+
         return {
-            valid: errors.filter(e => e.type === 'error').length === 0,
-            errors
+            valid: filtered.filter(e => e.type === 'error').length === 0,
+            errors: filtered
         };
     } catch (error) {
         console.error('CSS validation request failed:', error);
         throw new Error('W3C CSS validator is not available. Please check your internet connection.');
     }
+}
+
+/**
+ * Known modern CSS features the W3C Jigsaw validator doesn't recognize yet.
+ * Errors matching these patterns are demoted to informational notes rather
+ * than treated as real errors, so valid cutting-edge code isn't flagged.
+ */
+const MODERN_CSS_PATTERNS = [
+    // CSS Grid Level 2
+    /\bsubgrid\b/i,
+    // Cascade layers
+    /@layer\b/i,
+    /\blayer\b.*is not a.*value/i,
+    // Container queries
+    /@container\b/i,
+    /\bcontainer(-type|-name)?\b.*is not/i,
+    // CSS nesting
+    /\bnesting\b/i,
+    // Logical properties
+    /\b(inline|block)-(start|end|size)\b/i,
+    // Color functions
+    /\bcolor-mix\b/i,
+    /\boklab\b|\boklch\b|\blch\b|\blab\b/i,
+    // Scroll-driven animations
+    /\banimation-timeline\b/i,
+    /\bscroll-timeline\b/i,
+    /\bview-timeline\b/i,
+    // anchor positioning
+    /\banchor\b.*is not a/i,
+    // :has(), :is(), :where()
+    /":has".*not.*pseudo/i,
+];
+
+function filterModernCSSFalsePositives(errors) {
+    return errors.map(err => {
+        const isKnownFalsePositive = MODERN_CSS_PATTERNS.some(pattern => pattern.test(err.message));
+        if (isKnownFalsePositive) {
+            return {
+                ...err,
+                type: 'info',
+                message: `${err.message} (Note: this feature is valid modern CSS — the W3C validator hasn't caught up yet)`
+            };
+        }
+        return err;
+    });
 }
 
 /**

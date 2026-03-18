@@ -711,6 +711,11 @@ body.resizing .playground iframe {
   border-left-color: var(--accent-yellow);
 }
 
+.validation-issue.info {
+  border-left-color: var(--text-muted);
+  opacity: 0.75;
+}
+
 .validation-issue-type {
   font-weight: 600;
   color: var(--test-fail);
@@ -720,6 +725,10 @@ body.resizing .playground iframe {
 
 .validation-issue-type.warning {
   color: var(--accent-yellow);
+}
+
+.validation-issue-type.info {
+  color: var(--text-muted);
 }
 
 .validation-issue-message {

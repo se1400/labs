@@ -153,10 +153,11 @@ function createValidationSection(language, validation) {
 
     const title = document.createElement('h3');
 
-    if (validation.valid && validation.errors.length === 0) {
+    const realIssues = validation.errors.filter(e => e.type !== 'info');
+    if (validation.valid && realIssues.length === 0) {
         title.innerHTML = `<span class="validation-success">✓</span> ${language} - No Issues Found`;
     } else {
-        title.innerHTML = `<span class="validation-error">✗</span> ${language} - ${validation.errors.length} Issue(s) Found`;
+        title.innerHTML = `<span class="validation-error">✗</span> ${language} - ${realIssues.length} Issue(s) Found`;
     }
 
     section.appendChild(title);
@@ -169,6 +170,8 @@ function createValidationSection(language, validation) {
 
             if (error.type === 'warning') {
                 issueEl.classList.add('warning');
+            } else if (error.type === 'info') {
+                issueEl.classList.add('info');
             }
 
             const typeEl = document.createElement('div');
