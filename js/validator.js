@@ -197,8 +197,12 @@ const MODERN_CSS_PATTERNS = [
     /\boklab\b|\boklch\b|\blch\b|\blab\b/i,
     // Scroll-driven animations
     /\banimation-timeline\b/i,
+    /\banimation-range\b/i,
     /\bscroll-timeline\b/i,
     /\bview-timeline\b/i,
+    // CSS custom properties (variables) — validator can't statically check these, always fires
+    /dynamic nature.*CSS variables/i,
+    /CSS variables are currently not statically checked/i,
     // anchor positioning
     /\banchor\b.*is not a/i,
     // :has(), :is(), :where()
