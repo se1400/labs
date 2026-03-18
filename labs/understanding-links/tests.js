@@ -332,7 +332,8 @@ test('Step 5: The email link should point to admissions@utahtech.edu with a subj
     throw new Error(
       'The email link is missing a subject parameter.\n\n' +
       'Add ?subject= after the email address to pre-fill the subject line.\n' +
-      'For example: mailto:admissions@utahtech.edu?subject=Campus Tour Question'
+      'For example: mailto:admissions@utahtech.edu?subject=Campus%20Tour%20Question\n' +
+      '(Spaces in URLs must be encoded as %20)'
     );
   }
 

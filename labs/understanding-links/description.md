@@ -44,9 +44,9 @@ For example, if the number were (801) 555-1234, the href would be <code>tel:+180
 
 ### Part 4: Email Link
 
-Email links use <code>mailto:</code> in the <code>href</code>. Clicking one opens the user's default email client with a new message. You can pre-fill the subject line by adding <code>?subject=Your Subject Here</code> after the email address (spaces in the subject are OK).
+Email links use <code>mailto:</code> in the <code>href</code>. Clicking one opens the user's default email client with a new message. You can pre-fill the subject line by adding <code>?subject=Your%20Subject%20Here</code> after the email address. Spaces in URLs must be encoded as <code>%20</code>.
 
-For example: <code>href="mailto:info@example.com?subject=Hello There"</code>
+For example: <code>href="mailto:info@example.com?subject=Hello%20There"</code>
 
 5. In the same "Visit Campus" aside, add a new line after the phone number. You'll need a <code>&lt;br&gt;</code> after the phone number link to create the line break (you've used <code>&lt;br&gt;</code> in previous labs). On the new line, write "Email us at " followed by a link. The link's <code>href</code> should use <code>mailto:</code> pointing to <code>admissions@utahtech.edu</code> with the subject "Campus Tour Question". The visible link text should show the email address.
 
