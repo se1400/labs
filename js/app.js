@@ -8,6 +8,7 @@ import * as labLoader from './lab-loader.js';
 import * as livecodes from './livecodes-manager.js';
 import * as testRunner from './test-runner.js';
 import * as validator from './validator.js';
+import * as resizeHandle from './resize-handle.js';
 
 // Store current lab data globally
 let currentLabData = null;
@@ -309,6 +310,9 @@ async function startApp() {
             });
         }
 
+        // Initialize resize handle (no SDK dependency)
+        resizeHandle.init();
+
         // Wait for SDK
         await waitForReady();
 
@@ -332,5 +336,6 @@ window.app = {
     labLoader,
     livecodes,
     testRunner,
-    validator
+    validator,
+    resizeHandle
 };
