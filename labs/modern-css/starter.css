@@ -1,0 +1,729 @@
+/* CSS Custom Properties */
+:root {
+    --ut-navy: #003058;
+    --ut-red: #BA1C21;
+    --ut-white: #ffffff;
+    --ut-light-gray: #f2f2f2;
+    --ut-panel-gray: #f7f7f7;
+    --space-fluid: clamp(1rem, 3vw, 2rem);
+}
+
+/* Box Sizing */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Step 5: Responsive images — global reset */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Step 1: Mobile-first body grid — single column by default */
+body {
+    display: grid;
+    grid-template-columns: 1fr;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--ut-navy);
+    background-color: var(--ut-white);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header — radial gradient spotlight */
+header {
+    padding: 1rem;
+    background: radial-gradient(circle at 50% 50%, #fff 0%, #eee 70%);
+    text-align: center;
+}
+
+header img {
+    max-width: 120px;
+    margin-bottom: 8px;
+}
+
+/* Step 3: Fluid typography with clamp() */
+h1 {
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(1.5rem, 4vw + 1rem, 3rem);
+    background: linear-gradient(to right, var(--ut-navy), var(--ut-red));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+h2, h3, h4 {
+    color: var(--ut-red);
+    margin-top: 0;
+}
+
+h2 {
+    font-size: clamp(1.25rem, 3vw + 0.5rem, 2rem);
+}
+
+h3, h4 {
+    font-size: clamp(1rem, 2vw + 0.5rem, 1.5rem);
+}
+
+/* Step 2: Hamburger menu toggle button */
+.menu-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    background: var(--ut-navy);
+    border: none;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    width: 100%;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--ut-white);
+    border-radius: 2px;
+}
+
+/* Step 2: Nav — hidden on mobile by default */
+nav {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: var(--ut-navy);
+    color: var(--ut-white);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* Step 2: Show nav when toggled open */
+nav.nav-open {
+    display: flex;
+}
+
+/* Hero section — dark blue cinematic gradient layered over campus photo */
+#welcome {
+    background: linear-gradient(to bottom, rgba(0, 48, 88, 0.3) 0%, rgba(0, 20, 60, 0.78) 100%),
+                url("https://se1400.github.io/labs/assets/campus.jpg") center / cover no-repeat;
+    min-height: 60vh;
+    min-height: 60dvh;
+    display: grid;
+    align-items: end;
+}
+
+/* Overlay — blurs the campus photo behind it; text inside stays sharp */
+.hero-overlay {
+    grid-column: 1 / -1;
+    color: var(--ut-white);
+    backdrop-filter: blur(3px);
+}
+
+/* Content sits at the bottom of the hero, on the dark fade */
+.hero-content {
+    padding: clamp(1rem, 5vw, 2rem) clamp(1rem, 8vw, 1.5rem);
+}
+
+.hero-overlay h2 {
+    color: inherit;
+}
+
+/* Step 5: Responsive video */
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Full-width elements span all columns */
+header, .menu-toggle, nav, #welcome, footer {
+    grid-column: 1 / -1;
+}
+
+/* Main and sidebar — stack on mobile */
+main {
+    padding: var(--space-fluid);
+}
+
+.sidebar {
+    padding: var(--space-fluid);
+    align-self: start;
+}
+
+/* Step 3: Fluid panel spacing */
+.panel {
+    background-color: var(--ut-panel-gray);
+    padding: clamp(0.75rem, 3vw, 1.5rem);
+    border-top: 3px solid var(--ut-red);
+    margin-bottom: var(--space-fluid);
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+/* Step 4: Intrinsic programs grid */
+.programs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+    gap: var(--space-fluid);
+    container-type: inline-size;
+}
+
+#colleges figure {
+    grid-column: 1 / -1;
+    margin: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Step 5: object-fit on campus image */
+#colleges figure img {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 0.25rem;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+#colleges figure:hover img {
+    transform: scale(1.05);
+}
+
+#colleges figcaption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: var(--ut-white);
+    padding: 0.5rem;
+    border-radius: 0 0 0.25rem 0.25rem;
+}
+
+/* Program cards */
+.program-card {
+    background-color: var(--ut-white);
+    border: 1px solid var(--ut-light-gray);
+    border-top: 3px solid var(--ut-red);
+    padding: 1rem;
+    border-radius: 0 0 0.5rem 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.program-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Featured card — conic gradient background */
+.featured {
+    aspect-ratio: auto;
+    background: conic-gradient(from 200deg at 0% 100%, #dce8f0, var(--ut-white) 40%, #f5e8e8 80%, var(--ut-white));
+}
+
+/* Step 6: Container queries — cards adapt to available space */
+@container (min-width: 450px) {
+    .featured {
+        grid-column: span 2;
+    }
+}
+
+/* Key dates styling */
+.key-dates dl {
+    margin: 0;
+}
+
+.key-dates dt {
+    font-weight: bold;
+    color: var(--ut-red);
+}
+
+.key-dates dt:not(:first-child) {
+    margin-top: 0.5rem;
+}
+
+.key-dates dd {
+    margin-left: 0;
+}
+
+/* Footer */
+footer {
+    padding: 1rem;
+    background-color: var(--ut-navy);
+    color: var(--ut-white);
+    text-align: center;
+}
+
+footer a:link, footer a:visited {
+    color: var(--ut-white);
+}
+
+footer a:hover {
+    color: hsl(0, 65%, 51%);
+}
+
+address {
+    font-style: normal;
+    line-height: 1.4;
+}
+
+/* Step 7: Scrollable table on mobile */
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 12px;
+}
+
+th, td {
+    border: 1px solid var(--ut-navy);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+}
+
+th {
+    background-color: var(--ut-navy);
+    color: var(--ut-white);
+}
+
+tbody tr:nth-child(odd) {
+    background-color: var(--ut-light-gray);
+}
+
+/* Pre tag styling */
+pre {
+    margin: 0;
+    font-family: inherit;
+    white-space: pre-wrap;
+}
+
+/* Link styling - LoVe HAte order */
+a:link { color: var(--ut-red); }
+a:visited { color: #8B1518; }
+a:hover { color: hsl(0, 65%, 51%); }
+a:active { color: var(--ut-navy); }
+
+/* Nav link styling */
+nav a:link, nav a:visited { color: var(--ut-white); text-decoration: none; }
+nav a:hover { color: var(--ut-white); }
+
+/* Nav focus-visible for keyboard users */
+nav a:focus-visible {
+    outline: 2px solid var(--ut-white);
+    outline-offset: 4px;
+    border-radius: 2px;
+}
+
+/* Skip link (accessibility) */
+.skip-link {
+    position: absolute;
+    left: -9999px;
+}
+
+.skip-link:focus-visible {
+    left: 0;
+    top: 0;
+    background: var(--ut-navy);
+    color: var(--ut-white);
+    padding: 8px;
+    z-index: 100;
+    outline: 2px solid var(--ut-white);
+    outline-offset: -4px;
+}
+
+/* Footer image filter + spin transition */
+footer img {
+    filter: grayscale(100%);
+    transition: transform 0.6s ease-in-out, filter 0.3s ease;
+}
+
+footer img:hover {
+    filter: grayscale(0%);
+    transform: rotate(360deg);
+}
+
+/* =============================================
+   HTML Forms
+   ============================================= */
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+fieldset {
+    border: 1px solid var(--ut-light-gray);
+    border-radius: 0.25rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 0;
+}
+
+legend {
+    font-weight: bold;
+    color: var(--ut-navy);
+    padding: 0 0.5rem;
+    font-size: 1.05rem;
+}
+
+form label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--ut-navy);
+}
+
+input:not([type="radio"]):not([type="checkbox"]),
+select,
+textarea {
+    padding: 0.5rem 0.75rem;
+    border: 2px solid var(--ut-light-gray);
+    border-radius: 0.25rem;
+    font-family: inherit;
+    font-size: 1rem;
+    width: 100%;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.field-hint {
+    font-size: 0.85rem;
+    color: #555;
+    margin: 0;
+}
+
+input:not([type="radio"]):not([type="checkbox"]):focus,
+select:focus,
+textarea:focus {
+    outline: 2px solid var(--ut-navy);
+    outline-offset: 1px;
+    border-color: var(--ut-navy);
+}
+
+input:required:not([type="radio"]):not([type="checkbox"]),
+select:required,
+textarea:required {
+    border-left: 3px solid var(--ut-navy);
+}
+
+input:user-invalid,
+textarea:user-invalid {
+    border-color: var(--ut-red);
+    background-color: #fff5f5;
+}
+
+input:valid:not(:placeholder-shown):not([type="radio"]):not([type="checkbox"]) {
+    border-color: #2d8a4e;
+}
+
+button[type="submit"] {
+    background-color: var(--ut-red);
+    color: var(--ut-white);
+    border: none;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    animation: pulse 1.2s ease-in-out infinite alternate;
+}
+
+button[type="submit"]:hover {
+    background-color: #8B1518;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(186, 28, 33, 0.4);
+}
+
+/* =============================================
+   CSS Transitions and Transforms
+   ============================================= */
+
+/* Steps 2-3: Program card lift and campus photo zoom are integrated
+   into .program-card, #colleges figure, and #colleges figure img above */
+
+/* Step 6: 3D Flip Card */
+.flip-card {
+    perspective: 800px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    min-height: 280px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s ease-in-out;
+    transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-top: 3px solid var(--ut-red);
+    border-radius: 0 0 0.5rem 0.5rem;
+    padding: 1rem;
+    overflow: hidden;
+}
+
+.flip-card-front {
+    background: conic-gradient(from 200deg at 0% 100%, #dce8f0, var(--ut-white) 40%, #f5e8e8 80%, var(--ut-white));
+}
+
+.flip-card-back {
+    background-color: var(--ut-navy);
+    color: var(--ut-white);
+    transform: rotateY(180deg);
+}
+
+.flip-card-back h4 {
+    color: var(--ut-white);
+}
+
+/* =============================================
+   CSS Animations and Pseudo-Elements
+   ============================================= */
+
+/* Step 1: Hero entrance animation */
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-content h2 {
+    animation: fadeSlideIn 0.6s ease-out both;
+}
+
+.hero-content p {
+    animation: fadeSlideIn 0.6s ease-out 0.2s both;
+}
+
+/* Step 2: Scroll indicator */
+@keyframes bounce {
+    from {
+        transform: translateY(0) scale(1);
+    }
+    to {
+        transform: translateY(4px) scale(1.1);
+    }
+}
+
+.scroll-arrow {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+    font-size: 0;
+    animation: bounce 0.8s ease-in-out infinite alternate;
+}
+
+.scroll-arrow::after {
+    content: "";
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-right: 2px solid var(--ut-white);
+    border-bottom: 2px solid var(--ut-white);
+    transform: rotate(45deg);
+    margin-top: -4px;
+}
+
+/* Step 3: Pulsing submit button glow */
+@keyframes pulse {
+    from {
+        box-shadow: 0 0 4px rgba(186, 28, 33, 0.3);
+    }
+    to {
+        box-shadow: 0 0 20px rgba(186, 28, 33, 0.6);
+    }
+}
+
+/* Step 4: Scroll-driven card and figure entrance */
+@keyframes cardEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.programs-grid > * {
+    animation: cardEntrance 0.4s ease-out both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+}
+
+/* Step 5: Animated nav underline with ::after + transition */
+nav a {
+    position: relative;
+    transition: color 0.2s ease-out;
+}
+
+nav a::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--ut-white);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+}
+
+nav a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* Step 6: Typographic polish with pseudo-elements */
+
+/* Part A: Drop cap */
+.hero-content p:first-of-type::first-letter {
+    float: left;
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 0.85;
+    margin-right: 0.1em;
+    color: var(--ut-white);
+}
+
+/* Part B: List markers */
+.sidebar li::marker {
+    color: var(--ut-red);
+    font-size: 1.2em;
+}
+
+/* Part C: Placeholder text */
+input::placeholder,
+textarea::placeholder {
+    color: #94a3b8;
+    font-style: italic;
+}
+
+/* Part D: Selection colors */
+::selection {
+    background-color: var(--ut-red);
+    color: var(--ut-white);
+}
+
+/* Step 7: prefers-reduced-motion (comprehensive) */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+    }
+}
+
+/* =============================================
+   Responsive Web Design
+   ============================================= */
+
+/* Step 1: Desktop breakpoint — restore two-column layout */
+@media (min-width: 1024px) {
+    body {
+        grid-template-columns: minmax(0, 1fr) minmax(640px, 1fr) 280px minmax(0, 1fr);
+        column-gap: 1.5rem;
+    }
+
+    header, .menu-toggle, nav, #welcome, footer {
+        grid-column: 1 / -1;
+    }
+
+    main {
+        grid-column: 2;
+        grid-row: 4;
+        padding-top: 1.5rem;
+    }
+
+    .sidebar {
+        grid-column: 3;
+        grid-row: 4;
+        padding-top: 1.5rem;
+    }
+
+    /* Step 2: Desktop nav — show nav, hide hamburger */
+    .menu-toggle {
+        display: none;
+    }
+
+    nav {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    /* Step 5: Taller hero on desktop */
+    #welcome {
+        display: grid;
+        grid-template-columns: subgrid;
+        align-items: end;
+    }
+
+    .hero-overlay {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: subgrid;
+    }
+
+    .hero-content {
+        grid-column: 2 / 4;
+    }
+}
+

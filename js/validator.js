@@ -188,8 +188,11 @@ const MODERN_CSS_PATTERNS = [
     // Container queries
     /@container\b/i,
     /\bcontainer(-type|-name)?\b.*is not/i,
-    // CSS nesting
+    // CSS nesting — & selector may produce parse errors in older validators
     /\bnesting\b/i,
+    /parse error.*&/i,
+    /&.*parse error/i,
+    /&.*not.*valid/i,
     // Logical properties
     /\b(inline|block)-(start|end|size)\b/i,
     // Color functions
@@ -208,8 +211,10 @@ const MODERN_CSS_PATTERNS = [
     /-webkit-background-clip.*vendor extension/i,
     // anchor positioning
     /\banchor\b.*is not a/i,
-    // :has(), :is(), :where()
+    // :has(), :is(), :where() pseudo-classes
     /":has".*not.*pseudo/i,
+    /":is".*not.*pseudo/i,
+    /":where".*not.*pseudo/i,
 ];
 
 function filterModernCSSFalsePositives(errors) {
