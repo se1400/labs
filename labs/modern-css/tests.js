@@ -547,15 +547,134 @@ test('Step 5c: The dark mode query should redefine --color-bg on :root', () => {
       '        --color-text: #f1f5f9;      /* light text */\n' +
       '        --color-text-muted: #94a3b8;\n' +
       '        --color-border: #334155;\n' +
-      '        --color-accent: #f87171;    /* softer red for dark */\n' +
-      '        --color-accent-hover: #fca5a5;\n' +
+      '        --color-accent: #e2434b;    /* brighter red for dark */\n' +
+      '        --color-accent-hover: #c7363d;\n' +
       '    }\n' +
       '}'
     );
   }
 });
 
-test('Step 5d: The body background should use a semantic custom property', () => {
+test('Step 5d: Dark mode header background override', () => {
+  let found = false;
+  walkAllRules((rule) => {
+    if (found) return;
+    if (rule.type === CSSRule.MEDIA_RULE && rule.conditionText &&
+        rule.conditionText.includes('prefers-color-scheme')) {
+      for (let inner of rule.cssRules) {
+        if (inner.selectorText === 'header' && inner.cssText &&
+            inner.cssText.includes('gradient')) {
+          found = true;
+        }
+      }
+    }
+  });
+  if (!found) {
+    throw new Error(
+      'No dark mode header background override found.\n\n' +
+      'The header\'s light gradient (#fff to #eee) looks wrong on a dark page.\n' +
+      'Inside your @media (prefers-color-scheme: dark) block, add:\n\n' +
+      'header {\n' +
+      '    background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 70%);\n' +
+      '}\n\n' +
+      'This gives the header a dark gradient that matches the page background.'
+    );
+  }
+});
+
+test('Step 5e: Dark mode logo filter (white logo)', () => {
+  let found = false;
+  walkAllRules((rule) => {
+    if (found) return;
+    if (rule.type === CSSRule.MEDIA_RULE && rule.conditionText &&
+        rule.conditionText.includes('prefers-color-scheme')) {
+      for (let inner of rule.cssRules) {
+        if (inner.selectorText && inner.selectorText.includes('header') &&
+            inner.selectorText.includes('img') && inner.cssText &&
+            inner.cssText.includes('filter')) {
+          found = true;
+        }
+      }
+    }
+  });
+  if (!found) {
+    throw new Error(
+      'No dark mode logo filter found.\n\n' +
+      'The logo has dark blue (#003058) that is invisible on dark backgrounds.\n' +
+      'The Utah Tech brand guide approves white logos on dark backgrounds.\n' +
+      'Inside your dark mode media query, add:\n\n' +
+      'header img {\n' +
+      '    filter: brightness(0) invert(1);\n' +
+      '}\n\n' +
+      'This turns the logo white, making it visible on the dark header.'
+    );
+  }
+});
+
+test('Step 5f: Dark mode h1 gradient override', () => {
+  let found = false;
+  walkAllRules((rule) => {
+    if (found) return;
+    if (rule.type === CSSRule.MEDIA_RULE && rule.conditionText &&
+        rule.conditionText.includes('prefers-color-scheme')) {
+      for (let inner of rule.cssRules) {
+        if (inner.selectorText === 'h1' && inner.cssText &&
+            inner.cssText.includes('gradient') &&
+            inner.cssText.includes('background-clip')) {
+          found = true;
+        }
+      }
+    }
+  });
+  if (!found) {
+    throw new Error(
+      'No dark mode h1 gradient override found (or missing background-clip).\n\n' +
+      'The h1 gradient uses --ut-navy (dark blue) which is invisible on dark backgrounds.\n' +
+      'Inside your dark mode media query, add:\n\n' +
+      'h1 {\n' +
+      '    background: linear-gradient(to right, #94b8d8, var(--color-accent));\n' +
+      '    -webkit-background-clip: text;\n' +
+      '    background-clip: text;\n' +
+      '    color: transparent;\n' +
+      '}\n\n' +
+      'The background shorthand resets background-clip, so you must repeat it.\n' +
+      'The light blue to red gradient keeps the brand blue/red feel.'
+    );
+  }
+});
+
+test('Step 5g: Dark mode form input background', () => {
+  let found = false;
+  walkAllRules((rule) => {
+    if (found) return;
+    if (rule.type === CSSRule.MEDIA_RULE && rule.conditionText &&
+        rule.conditionText.includes('prefers-color-scheme')) {
+      for (let inner of rule.cssRules) {
+        if (inner.selectorText && inner.cssText &&
+            (inner.selectorText.includes('input') || inner.selectorText.includes('textarea') || inner.selectorText.includes('select')) &&
+            (inner.cssText.includes('background-color') || inner.cssText.includes('background:'))) {
+          found = true;
+        }
+      }
+    }
+  });
+  if (!found) {
+    throw new Error(
+      'No dark mode form input background found.\n\n' +
+      'Browser defaults make form inputs white, which is jarring in dark mode.\n' +
+      'Inside your dark mode media query (NOT inside a @layer), add:\n\n' +
+      'input:not([type="radio"]):not([type="checkbox"]),\n' +
+      'select,\n' +
+      'textarea {\n' +
+      '    background-color: var(--color-surface);\n' +
+      '    color: var(--color-text);\n' +
+      '}\n\n' +
+      'This rule must be in the unlayered dark mode block to override browser defaults.'
+    );
+  }
+});
+
+test('Step 5h: The body background should use a semantic custom property', () => {
   let found = false;
   walkAllRules((rule) => {
     if (found) return;

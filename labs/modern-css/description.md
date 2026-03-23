@@ -65,7 +65,20 @@ In this step you'll organize your CSS into four named groups called **layers**. 
 
 3. **Wrap the component styles** inside `@layer components { }`.
 
-   "Components" are the visual building blocks of the page — anything you can point to and name. This includes: `header` and `header img`, `.menu-toggle` and `.menu-toggle span`, `nav` and all `nav`-related rules (`nav.nav-open`, `nav a`, `nav a::after`, `nav a:hover::after`, `nav a:link`, `nav a:visited`, `nav a:hover`, `nav a:focus-visible`), the hero section (`#welcome`, `.hero-overlay`, `.hero-overlay h2`, `.hero-content`, `.hero-content h2`, `.hero-content p`, `.hero-content p:first-of-type::first-letter`), the grid-column spanning rule (`header, .menu-toggle, nav, #welcome, footer`), `main`, `.sidebar` and `.sidebar li::marker`, `.panel`, `.programs-grid`, `#colleges figure` and its children (`#colleges figure img`, `#colleges figure:hover img`, `#colleges figcaption`), `.program-card` and `.program-card:hover`, `.featured`, the `@container` query, all flip-card rules (`.flip-card`, `.flip-card-inner`, `.flip-card:hover .flip-card-inner`, `.flip-card-front, .flip-card-back`, `.flip-card-front`, `.flip-card-back`, `.flip-card-back h4`), `.key-dates` rules, `footer` and all footer-related rules (`footer a:link`, `footer a:visited`, `footer a:hover`, `footer img`, `footer img:hover`), table rules (`.table-wrapper`, `table`, `th, td`, `th`, `tbody tr:nth-child(odd)`), and the placeholder rules (`input::placeholder`, `textarea::placeholder`).
+   "Components" are the visual building blocks of the page — anything you can point to and name. Move all of the following rules inside this layer:
+
+   - **Header:** `header`, `header img`
+   - **Menu toggle:** `.menu-toggle`, `.menu-toggle span`
+   - **Navigation:** `nav` and all nav-related rules — `nav.nav-open`, `nav a`, `nav a::after`, `nav a:hover::after`, `nav a:link, nav a:visited`, `nav a:hover`, `nav a:focus-visible`
+   - **Hero section:** `#welcome`, `.hero-overlay`, `.hero-overlay h2`, `.hero-content`, `.hero-content h2`, `.hero-content p`, `.hero-content p:first-of-type::first-letter`
+   - **Layout:** the grid-column spanning rule (`header, .menu-toggle, nav, #welcome, footer`), `main`, `.sidebar`, `.sidebar li::marker`
+   - **Panels and cards:** `.panel`, `.programs-grid`, `.program-card`, `.program-card:hover`, `.featured`, the `@container` query
+   - **Colleges section:** `#colleges figure`, `#colleges figure img`, `#colleges figure:hover img`, `#colleges figcaption`
+   - **Flip cards:** `.flip-card`, `.flip-card-inner`, `.flip-card:hover .flip-card-inner`, `.flip-card-front, .flip-card-back`, `.flip-card-front`, `.flip-card-back`, `.flip-card-back h4`
+   - **Key dates:** `.key-dates dl`, `.key-dates dt`, `.key-dates dt:not(:first-child)`, `.key-dates dd`
+   - **Footer:** `footer`, `footer a:link, footer a:visited`, `footer a:hover`, `footer img`, `footer img:hover`
+   - **Tables:** `.table-wrapper`, `table`, `th, td`, `th`, `tbody tr:nth-child(odd)`
+   - **Placeholders:** `input::placeholder`, `textarea::placeholder`
 
 4. **Wrap the form styles** inside `@layer forms { }`.
 
@@ -185,8 +198,8 @@ Right now, your CSS uses brand tokens like `--ut-red` and `--ut-navy` directly. 
    | `--color-text` | `#f1f5f9` |
    | `--color-text-muted` | `#94a3b8` |
    | `--color-border` | `#334155` |
-   | `--color-accent` | `#f87171` |
-   | `--color-accent-hover` | `#fca5a5` |
+   | `--color-accent` | `#e2434b` |
+   | `--color-accent-hover` | `#c7363d` |
 
 3. **Replace old color tokens with the new semantic ones.** Go through your CSS and swap old brand tokens for the matching semantic tokens. Use Find & Replace (Ctrl+H / Cmd+H) to speed this up.
 
@@ -209,9 +222,18 @@ Right now, your CSS uses brand tokens like `--ut-red` and `--ut-navy` directly. 
 
    The reason: elements like the nav bar, footer, table headers, and flip-card back are **always** dark navy with white text, even in dark mode. Those should keep using `--ut-navy` and `--ut-white`. Only colors on *light-background* elements (body, panels, cards, form fields) need to switch for dark mode.
 
-4. **Test your dark mode.** Open Chrome DevTools, then go to the Rendering panel (three-dot menu, More tools, Rendering). Set "Emulate CSS media feature prefers-color-scheme" to "dark." Your entire site should switch to a dark color scheme. If some elements still look light, check whether you missed replacing their color tokens in step 3.
+4. **Add element-specific dark mode overrides.** Some elements use hardcoded colors that can't be fixed with variables alone. Inside the same `@media (prefers-color-scheme: dark)` block (after the `:root` rule), add rules for these elements:
 
-> **Why put dark mode outside layers?** The `@media (prefers-color-scheme: dark)` block only redefines variable values on `:root`. It doesn't contain any selectors for specific elements. Since custom properties inherit to every element on the page regardless of layers, your components automatically pick up the new dark values without any extra rules.
+   - **Header background:** Change the `header` background to a dark radial gradient: `radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 70%)`. The light gradient would stand out against the dark page.
+   - **Logo:** Add a `header img` rule with `filter: brightness(0) invert(1)`. This turns the logo white — the Utah Tech brand guide approves white logos on dark backgrounds. The dark blue in the original logo would be invisible on a dark background.
+   - **h1 gradient:** Override the `h1` with `background: linear-gradient(to right, #94b8d8, var(--color-accent))`, plus `-webkit-background-clip: text`, `background-clip: text`, and `color: transparent`. You must repeat the background-clip and color properties because the `background` shorthand resets `background-clip` back to its default. The light blue (#94b8d8) to red gradient keeps the brand blue/red feel on dark backgrounds.
+   - **Featured card and flip-card-front:** Override `.featured` and `.flip-card-front` with a dark conic gradient: `conic-gradient(from 200deg at 0% 100%, #1e3a5f, var(--color-surface) 40%, #3d2020 80%, var(--color-surface))`. The original uses hardcoded light colors.
+   - **Form inputs:** Add a rule for `input:not([type="radio"]):not([type="checkbox"]), select, textarea` with `background-color: var(--color-surface)` and `color: var(--color-text)`. Browser defaults make form inputs white, which is jarring in dark mode. This rule must be inside the dark mode media query (not inside a `@layer`) to override the browser defaults.
+   - **Invalid input background:** Override `input:user-invalid, textarea:user-invalid` with `background-color: #2d1b1b`. The original `#fff5f5` (light pink) doesn't work on dark backgrounds.
+
+5. **Test your dark mode.** Open Chrome DevTools, then go to the Rendering panel (three-dot menu, More tools, Rendering). Set "Emulate CSS media feature prefers-color-scheme" to "dark." Your entire site should switch to a dark color scheme. The header, logo, cards, and form inputs should all look natural against the dark background.
+
+> **Why put dark mode outside layers?** The dark mode media query is *outside* any `@layer`. This is important for two reasons: (1) CSS custom properties on `:root` inherit everywhere regardless of layers, and (2) the element-specific rules (like form input backgrounds) need to override browser defaults, which only works reliably from unlayered styles.
 
 ---
 

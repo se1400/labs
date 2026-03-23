@@ -539,6 +539,8 @@
         font-family: inherit;
         font-size: 1rem;
         width: 100%;
+        background-color: var(--color-bg);
+        color: var(--color-text);
     }
 
     textarea {
@@ -701,8 +703,46 @@
         --color-text: #f1f5f9;
         --color-text-muted: #94a3b8;
         --color-border: #334155;
-        --color-accent: #f87171;
-        --color-accent-hover: #fca5a5;
+        --color-accent: #e2434b;
+        --color-accent-hover: #c7363d;
+    }
+
+    /* Header — dark gradient background */
+    header {
+        background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 70%);
+    }
+
+    /* Logo — white version per brand guide (approved for dark backgrounds) */
+    header img {
+        filter: brightness(0) invert(1);
+    }
+
+    /* h1 gradient — light blue to red keeps the brand blue/red feel */
+    h1 {
+        background: linear-gradient(to right, #94b8d8, var(--color-accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    /* Featured card and flip-card-front — dark conic gradient */
+    .featured,
+    .flip-card-front {
+        background: conic-gradient(from 200deg at 0% 100%, #1e3a5f, var(--color-surface) 40%, #3d2020 80%, var(--color-surface));
+    }
+
+    /* Form controls — dark backgrounds (unlayered to override browser defaults) */
+    input:not([type="radio"]):not([type="checkbox"]),
+    select,
+    textarea {
+        background-color: var(--color-surface);
+        color: var(--color-text);
+    }
+
+    /* Form invalid state — dark red background instead of light pink */
+    input:user-invalid,
+    textarea:user-invalid {
+        background-color: #2d1b1b;
     }
 }
 
