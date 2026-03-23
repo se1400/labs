@@ -10,7 +10,7 @@ In this lab you'll reorganize and improve the existing CSS using five modern fea
 
 **Before you start:** Consider duplicating your `starter.css` as a backup before restructuring. You'll be moving hundreds of lines around, and it's helpful to have the original to compare against.
 
-**How to test:** After each step, run the tests. For dark mode testing, open Chrome DevTools, then go to the Rendering panel (three-dot menu at the top right of DevTools, then More tools, then Rendering) and set "Emulate CSS media feature prefers-color-scheme" to "dark."
+**How to test:** After each step, run the tests. For dark mode testing, open Chrome DevTools, then go to the Rendering panel (three-dot menu at the top right of DevTools, then More tools, then Rendering) and set "Emulate CSS media feature prefers-color-scheme" to "dark." To switch back to light mode, set it to "light" or "No emulation." **Note:** If your computer is already set to dark mode, the page will automatically appear in dark mode — `prefers-color-scheme` detects your operating system's setting. Use the DevTools emulation to switch between both modes for testing.
 
 ## Key Concepts
 
@@ -231,7 +231,7 @@ Right now, your CSS uses brand tokens like `--ut-red` and `--ut-navy` directly. 
    - **Form inputs:** Add a rule for `input:not([type="radio"]):not([type="checkbox"]), select, textarea` with `background-color: var(--color-surface)` and `color: var(--color-text)`. Browser defaults make form inputs white, which is jarring in dark mode. This rule must be inside the dark mode media query (not inside a `@layer`) to override the browser defaults.
    - **Invalid input background:** Override `input:user-invalid, textarea:user-invalid` with `background-color: #2d1b1b`. The original `#fff5f5` (light pink) doesn't work on dark backgrounds.
 
-5. **Test your dark mode.** Open Chrome DevTools, then go to the Rendering panel (three-dot menu, More tools, Rendering). Set "Emulate CSS media feature prefers-color-scheme" to "dark." Your entire site should switch to a dark color scheme. The header, logo, cards, and form inputs should all look natural against the dark background.
+5. **Test your dark mode.** Open Chrome DevTools, then go to the Rendering panel (three-dot menu, More tools, Rendering). Set "Emulate CSS media feature prefers-color-scheme" to "dark" to see dark mode, and "light" to see light mode. Test both — the site should look correct in each. If your computer uses dark mode, the page will already be dark when you load it. Use "light" emulation to verify your light mode still works too.
 
 > **Why put dark mode outside layers?** The dark mode media query is *outside* any `@layer`. This is important for two reasons: (1) CSS custom properties on `:root` inherit everywhere regardless of layers, and (2) the element-specific rules (like form input backgrounds) need to override browser defaults, which only works reliably from unlayered styles.
 
