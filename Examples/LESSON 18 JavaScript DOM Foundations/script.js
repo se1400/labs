@@ -8,9 +8,9 @@ const heading = document.querySelector('h1');
 heading.textContent = 'Utah Tech — Trailblazers';
 console.log(heading);
 
-const tagline = document.querySelector('header > p');
-tagline.textContent = 'Where curiosity meets red rock country.';
-console.log(tagline);
+const heroHeading = document.querySelector('#welcome h2');
+heroHeading.textContent = 'Your Future Starts Here';
+console.log(heroHeading);
 
 
 // ── Step 2: style.setProperty() — change a CSS custom property ───
@@ -28,7 +28,7 @@ collegesPanel.classList.add('highlighted');
 
 const banner = document.createElement('div');
 banner.classList.add('announcement');
-banner.textContent = 'Applications for Fall 2025 are now open!';
+banner.textContent = 'New student applications are now open!';
 
 const header = document.querySelector('header');
 header.appendChild(banner);
@@ -40,9 +40,10 @@ document.querySelector('#info-banner').remove();
 
 const swatch = document.querySelector('.color-swatch');
 const color = swatch.dataset.color;
-const name = swatch.dataset.name;
+const swatchName = swatch.dataset.name;
+const label = `${swatchName}: ${color}`;
 
-const swatchRow = document.querySelector('#swatch-row');
-swatchRow.innerHTML = `<p class="swatch-label">${name}: ${color}</p>`;
+const labelContainer = document.querySelector('#swatch-label');
+labelContainer.innerHTML = `<p class="swatch-label">${label}</p>`;
 
 document.documentElement.style.setProperty('--color-accent', color);
