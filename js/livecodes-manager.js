@@ -56,7 +56,7 @@ export async function initPlayground(container, labData) {
         };
 
         const params = {
-            activeEditor: 'markup',
+            activeEditor: labData.activeEditor ?? 'markup',
             mode: 'full',
             theme: 'dark',
             wordWrap: 'true',

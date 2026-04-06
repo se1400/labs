@@ -35,7 +35,8 @@ export async function loadLab(labName) {
             starterHTML,
             starterCSS,
             starterJS,
-            tests
+            tests,
+            activeEditor: labName.startsWith('javascript') ? 'script' : 'markup'
         };
     } catch (error) {
         console.error('Error loading lab:', error);
