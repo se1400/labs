@@ -21,11 +21,11 @@ const charCount = document.querySelector('#char-count');
 statement.addEventListener('input', function(event) {
     const length = event.target.value.length;
     if (length >= 100) {
-        charCount.textContent = 'Looks great! (' + length + ' characters)';
+        charCount.textContent = `Looks great! (${length} characters)`;
     } else if (length >= 50) {
-        charCount.textContent = 'Getting there (' + length + ' characters)';
+        charCount.textContent = `Getting there (${length} characters)`;
     } else {
-        charCount.textContent = 'Keep writing... (' + length + ' characters)';
+        charCount.textContent = `Keep writing... (${length} characters)`;
     }
 });
 
