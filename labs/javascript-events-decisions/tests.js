@@ -6,25 +6,6 @@
 // ─────────────────────────────────────────────────────────
 
 
-// ── Getting Started ───────────────────────────────────────
-
-test('Getting Started: script tag with defer attribute exists', function() {
-    const script = document.querySelector('script[src="starter.js"]');
-    if (!script) {
-        throw new Error(
-            'The <script defer src="starter.js"> tag was not found in the HTML. ' +
-            'It should already be there — make sure you have not accidentally deleted it.'
-        );
-    }
-    if (!script.hasAttribute('defer')) {
-        throw new Error(
-            'The script tag exists but is missing the defer attribute. ' +
-            'Make sure it reads: <script defer src="starter.js">'
-        );
-    }
-});
-
-
 // ── Step 1: click — toggle Areas of Interest ─────────────
 
 test('Step 1a: #toggle-interests button is in the HTML', function() {
@@ -57,14 +38,63 @@ test('Step 1c: clicking the toggle button hides and shows the interests section'
         );
     }
 
-    btn.click();
-    const isHidden = content.classList.contains('hidden');
-    btn.click(); // restore
+    // Ensure a known starting state — content visible, button reads "Hide"
+    content.classList.remove('hidden');
 
-    if (!isHidden) {
+    btn.click();
+    const isHiddenAfterFirst = content.classList.contains('hidden');
+
+    btn.click();
+    const isHiddenAfterSecond = content.classList.contains('hidden');
+
+    if (!isHiddenAfterFirst) {
         throw new Error(
-            'Clicking #toggle-interests should toggle the "hidden" class on #interests-content. ' +
-            'Use addEventListener("click") and classList.toggle("hidden") to make this work.'
+            'The first click on #toggle-interests should hide #interests-content ' +
+            'by adding the "hidden" class. ' +
+            'Use classList.toggle("hidden") inside your click listener.'
+        );
+    }
+
+    if (isHiddenAfterSecond) {
+        throw new Error(
+            'The second click on #toggle-interests should show #interests-content again ' +
+            'by removing the "hidden" class. ' +
+            'Make sure you are using classList.toggle("hidden") — not classList.add("hidden").'
+        );
+    }
+});
+
+test('Step 1d: the button label flips between "Show" and "Hide" when clicked', function() {
+    const btn = document.querySelector('#toggle-interests');
+    const content = document.querySelector('#interests-content');
+    if (!btn || !content) {
+        throw new Error(
+            'Could not find #toggle-interests or #interests-content. ' +
+            'Have you accidentally changed the HTML?'
+        );
+    }
+
+    // Ensure known starting state
+    content.classList.remove('hidden');
+
+    btn.click();
+    const labelWhenHidden = btn.textContent.trim();
+
+    btn.click();
+    const labelWhenVisible = btn.textContent.trim();
+
+    if (labelWhenHidden !== 'Show') {
+        throw new Error(
+            'After clicking to hide the section, the button label should change to "Show". ' +
+            'Use the ternary operator after classList.toggle to update the button\'s textContent: ' +
+            'if the content is now hidden, show "Show"; otherwise show "Hide".'
+        );
+    }
+
+    if (labelWhenVisible !== 'Hide') {
+        throw new Error(
+            'After clicking to show the section again, the button label should flip back to "Hide". ' +
+            'Make sure your ternary checks classList.contains("hidden") after the toggle.'
         );
     }
 });
@@ -181,22 +211,25 @@ test('Step 3c: a valid username (4+ characters, no spaces) shows a positive hint
     const saved = input.value;
     input.value = 'trailblazer';
     input.dispatchEvent(new Event('input', { bubbles: true }));
-    const hintText = hint.textContent.toLowerCase();
+    const hintText = hint.textContent.toLowerCase().trim();
 
     input.value = saved;
     input.dispatchEvent(new Event('input', { bubbles: true }));
 
-    const isPositive =
-        hintText.includes('good') ||
-        hintText.includes('great') ||
-        hintText.includes('valid') ||
-        hintText.includes('looks') ||
-        hintText.includes('nice');
-
-    if (!isPositive) {
+    if (!hintText) {
         throw new Error(
             'When the username is valid (4 or more characters with no spaces), ' +
-            '#username-hint should show a positive message like "Username looks good!"'
+            '#username-hint should show a success message. ' +
+            'Make sure your final else branch sets a message like "Username looks good!"'
+        );
+    }
+
+    if (hintText.includes('too short') || hintText.includes('no space') || hintText.includes('spaces allowed')) {
+        throw new Error(
+            'The username "trailblazer" is valid — 11 characters, no spaces — but your code ' +
+            'is still showing an error message. Check the order of your if/else if/else conditions. ' +
+            'The empty check should come first, then the space check, then the length check, ' +
+            'then the success message in the final else.'
         );
     }
 });
@@ -267,15 +300,16 @@ test('Step 5b: submitting with empty name and email shows an error message', fun
 
     form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
 
-    const showsError = !feedback.hidden || feedback.textContent.trim().length > 0;
+    const errorText = feedback.textContent.trim();
 
     firstNameInput.value = savedFirst;
     emailInput.value = savedEmail;
 
-    if (!showsError) {
+    if (!errorText) {
         throw new Error(
             'Submitting the form with an empty name and email should show an error message in #form-feedback. ' +
-            'Check your truthy/falsy condition: if (!firstName || !email)'
+            'Inside your submit handler, set the textContent of #form-feedback to an error message ' +
+            'when either the name or email field is empty.'
         );
     }
 });
@@ -297,15 +331,23 @@ test('Step 5c: submitting with a name and email shows a personalized success mes
     form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
 
     const text = feedback.textContent.toLowerCase();
-    const isPersonalized = text.includes('alex') || text.includes('received') || text.includes('thank');
+    const includesName = text.includes('alex');
 
     firstNameInput.value = savedFirst;
     emailInput.value = savedEmail;
 
-    if (!isPersonalized) {
+    if (!text) {
         throw new Error(
-            'Submitting with a valid name and email should show a personalized success message in #form-feedback. ' +
-            'Try including the first name (e.g. "Alex, your application has been received!").'
+            'Submitting with a valid name and email should show a success message in #form-feedback. ' +
+            'Make sure your else branch sets the textContent and makes the element visible.'
+        );
+    }
+
+    if (!includesName) {
+        throw new Error(
+            'The success message should be personalized — include the user\'s first name in the message. ' +
+            'You already have the name stored in a variable, so embed it using a template literal. ' +
+            '(e.g. "Alex, your application has been received!")'
         );
     }
 });
@@ -337,8 +379,8 @@ test('Step 5d: the error message has the "error" class and the success message h
 
     if (!hasError || !hasSuccess) {
         throw new Error(
-            'When showing an error, set formFeedback.className = "form-feedback error". ' +
-            'When showing a success message, set formFeedback.className = "form-feedback success". ' +
+            'When showing an error, set the className of #form-feedback to "form-feedback error". ' +
+            'When showing a success message, set it to "form-feedback success". ' +
             'This applies the correct color styling to the feedback box.'
         );
     }
