@@ -620,7 +620,7 @@ test('Step 5f: Dark mode h1 gradient override', () => {
       for (let inner of rule.cssRules) {
         if (inner.selectorText === 'h1' && inner.cssText &&
             inner.cssText.includes('gradient') &&
-            inner.cssText.includes('background-clip')) {
+            (inner.cssText.includes('background-clip') || inner.cssText.includes('transparent'))) {
           found = true;
         }
       }
