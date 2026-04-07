@@ -697,9 +697,19 @@ test('Step 5f: Dark mode h1 gradient override', () => {
         rule.conditionText.includes('prefers-color-scheme')) {
       for (let inner of rule.cssRules) {
         if (inner.selectorText === 'h1' && inner.cssText &&
-            inner.cssText.includes('gradient') &&
-            (inner.cssText.includes('background-clip') || inner.cssText.includes('transparent'))) {
-          found = true;
+            inner.cssText.includes('gradient')) {
+          // cssText is unreliable here: browsers normalize 'transparent' to 'rgba(0,0,0,0)'
+          // and may fold background-clip into the background shorthand.
+          // Use style.getPropertyValue() to read the actual CSSOM values directly.
+          const bgClip = inner.style ? inner.style.getPropertyValue('background-clip').trim() : '';
+          const webkitBgClip = inner.style ? inner.style.getPropertyValue('-webkit-background-clip').trim() : '';
+          const color = inner.style ? inner.style.getPropertyValue('color').trim() : '';
+          const hasClip = bgClip === 'text' || webkitBgClip === 'text' ||
+                          inner.cssText.includes('background-clip');
+          const hasTransparent = color.includes('0, 0, 0, 0') ||
+                                  inner.cssText.includes('transparent') ||
+                                  inner.cssText.includes('rgba(0, 0, 0, 0)');
+          if (hasClip || hasTransparent) found = true;
         }
       }
     }
