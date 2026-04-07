@@ -277,6 +277,23 @@ test('Step 2b: nav should have nested child rules', () => {
       'This keeps all nav styles co-located in one block.'
     );
   }
+  // Verify the nested rule actually targets anchor elements correctly.
+  // &:a is a common mistake — it creates an invalid pseudo-class instead of a descendant selector.
+  const navLink = document.querySelector('nav a, #main-nav a');
+  if (navLink) {
+    const color = getComputedStyle(navLink).color;
+    if (!color.includes('255, 255, 255')) {
+      throw new Error(
+        'Nav links exist but are not white — your nested selector is probably wrong.\n\n' +
+        'Inside nav { }, use "& a" (ampersand, space, then a) to target links:\n\n' +
+        'nav {\n' +
+        '    & a { color: var(--ut-white); text-decoration: none; }\n' +
+        '}\n\n' +
+        '"&:a" is a common mistake — it creates an invalid pseudo-class (:a) instead\n' +
+        'of a descendant selector. The browser drops the rule silently.'
+      );
+    }
+  }
 });
 
 test('Step 2c: #colleges figure should have nested child rules', () => {
@@ -296,6 +313,23 @@ test('Step 2c: #colleges figure should have nested child rules', () => {
       '    }\n' +
       '}'
     );
+  }
+  // Verify the nested rule actually targets img correctly.
+  // &:img is a common mistake — it creates an invalid pseudo-class instead of a descendant selector.
+  const figImg = document.querySelector('#colleges figure img');
+  if (figImg) {
+    const ratio = getComputedStyle(figImg).aspectRatio;
+    if (!ratio || ratio === 'auto') {
+      throw new Error(
+        'The img inside #colleges figure is missing its styles — your nested selector is probably wrong.\n\n' +
+        'Inside #colleges figure { }, use "& img" (ampersand, space, then img):\n\n' +
+        '#colleges figure {\n' +
+        '    & img { width: 100%; aspect-ratio: 16 / 9; }\n' +
+        '}\n\n' +
+        '"&:img" is a common mistake — it creates an invalid pseudo-class (:img) instead\n' +
+        'of a descendant selector. The browser drops the rule silently.'
+      );
+    }
   }
 });
 
@@ -318,6 +352,23 @@ test('Step 2d: footer should have nested child rules', () => {
       '    }\n' +
       '}'
     );
+  }
+  // Verify the nested rule actually targets img correctly.
+  // &img (no space) compiles to "footerimg" — an invalid element — instead of "footer img".
+  const footerImg = document.querySelector('footer img');
+  if (footerImg) {
+    const filter = getComputedStyle(footerImg).filter;
+    if (!filter || !filter.includes('grayscale')) {
+      throw new Error(
+        'The img inside footer is missing its filter style — your nested selector is probably wrong.\n\n' +
+        'Inside footer { }, use "& img" (ampersand, space, then img):\n\n' +
+        'footer {\n' +
+        '    & img { filter: grayscale(100%); }\n' +
+        '}\n\n' +
+        '"&img" (no space) is a common mistake — it compiles to "footerimg", which is not\n' +
+        'a valid element. The browser drops the rule silently.'
+      );
+    }
   }
 });
 
@@ -521,21 +572,24 @@ test('Step 5b: Add a @media (prefers-color-scheme: dark) query', () => {
   }
 });
 
-test('Step 5c: The dark mode query should redefine --color-bg on :root', () => {
-  let found = false;
+test('Step 5c: The dark mode query should redefine --color-bg and --color-text on :root', () => {
+  let bgFound = false;
+  let textFound = false;
+  let textValue = '';
   walkAllRules((rule) => {
-    if (found) return;
     if (rule.type === CSSRule.MEDIA_RULE && rule.conditionText &&
         rule.conditionText.includes('prefers-color-scheme')) {
       for (let inner of rule.cssRules) {
         if (inner.selectorText === ':root' && inner.style) {
           const bg = inner.style.getPropertyValue('--color-bg').trim();
-          if (bg) found = true;
+          if (bg) bgFound = true;
+          const text = inner.style.getPropertyValue('--color-text').trim();
+          if (text) { textFound = true; textValue = text; }
         }
       }
     }
   });
-  if (!found) {
+  if (!bgFound) {
     throw new Error(
       'The dark mode media query does not redefine --color-bg on :root.\n\n' +
       'Inside your @media (prefers-color-scheme: dark) block,\n' +
@@ -552,6 +606,30 @@ test('Step 5c: The dark mode query should redefine --color-bg on :root', () => {
       '    }\n' +
       '}'
     );
+  }
+  if (!textFound) {
+    throw new Error(
+      'The dark mode media query does not redefine --color-text on :root.\n\n' +
+      'Make sure your dark mode :root block includes --color-text:\n\n' +
+      '@media (prefers-color-scheme: dark) {\n' +
+      '    :root {\n' +
+      '        --color-text: #f1f5f9;  /* light text for dark background */\n' +
+      '    }\n' +
+      '}'
+    );
+  }
+  // Validate hex length — catches typos like #f1f5ff9 (7 digits instead of 6)
+  if (textValue.startsWith('#')) {
+    const hex = textValue.slice(1);
+    if (![3, 4, 6, 8].includes(hex.length) || !/^[0-9a-fA-F]+$/.test(hex)) {
+      throw new Error(
+        `--color-text value "${textValue}" is not a valid hex color.\n\n` +
+        'A hex color needs exactly 3 or 6 hex digits after the #:\n' +
+        '  #f1f5f9   \u2190 6 digits, correct\n' +
+        '  #f1f5ff9  \u2190 7 digits, invalid \u2014 check for a typo\n\n' +
+        'Fix: --color-text: #f1f5f9;'
+      );
+    }
   }
 });
 
