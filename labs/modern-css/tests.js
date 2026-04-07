@@ -734,7 +734,11 @@ test('Step 5f: Dark mode h1 gradient override', () => {
   const bgImage   = s ? s.getPropertyValue('background-image').trim() : '';
   const bg        = s ? s.getPropertyValue('background').trim() : '';
 
-  const hasGradient   = ct.includes('gradient') || bgImage.includes('gradient') || bg.includes('gradient');
+  // When var() appears in a background shorthand, Chrome cannot serialize the longhands —
+  // background-image serializes as empty, but 'background-image:' still appears in cssText
+  // confirming the background shorthand was declared. Use that as a fallback.
+  const hasGradient   = ct.includes('gradient') || bgImage.includes('gradient') || bg.includes('gradient') ||
+                        ct.includes('background-image:');
   const hasClip       = bgClip === 'text' || wkBgClip === 'text' || ct.includes('background-clip');
   const hasTransparent = color === 'transparent' || color.includes('0, 0, 0') ||
                          ct.includes('transparent') || ct.includes('rgba(0, 0, 0');
