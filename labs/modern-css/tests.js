@@ -690,43 +690,68 @@ test('Step 5e: Dark mode logo filter (white logo)', () => {
 });
 
 test('Step 5f: Dark mode h1 gradient override', () => {
-  let found = false;
+  let h1DarkRule = null;
+  const diag = [];
+
   walkAllRules((rule) => {
-    if (found) return;
     if (rule.type === CSSRule.MEDIA_RULE && rule.conditionText &&
         rule.conditionText.includes('prefers-color-scheme')) {
+      diag.push(`media conditionText: "${rule.conditionText}" | children: ${rule.cssRules.length}`);
       for (let inner of rule.cssRules) {
-        if (inner.selectorText === 'h1' && inner.cssText &&
-            inner.cssText.includes('gradient')) {
-          // cssText is unreliable here: browsers normalize 'transparent' to 'rgba(0,0,0,0)'
-          // and may fold background-clip into the background shorthand.
-          // Use style.getPropertyValue() to read the actual CSSOM values directly.
-          const bgClip = inner.style ? inner.style.getPropertyValue('background-clip').trim() : '';
-          const webkitBgClip = inner.style ? inner.style.getPropertyValue('-webkit-background-clip').trim() : '';
-          const color = inner.style ? inner.style.getPropertyValue('color').trim() : '';
-          const hasClip = bgClip === 'text' || webkitBgClip === 'text' ||
-                          inner.cssText.includes('background-clip');
-          const hasTransparent = color.includes('0, 0, 0, 0') ||
-                                  inner.cssText.includes('transparent') ||
-                                  inner.cssText.includes('rgba(0, 0, 0, 0)');
-          if (hasClip || hasTransparent) found = true;
+        diag.push(`  child selectorText: "${inner.selectorText}"`);
+        if (inner.selectorText === 'h1') {
+          h1DarkRule = inner;
+          const s = inner.style;
+          diag.push(`  h1 cssText (first 300): "${(inner.cssText || '').slice(0, 300)}"`);
+          diag.push(`  getPropertyValue('background-clip'): "${s ? s.getPropertyValue('background-clip') : 'NO STYLE'}"`);
+          diag.push(`  getPropertyValue('-webkit-background-clip'): "${s ? s.getPropertyValue('-webkit-background-clip') : 'NO STYLE'}"`);
+          diag.push(`  getPropertyValue('color'): "${s ? s.getPropertyValue('color') : 'NO STYLE'}"`);
+          diag.push(`  getPropertyValue('background-image'): "${s ? s.getPropertyValue('background-image').slice(0, 100) : 'NO STYLE'}"`);
         }
       }
     }
   });
-  if (!found) {
+
+  if (!h1DarkRule) {
     throw new Error(
-      'No dark mode h1 gradient override found (or missing background-clip).\n\n' +
-      'The h1 gradient uses --ut-navy (dark blue) which is invisible on dark backgrounds.\n' +
+      'No h1 rule found inside @media (prefers-color-scheme: dark).\n\n' +
+      'DIAGNOSTIC:\n' + diag.join('\n') + '\n\n' +
       'Inside your dark mode media query, add:\n\n' +
       'h1 {\n' +
       '    background: linear-gradient(to right, #94b8d8, var(--color-accent));\n' +
       '    -webkit-background-clip: text;\n' +
       '    background-clip: text;\n' +
       '    color: transparent;\n' +
+      '}'
+    );
+  }
+
+  const ct = h1DarkRule.cssText || '';
+  const s = h1DarkRule.style;
+  const bgClip    = s ? s.getPropertyValue('background-clip').trim() : '';
+  const wkBgClip  = s ? s.getPropertyValue('-webkit-background-clip').trim() : '';
+  const color     = s ? s.getPropertyValue('color').trim() : '';
+  const bgImage   = s ? s.getPropertyValue('background-image').trim() : '';
+  const bg        = s ? s.getPropertyValue('background').trim() : '';
+
+  const hasGradient   = ct.includes('gradient') || bgImage.includes('gradient') || bg.includes('gradient');
+  const hasClip       = bgClip === 'text' || wkBgClip === 'text' || ct.includes('background-clip');
+  const hasTransparent = color === 'transparent' || color.includes('0, 0, 0') ||
+                         ct.includes('transparent') || ct.includes('rgba(0, 0, 0');
+
+  if (!hasGradient || (!hasClip && !hasTransparent)) {
+    throw new Error(
+      'Dark mode h1 rule found but checks failed.\n\n' +
+      'DIAGNOSTIC:\n' + diag.join('\n') + '\n\n' +
+      `hasGradient: ${hasGradient} | hasClip: ${hasClip} | hasTransparent: ${hasTransparent}\n\n` +
+      'Expected:\n' +
+      'h1 {\n' +
+      '    background: linear-gradient(to right, #94b8d8, var(--color-accent));\n' +
+      '    -webkit-background-clip: text;\n' +
+      '    background-clip: text;\n' +
+      '    color: transparent;\n' +
       '}\n\n' +
-      'The background shorthand resets background-clip, so you must repeat it.\n' +
-      'The light blue to red gradient keeps the brand blue/red feel.'
+      'The background shorthand resets background-clip, so you must repeat it.'
     );
   }
 });
