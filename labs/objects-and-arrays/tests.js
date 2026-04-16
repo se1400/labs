@@ -104,7 +104,7 @@ test('Step 2b: each .program-card has a data-id attribute matching a program id'
     }
 });
 
-test('Step 2c: the first card shows the program\'s name, department, total credits, and major credits', function() {
+test('Step 2c: every card shows its own program\'s name, department, total credits, and major credits', function() {
     var grid = document.querySelector('#programs-grid');
     if (!grid) {
         throw new Error('Could not find #programs-grid.');
@@ -115,42 +115,46 @@ test('Step 2c: the first card shows the program\'s name, department, total credi
         throw new Error('No .program-card elements found. Complete Step 2a first.');
     }
 
-    var firstCard = cards[0];
-    var idAttr = firstCard.getAttribute('data-id');
-    var idNum = Number(idAttr);
-    var program = programs.find(function(p) { return p.id === idNum; });
-    if (!program) {
-        throw new Error('First card does not match any program in the programs array.');
-    }
+    // Check every card — not just the first — so hardcoded values like
+    // "42" or "Computer Science" can't slip through.
+    for (var i = 0; i < cards.length; i++) {
+        var card = cards[i];
+        var idAttr = card.getAttribute('data-id');
+        var idNum = Number(idAttr);
+        var program = programs.find(function(p) { return p.id === idNum; });
+        if (!program) {
+            throw new Error('Card at position ' + i + ' does not match any program in the programs array.');
+        }
 
-    var cardText = firstCard.textContent;
+        var cardText = card.textContent;
 
-    if (cardText.indexOf(program.name) === -1) {
-        throw new Error(
-            'The first card should contain "' + program.name + '" but its text is "' + cardText.trim() + '". ' +
-            'Include ${program.name} in your template literal.'
-        );
-    }
+        if (cardText.indexOf(program.name) === -1) {
+            throw new Error(
+                'The card for id=' + program.id + ' should contain "' + program.name + '" but its text is "' + cardText.trim() + '". ' +
+                'Include ${program.name} in your template literal so each card uses its OWN program\'s data.'
+            );
+        }
 
-    if (cardText.indexOf(program.department) === -1) {
-        throw new Error(
-            'The first card should contain the department "' + program.department + '" but its text is "' + cardText.trim() + '". ' +
-            'Include ${program.department} in your template literal.'
-        );
-    }
+        if (cardText.indexOf(program.department) === -1) {
+            throw new Error(
+                'The card for "' + program.name + '" should contain the department "' + program.department + '" but its text is "' + cardText.trim() + '". ' +
+                'Include ${program.department} in your template literal.'
+            );
+        }
 
-    if (cardText.indexOf(String(program.credits)) === -1) {
-        throw new Error(
-            'The first card should contain the total credits number "' + program.credits + '" but its text is "' + cardText.trim() + '". ' +
-            'Include ${program.credits} in your template literal.'
-        );
-    }
+        if (cardText.indexOf(String(program.credits)) === -1) {
+            throw new Error(
+                'The card for "' + program.name + '" should contain the total credits number "' + program.credits + '" but its text is "' + cardText.trim() + '". ' +
+                'Include ${program.credits} in your template literal.'
+            );
+        }
 
-    if (cardText.indexOf(String(program.majorCredits)) === -1) {
-        throw new Error(
-            'The first card should contain the major credits number "' + program.majorCredits + '" but its text is "' + cardText.trim() + '". ' +
-            'Include ${program.majorCredits} in your template literal.'
-        );
+        if (cardText.indexOf(String(program.majorCredits)) === -1) {
+            throw new Error(
+                'The card for "' + program.name + '" should contain its major credits number "' + program.majorCredits + '" but its text is "' + cardText.trim() + '". ' +
+                'Include ${program.majorCredits} in your template literal — do not hardcode one number for every card.'
+            );
+        }
     }
 });
 
@@ -341,43 +345,62 @@ test('Step 4b: the modal shows the clicked program\'s name, department, total cr
     modal.classList.remove('visible');
     firstCard.click();
 
-    var modalText = modal.textContent;
+    // Check specific modal elements (not the whole modal text) so that
+    // swapping #modal-major and #modal-remaining values is caught, and
+    // so that a backwards subtraction like (majorCredits - credits)
+    // returning a negative number can't slip past a substring match.
+    var nameEl = modal.querySelector('#modal-program-name');
+    var deptEl = modal.querySelector('#modal-department');
+    var creditsEl = modal.querySelector('#modal-credits');
+    var majorEl = modal.querySelector('#modal-major');
+    var remainingEl = modal.querySelector('#modal-remaining');
 
-    if (modalText.indexOf(expected.name) === -1) {
+    if (!nameEl || !deptEl || !creditsEl || !majorEl || !remainingEl) {
         throw new Error(
-            'After clicking a card, the modal should contain the program name ("' + expected.name + '") ' +
-            'but the modal text is "' + modalText.trim().substring(0, 80) + '...". ' +
+            'Could not find one of the modal fields (#modal-program-name, #modal-department, #modal-credits, #modal-major, #modal-remaining). ' +
+            'These are already in the HTML — do not rename them.'
+        );
+    }
+
+    if (nameEl.textContent.indexOf(expected.name) === -1) {
+        throw new Error(
+            'After clicking a card, #modal-program-name should show "' + expected.name + '" but it shows "' + nameEl.textContent + '". ' +
             'In your click handler, look up the program with programs.find(p => p.id === Number(card.dataset.id)), ' +
             'then set #modal-program-name.textContent to program.name.'
         );
     }
 
-    if (modalText.indexOf(expected.department) === -1) {
+    if (deptEl.textContent.indexOf(expected.department) === -1) {
         throw new Error(
-            'The modal should contain the department ("' + expected.department + '") but it does not. ' +
+            '#modal-department should show "' + expected.department + '" but it shows "' + deptEl.textContent + '". ' +
             'Set #modal-department.textContent to program.department.'
         );
     }
 
-    if (modalText.indexOf(String(expected.credits)) === -1) {
+    // Use parseInt for numeric comparison so "-78" does not match "78"
+    // and so swapped fields are detected.
+    var creditsNum = parseInt(creditsEl.textContent, 10);
+    if (creditsNum !== expected.credits) {
         throw new Error(
-            'The modal should contain the total credits number ("' + expected.credits + '") but it does not. ' +
+            '#modal-credits should show ' + expected.credits + ' but it shows "' + creditsEl.textContent + '". ' +
             'Set #modal-credits.textContent using program.credits.'
         );
     }
 
-    if (modalText.indexOf(String(expected.majorCredits)) === -1) {
+    var majorNum = parseInt(majorEl.textContent, 10);
+    if (majorNum !== expected.majorCredits) {
         throw new Error(
-            'The modal should contain the major credits number ("' + expected.majorCredits + '") but it does not. ' +
-            'Set #modal-major.textContent using program.majorCredits.'
+            '#modal-major should show ' + expected.majorCredits + ' but it shows "' + majorEl.textContent + '". ' +
+            'Set #modal-major.textContent using program.majorCredits — check that you are not swapping it with another field.'
         );
     }
 
     var expectedRemaining = expected.credits - expected.majorCredits;
-    if (modalText.indexOf(String(expectedRemaining)) === -1) {
+    var remainingNum = parseInt(remainingEl.textContent, 10);
+    if (remainingNum !== expectedRemaining) {
         throw new Error(
-            'The modal should contain the remaining credits ("' + expectedRemaining + '") — that is total credits minus major credits. ' +
-            'Set #modal-remaining.textContent using (program.credits - program.majorCredits).'
+            '#modal-remaining should show ' + expectedRemaining + ' (total credits minus major credits) but it shows "' + remainingEl.textContent + '". ' +
+            'Set #modal-remaining.textContent using (program.credits - program.majorCredits) — order matters, and do not swap this with another field.'
         );
     }
 });
@@ -433,6 +456,8 @@ test('Step 5: submitting the add-program form adds a new card to the grid', func
         }
     }
 
+    var lengthAfter = programs.length;
+
     // Clean up: pop any items that got pushed and re-render.
     while (programs.length > initialLength) {
         programs.pop();
@@ -446,6 +471,17 @@ test('Step 5: submitting the add-program form adds a new card to the grid', func
             'After submitting the form, a new card containing "' + testName + '" should appear in the grid. ' +
             'In your submit handler: call event.preventDefault(), build a new program object from the input values ' +
             '(using Number() for credits and majorCredits), push it into programs, and call renderPrograms(programs).'
+        );
+    }
+
+    // Catch students who bypass the data model by writing straight to
+    // grid.innerHTML instead of pushing into the programs array.
+    if (lengthAfter <= initialLength) {
+        throw new Error(
+            'The new card appeared in the grid, but the programs array did not grow. ' +
+            'You must push the new program OBJECT into the programs array (programs.push(newProgram)) ' +
+            'and then call renderPrograms(programs) — do not append HTML to the grid directly. ' +
+            'Otherwise, sorting and re-rendering will lose the new program.'
         );
     }
 });
