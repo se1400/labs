@@ -23,8 +23,9 @@ test('Step 1: #featured-program shows the first program\'s name and department',
 
     if (!text) {
         throw new Error(
-            '#featured-program is empty. Set its textContent using programs[0].name and programs[0].department. ' +
-            'For example: `Featured program: ${programs[0].name} — ${programs[0].department} department`'
+            '#featured-program is empty. Select it and set its textContent to a template literal ' +
+            'that reads programs[0].name and programs[0].department using dot notation. ' +
+            'See Step 1 in the description for the exact sentence shape.'
         );
     }
 
@@ -192,8 +193,9 @@ test('Step 2d: renderPrograms([]) shows an empty-state message in the grid', fun
     if (!gridText) {
         throw new Error(
             'renderPrograms([]) should show an empty-state message when the list is empty, but the grid is completely blank. ' +
-            'When list.length === 0, set grid.innerHTML to something like ' +
-            '\'<p class="empty-state">No programs available. Add one below to get started.</p>\' and return.'
+            'Before the normal rendering, add a guard clause: when list.length === 0, set grid.innerHTML to a ' +
+            '<p> with class "empty-state" containing a friendly message, then return. ' +
+            'See Step 2 in the description for the exact message text.'
         );
     }
 });
@@ -224,8 +226,9 @@ test('Step 3a: clicking #sort-major moves Computer Science (fewest major credits
         throw new Error(
             'After clicking #sort-major, the first card should be "Computer Science" (fewest major credits at 42) ' +
             'but it is "' + firstText.trim().substring(0, 40) + '...". ' +
-            'Use [...programs].sort((a, b) => a.majorCredits - b.majorCredits) to sort by major credits ascending, ' +
-            'then pass the result to renderPrograms.'
+            'In the click handler, make a COPY of programs with the spread operator, sort the copy by majorCredits ' +
+            'ascending using a comparator function, then pass the sorted copy to renderPrograms. ' +
+            'For numbers, the comparator subtracts a from b (or the other way) to decide order.'
         );
     }
 });
@@ -253,8 +256,9 @@ test('Step 3b: clicking #sort-name moves Biology (alphabetical first) to the fir
         throw new Error(
             'After clicking #sort-name, the first card should be "Biology" (alphabetically first) ' +
             'but it is "' + firstText.trim().substring(0, 40) + '...". ' +
-            'Use [...programs].sort((a, b) => a.name.localeCompare(b.name)) to sort alphabetically, ' +
-            'then pass the result to renderPrograms.'
+            'Make a copy of programs with the spread operator and sort by name — strings cannot be subtracted, ' +
+            'so use the .localeCompare() string method inside your comparator. ' +
+            'Then pass the sorted copy to renderPrograms.'
         );
     }
 });
@@ -365,8 +369,9 @@ test('Step 4b: the modal shows the clicked program\'s name, department, total cr
     if (nameEl.textContent.indexOf(expected.name) === -1) {
         throw new Error(
             'After clicking a card, #modal-program-name should show "' + expected.name + '" but it shows "' + nameEl.textContent + '". ' +
-            'In your click handler, look up the program with programs.find(p => p.id === Number(card.dataset.id)), ' +
-            'then set #modal-program-name.textContent to program.name.'
+            'In your click handler, read the card\'s data-id with card.dataset.id and convert it with Number(). ' +
+            'Then use the .find() array method on programs to look up the matching object by id, ' +
+            'and set #modal-program-name.textContent to that program\'s name.'
         );
     }
 
@@ -458,6 +463,18 @@ test('Step 5: submitting the add-program form adds a new card to the grid', func
 
     var lengthAfter = programs.length;
 
+    // Capture the types of the newly pushed program's numeric fields
+    // BEFORE cleanup, so we can verify Number() conversion after.
+    var newCreditsType = null;
+    var newMajorType = null;
+    if (lengthAfter > initialLength) {
+        var added = programs[initialLength];
+        if (added) {
+            newCreditsType = typeof added.credits;
+            newMajorType = typeof added.majorCredits;
+        }
+    }
+
     // Clean up: pop any items that got pushed and re-render.
     while (programs.length > initialLength) {
         programs.pop();
@@ -482,6 +499,24 @@ test('Step 5: submitting the add-program form adds a new card to the grid', func
             'You must push the new program OBJECT into the programs array (programs.push(newProgram)) ' +
             'and then call renderPrograms(programs) — do not append HTML to the grid directly. ' +
             'Otherwise, sorting and re-rendering will lose the new program.'
+        );
+    }
+
+    // Catch students who forget Number() on the input .values — the
+    // new card shows fine, but sorting by major credits will break
+    // because strings sort differently than numbers.
+    if (newCreditsType !== null && newCreditsType !== 'number') {
+        throw new Error(
+            'The new program was added, but its credits property is a ' + newCreditsType + ' instead of a number. ' +
+            'Input .value is always a string — wrap the value from #new-credits with Number() ' +
+            'when building the new program object. Otherwise, Sort by Major Credits will break for new programs.'
+        );
+    }
+    if (newMajorType !== null && newMajorType !== 'number') {
+        throw new Error(
+            'The new program was added, but its majorCredits property is a ' + newMajorType + ' instead of a number. ' +
+            'Input .value is always a string — wrap the value from #new-major with Number() ' +
+            'when building the new program object. Otherwise, Sort by Major Credits will break for new programs.'
         );
     }
 });
