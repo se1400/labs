@@ -1092,7 +1092,7 @@ body.dark-mode #clear-programs:hover {
     color: var(--color-text-muted);
 }
 
-.program-card .card-price {
+.program-card .card-major {
     margin: 0.25rem 0 0 0;
     font-weight: 700;
     color: var(--color-accent);

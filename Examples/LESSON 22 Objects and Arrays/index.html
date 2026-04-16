@@ -69,7 +69,7 @@
 
             <div class="program-controls">
                 <button type="button" id="sort-name">Sort by Name</button>
-                <button type="button" id="sort-price">Sort by Price</button>
+                <button type="button" id="sort-major">Sort by Major Credits</button>
                 <button type="button" id="clear-programs">Clear All</button>
             </div>
 
@@ -88,12 +88,12 @@
                     <input type="text" id="new-department" name="new-department" required>
                 </div>
                 <div class="form-group">
-                    <label for="new-credits">Credits</label>
+                    <label for="new-credits">Total Credits</label>
                     <input type="number" id="new-credits" name="new-credits" min="1" max="200" required>
                 </div>
                 <div class="form-group">
-                    <label for="new-price">Cost Per Credit</label>
-                    <input type="number" id="new-price" name="new-price" min="0" step="1" required>
+                    <label for="new-major">Major Credits</label>
+                    <input type="number" id="new-major" name="new-major" min="0" max="200" step="1" required>
                 </div>
                 <button type="submit">Add Program</button>
             </form>
@@ -339,12 +339,12 @@
             <span class="badge" id="modal-department"></span>
             <h3 id="modal-program-name"></h3>
             <dl class="modal-details">
-                <dt>Credits</dt>
+                <dt>Total Credits</dt>
                 <dd id="modal-credits"></dd>
-                <dt>Cost Per Credit</dt>
-                <dd id="modal-price"></dd>
-                <dt>Total Tuition</dt>
-                <dd id="modal-total"></dd>
+                <dt>Credits in Major</dt>
+                <dd id="modal-major"></dd>
+                <dt>Gen Ed &amp; Electives</dt>
+                <dd id="modal-remaining"></dd>
             </dl>
         </div>
     </div>
@@ -366,14 +366,14 @@ St. George, UT 84770</pre>
     <script>
         // Data for Lab 22 — array of program objects
         var programs = [
-            { id: 1, name: 'Computer Science',    department: 'Computing',        credits: 120, costPerCredit: 250 },
-            { id: 2, name: 'Software Engineering', department: 'Computing',        credits: 120, costPerCredit: 260 },
-            { id: 3, name: 'Nursing',              department: 'Health Sciences',  credits: 128, costPerCredit: 280 },
-            { id: 4, name: 'Biology',              department: 'Science',          credits: 120, costPerCredit: 240 },
-            { id: 5, name: 'Cybersecurity',        department: 'Computing',        credits: 120, costPerCredit: 270 },
-            { id: 6, name: 'Psychology',           department: 'Social Sciences',  credits: 120, costPerCredit: 215 },
-            { id: 7, name: 'Business Marketing',   department: 'Business',         credits: 120, costPerCredit: 230 },
-            { id: 8, name: 'Digital Media',        department: 'Humanities',       credits: 120, costPerCredit: 220 }
+            { id: 1, name: 'Computer Science',     department: 'Computing',        credits: 120, majorCredits: 42 },
+            { id: 2, name: 'Software Engineering', department: 'Computing',        credits: 120, majorCredits: 69 },
+            { id: 3, name: 'Nursing',              department: 'Health Sciences',  credits: 120, majorCredits: 59 },
+            { id: 4, name: 'Biology',              department: 'Science',          credits: 120, majorCredits: 83 },
+            { id: 5, name: 'Cybersecurity',        department: 'Computing',        credits: 120, majorCredits: 57 },
+            { id: 6, name: 'Psychology',           department: 'Social Sciences',  credits: 120, majorCredits: 55 },
+            { id: 7, name: 'Business Marketing',   department: 'Business',         credits: 120, majorCredits: 67 },
+            { id: 8, name: 'Digital Media',        department: 'Humanities',       credits: 120, majorCredits: 63 }
         ];
 
         document.querySelector('#year').textContent = new Date().getFullYear();

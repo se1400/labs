@@ -2,7 +2,7 @@
 // ─────────────────────────────────────────────────────────
 // The programs array is in the HTML tab near the bottom of
 // the page. Each item is an OBJECT with five properties:
-//   id, name, department, credits, costPerCredit
+//   id, name, department, credits, majorCredits
 // Do not modify the array — your JavaScript will read
 // (and in Step 5, add to) it.
 // ─────────────────────────────────────────────────────────

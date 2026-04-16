@@ -1,8 +1,8 @@
 # Objects & Arrays of Objects
 
-In the last lab you used a function and a loop to turn an array of strings into a grid of program cards. That worked — but each program only knew one thing about itself: its name. Real programs have a name **and** a department **and** a credit count **and** a price per credit. You need a way to bundle those values together so they travel through your code as one thing.
+In the last lab you used a function and a loop to turn an array of strings into a grid of program cards. That worked — but each program only knew one thing about itself: its name. Real programs have a name **and** a department **and** a total credit count **and** a number of credits required in the major (pulled straight from Utah Tech's degree worksheets). You need a way to bundle those values together so they travel through your code as one thing.
 
-That bundle is called an **object**. Without objects, you would need four parallel arrays — one for names, one for departments, one for credits, one for prices — and trust that `names[2]` and `credits[2]` always line up. Objects keep related values glued together so they travel as one thing.
+That bundle is called an **object**. Without objects, you would need four parallel arrays — one for names, one for departments, one for total credits, one for major credits — and trust that `names[2]` and `majorCredits[2]` always line up. Objects keep related values glued together so they travel as one thing.
 
 And when you put a bunch of objects in an array, you get the single most common data shape in web development: the **array of objects**. Every product list, every user directory, every search result, every feed — they are all arrays of objects.
 
@@ -20,13 +20,13 @@ Scroll to the bottom of the HTML tab and look at the `programs` array. In Lab 21
 
 ```
 var programs = [
-    { id: 1, name: 'Computer Science', department: 'Computing', credits: 120, costPerCredit: 250 },
-    { id: 2, name: 'Software Engineering', department: 'Computing', credits: 120, costPerCredit: 260 },
+    { id: 1, name: 'Computer Science',     department: 'Computing', credits: 120, majorCredits: 42 },
+    { id: 2, name: 'Software Engineering', department: 'Computing', credits: 120, majorCredits: 69 },
     ...
 ];
 ```
 
-Each object has five properties. Read a property with dot notation: `programs[0].name` gives you `'Computer Science'`, and `programs[0].costPerCredit` gives you `250`. That is the only new syntax you need to get started.
+Each object has five properties. Read a property with dot notation: `programs[0].name` gives you `'Computer Science'`, and `programs[0].majorCredits` gives you `42`. That is the only new syntax you need to get started.
 
 > **Scope tip:** The `programs` array is declared with `var` in the HTML so it is available everywhere — including in your JS tab. The `renderPrograms` function you write in Step 2 must be declared with `function` (not `const` or `let`) so the tests can find it.
 
@@ -57,7 +57,7 @@ document.querySelector('#featured-program').textContent =
 
 ## Step 2 — renderPrograms (data-driven cards)
 
-The `#programs-grid` div is empty. Your job is to write a `renderPrograms` function that takes a list of program objects and builds a card for each one — showing **four** pieces of data per card (department badge, name, credits, price). While you are at it, you will teach the function to handle an empty list gracefully, so Step 3's **Clear All** button has something to lean on.
+The `#programs-grid` div is empty. Your job is to write a `renderPrograms` function that takes a list of program objects and builds a card for each one — showing **four** pieces of data per card (department badge, name, total credits, major credits). While you are at it, you will teach the function to handle an empty list gracefully, so Step 3's **Clear All** button has something to lean on.
 
 This step replaces what you did in Steps 4 and 5 of Lab 21, but in a more powerful way. Instead of `for...of` and string concatenation, you will use `.map()` and `.join('')` — the standard pattern for turning an array into HTML.
 
@@ -94,17 +94,16 @@ grid.innerHTML = list.map(program => `
     <div class="program-card" data-id="${program.id}">
         <span class="badge">${program.department}</span>
         <h4>${program.name}</h4>
-        <p class="card-meta">${program.credits} credits</p>
-        <p class="card-price">$${program.costPerCredit.toFixed(2)}/credit</p>
+        <p class="card-meta">${program.credits} total credits</p>
+        <p class="card-major">${program.majorCredits} in major</p>
     </div>
 `).join('');
 ```
 
-Three things to notice:
+Two things to notice:
 
 - `.map(program => ...)` is an arrow function (same as Lab 21) that runs once for every item in the array. On each pass, `program` is the current object — so `program.name` reads the name off that specific program.
 - `data-id="${program.id}"` stores the program's id directly on the card in the HTML. You will use that in Step 4 to figure out which program was clicked. Any attribute that starts with `data-` is a **custom data attribute** — a place to stash information on an element that JavaScript can read later.
-- `.toFixed(2)` is the same method you used in Lab 21 for `formatPrice`. It formats a number with exactly two decimal places.
 
 **Fourth — call the function to render the initial cards.**
 
@@ -114,21 +113,21 @@ Below the function, call it with the full `programs` array:
 renderPrograms(programs);
 ```
 
-**What you will see:** Eight program cards appear, each with a navy department badge, the program name, a credits line, and a red price per credit. If you temporarily try `renderPrograms([])`, you will see the empty-state message instead — your function is already ready for the Clear All button in Step 3.
+**What you will see:** Eight program cards appear, each with a navy department badge, the program name, a total-credits line, and a red "in major" line. If you temporarily try `renderPrograms([])`, you will see the empty-state message instead — your function is already ready for the Clear All button in Step 3.
 
 ---
 
 ## Step 3 — Control Buttons
 
-Above the grid there are three buttons: **Sort by Name**, **Sort by Price**, and **Clear All**. All three do the same kind of thing: they call `renderPrograms` with a different list. You are about to write three click listeners — each one a single idea, each one four lines of code.
+Above the grid there are three buttons: **Sort by Name**, **Sort by Major Credits**, and **Clear All**. All three do the same kind of thing: they call `renderPrograms` with a different list. You are about to write three click listeners — each one a single idea, each one four lines of code.
 
-**First — Sort by Price.**
+**First — Sort by Major Credits.**
 
-Select `#sort-price` and attach a `click` listener. Inside the handler, build a sorted copy of the array and pass it to `renderPrograms`:
+Select `#sort-major` and attach a `click` listener. Inside the handler, build a sorted copy of the array and pass it to `renderPrograms`:
 
 ```
-document.querySelector('#sort-price').addEventListener('click', function() {
-    const sorted = [...programs].sort((a, b) => a.costPerCredit - b.costPerCredit);
+document.querySelector('#sort-major').addEventListener('click', function() {
+    const sorted = [...programs].sort((a, b) => a.majorCredits - b.majorCredits);
     renderPrograms(sorted);
 });
 ```
@@ -136,7 +135,7 @@ document.querySelector('#sort-price').addEventListener('click', function() {
 Two things to notice:
 
 - `[...programs]` uses the spread operator (same one you used in Lab 21 for `.reverse()`) to make a **copy** of the array. `.sort()` changes the array it is called on — calling it on a copy keeps the original `programs` array in its original order.
-- The function passed to `.sort()` is called a **comparator**. It takes two items (`a` and `b`) and returns a number. If the number is negative, `a` comes before `b`. If positive, `b` comes first. For numbers like price, `a.costPerCredit - b.costPerCredit` sorts ascending (cheapest first).
+- The function passed to `.sort()` is called a **comparator**. It takes two items (`a` and `b`) and returns a number. If the number is negative, `a` comes before `b`. If positive, `b` comes first. For numbers, `a.majorCredits - b.majorCredits` sorts ascending (fewest major credits first).
 
 **Second — Sort by Name.**
 
@@ -161,13 +160,13 @@ document.querySelector('#clear-programs').addEventListener('click', function() {
 
 Notice that this does **not** erase the `programs` array — it just re-renders the grid with nothing in it. Click Sort by Name next and all eight programs come right back, because the real data is untouched.
 
-**What you will see:** Clicking **Sort by Price** puts Psychology ($215) at the top. Clicking **Sort by Name** puts Biology at the top alphabetically. Clicking **Clear All** shows the empty-state message. The `programs` array itself never changes — each click just passes a different list to the same render function.
+**What you will see:** Clicking **Sort by Major Credits** puts Computer Science (42 major credits) at the top. Clicking **Sort by Name** puts Biology at the top alphabetically. Clicking **Clear All** shows the empty-state message. The `programs` array itself never changes — each click just passes a different list to the same render function.
 
 ---
 
 ## Step 4 — Click a Card to Open a Modal
 
-Right now the cards just sit there. Your job is to make each card open a details modal when clicked — showing the department, name, credits, price per credit, and **total tuition** (credits × price).
+Right now the cards just sit there. Your job is to make each card open a details modal when clicked — showing the department, name, total credits, credits in the major, and **remaining credits** (total − major = credits needed for gen ed and electives).
 
 The obvious approach would be: loop through every card and attach a click listener to each one. That works, but it breaks the moment you re-render — the new cards have no listeners. The better approach, called **event delegation**, attaches a **single** listener to the grid and asks the click event which card was clicked.
 
@@ -179,7 +178,7 @@ grid.addEventListener('click', function(event) {
     if (!card) return;
 ```
 
-- `event.target` is whatever the user actually clicked — it might be the `<h4>`, the badge span, the price paragraph, or the card itself.
+- `event.target` is whatever the user actually clicked — it might be the `<h4>`, the badge span, the major-credits paragraph, or the card itself.
 - `.closest('.program-card')` walks up from `event.target` and returns the nearest ancestor (including itself) that matches the selector. If the user clicked inside a card, you get the card. If they clicked empty space between cards, you get `null`.
 - `if (!card) return;` bails out on null clicks. This is the `!` operator (NOT) combined with the truthy-falsy idea from Lab 19 — `null` is falsy, so `!null` is `true` and `return` runs.
 
@@ -198,19 +197,19 @@ if (!program) return;
 
 **Third — fill in the modal and show it.**
 
-The modal is already in the HTML as `#program-modal`. It has five elements you need to fill: `#modal-department`, `#modal-program-name`, `#modal-credits`, `#modal-price`, `#modal-total`.
+The modal is already in the HTML as `#program-modal`. It has five elements you need to fill: `#modal-department`, `#modal-program-name`, `#modal-credits`, `#modal-major`, `#modal-remaining`.
 
 ```
 document.querySelector('#modal-department').textContent = program.department;
 document.querySelector('#modal-program-name').textContent = program.name;
 document.querySelector('#modal-credits').textContent = program.credits + ' credits';
-document.querySelector('#modal-price').textContent = '$' + program.costPerCredit.toFixed(2);
-document.querySelector('#modal-total').textContent = '$' + (program.credits * program.costPerCredit).toFixed(2);
+document.querySelector('#modal-major').textContent = program.majorCredits + ' credits';
+document.querySelector('#modal-remaining').textContent = (program.credits - program.majorCredits) + ' credits';
 document.querySelector('#program-modal').classList.add('visible');
 });
 ```
 
-The last line — `classList.add('visible')` — reuses the exact same modal-open trick from Lab 20.
+Notice the last data line — `program.credits - program.majorCredits` — is a little computation done at display time. You are not storing "remaining credits" on the object, because it can always be derived from the two values you *do* store. Keeping data minimal and computing the rest on demand is a habit worth building early. The final line — `classList.add('visible')` — reuses the exact same modal-open trick from Lab 20.
 
 **Fourth — wire up the close button.**
 
@@ -220,7 +219,7 @@ document.querySelector('#program-modal-close').addEventListener('click', functio
 });
 ```
 
-**What you will see:** Clicking any card opens a modal showing the program's department badge, its name as the heading, its credit count, its price per credit, and the calculated total tuition for the degree. Clicking the × closes the modal. Re-sort the cards and click a new one — it still works, because the listener is on the grid, not on each card.
+**What you will see:** Clicking any card opens a modal showing the program's department badge, its name as the heading, its total credits, the credits required in the major, and the calculated remaining credits for gen ed and electives. Clicking the × closes the modal. Re-sort the cards and click a new one — it still works, because the listener is on the grid, not on each card.
 
 ---
 
@@ -228,7 +227,7 @@ document.querySelector('#program-modal-close').addEventListener('click', functio
 
 Your final step grows the catalog. The **Add a New Program** form lets the user type in a new program and append it to the grid — the first time in this course that the user adds data instead of the data being hard-coded.
 
-The form has four inputs: `#new-name`, `#new-department`, `#new-credits`, `#new-price`. Your handler needs to read those values, build a new program **object**, push it into the array, and re-render.
+The form has four inputs: `#new-name`, `#new-department`, `#new-credits`, `#new-major`. Your handler needs to read those values, build a new program **object**, push it into the array, and re-render.
 
 **Building an object literal.**
 
@@ -243,7 +242,7 @@ document.querySelector('#add-program-form').addEventListener('submit', function(
         name: document.querySelector('#new-name').value,
         department: document.querySelector('#new-department').value,
         credits: Number(document.querySelector('#new-credits').value),
-        costPerCredit: Number(document.querySelector('#new-price').value)
+        majorCredits: Number(document.querySelector('#new-major').value)
     };
 
     programs.push(newProgram);
@@ -255,11 +254,11 @@ document.querySelector('#add-program-form').addEventListener('submit', function(
 A few things worth pausing on:
 
 - `event.preventDefault()` stops the form from submitting the traditional way and reloading the page (same as Lab 19).
-- `Number(...)` converts the string the user typed into an actual number. Input `.value` is always a string, and `.toFixed(2)` only works on numbers.
+- `Number(...)` converts the string the user typed into an actual number. Input `.value` is always a string, and the sort comparator you wrote in Step 3 does math on these values — subtracting strings would not do what you want.
 - `.push(newProgram)` adds the object to the **end** of the array. The array grew from 8 items to 9. The next `renderPrograms(programs)` call will build 9 cards.
 - `event.target.reset()` clears the form inputs so the user can add another program without retyping.
 
-**What you will see:** Fill in the form with a new program and click Add Program — a ninth card appears at the end of the grid, stylishly matching the others. Click it and the modal shows your new program's details. Click Sort by Price and your new program slots in based on its cost. Click Clear All and the empty state returns — click Sort by Name and your new program is back, because it is saved in the array.
+**What you will see:** Fill in the form with a new program and click Add Program — a ninth card appears at the end of the grid, stylishly matching the others. Click it and the modal shows your new program's details. Click Sort by Major Credits and your new program slots in based on its major-credit count. Click Clear All and the empty state returns — click Sort by Name and your new program is back, because it is saved in the array.
 
 ---
 

@@ -104,7 +104,7 @@ test('Step 2b: each .program-card has a data-id attribute matching a program id'
     }
 });
 
-test('Step 2c: the first card shows the program\'s name, department, credits, and price with .toFixed(2)', function() {
+test('Step 2c: the first card shows the program\'s name, department, total credits, and major credits', function() {
     var grid = document.querySelector('#programs-grid');
     if (!grid) {
         throw new Error('Could not find #programs-grid.');
@@ -141,16 +141,15 @@ test('Step 2c: the first card shows the program\'s name, department, credits, an
 
     if (cardText.indexOf(String(program.credits)) === -1) {
         throw new Error(
-            'The first card should contain the credits number "' + program.credits + '" but its text is "' + cardText.trim() + '". ' +
+            'The first card should contain the total credits number "' + program.credits + '" but its text is "' + cardText.trim() + '". ' +
             'Include ${program.credits} in your template literal.'
         );
     }
 
-    var expectedPrice = program.costPerCredit.toFixed(2);
-    if (cardText.indexOf(expectedPrice) === -1) {
+    if (cardText.indexOf(String(program.majorCredits)) === -1) {
         throw new Error(
-            'The first card should show the price formatted with two decimals ("' + expectedPrice + '") but its text is "' + cardText.trim() + '". ' +
-            'Use ${program.costPerCredit.toFixed(2)} to format the price.'
+            'The first card should contain the major credits number "' + program.majorCredits + '" but its text is "' + cardText.trim() + '". ' +
+            'Include ${program.majorCredits} in your template literal.'
         );
     }
 });
@@ -198,11 +197,11 @@ test('Step 2d: renderPrograms([]) shows an empty-state message in the grid', fun
 
 // ── Step 3: Control Buttons ─────────────────────────────
 
-test('Step 3a: clicking #sort-price moves Psychology (cheapest) to the first card', function() {
-    var btn = document.querySelector('#sort-price');
+test('Step 3a: clicking #sort-major moves Computer Science (fewest major credits) to the first card', function() {
+    var btn = document.querySelector('#sort-major');
     if (!btn) {
         throw new Error(
-            'Could not find #sort-price. This element is already in the HTML — make sure you have not changed it.'
+            'Could not find #sort-major. This element is already in the HTML — make sure you have not changed it.'
         );
     }
 
@@ -211,17 +210,17 @@ test('Step 3a: clicking #sort-price moves Psychology (cheapest) to the first car
     var cards = document.querySelectorAll('#programs-grid .program-card');
     if (cards.length === 0) {
         throw new Error(
-            'No .program-card elements found after clicking #sort-price. ' +
+            'No .program-card elements found after clicking #sort-major. ' +
             'Your click handler should call renderPrograms with the sorted list.'
         );
     }
 
     var firstText = cards[0].textContent;
-    if (firstText.indexOf('Psychology') === -1) {
+    if (firstText.indexOf('Computer Science') === -1) {
         throw new Error(
-            'After clicking #sort-price, the first card should be "Psychology" (the cheapest at $215 per credit) ' +
+            'After clicking #sort-major, the first card should be "Computer Science" (fewest major credits at 42) ' +
             'but it is "' + firstText.trim().substring(0, 40) + '...". ' +
-            'Use [...programs].sort((a, b) => a.costPerCredit - b.costPerCredit) to sort by price ascending, ' +
+            'Use [...programs].sort((a, b) => a.majorCredits - b.majorCredits) to sort by major credits ascending, ' +
             'then pass the result to renderPrograms.'
         );
     }
@@ -322,7 +321,7 @@ test('Step 4a: clicking a .program-card adds the "visible" class to #program-mod
     }
 });
 
-test('Step 4b: the modal shows the clicked program\'s name, department, credits, and price', function() {
+test('Step 4b: the modal shows the clicked program\'s name, department, total credits, major credits, and remaining credits', function() {
     var modal = document.querySelector('#program-modal');
     var cards = document.querySelectorAll('#programs-grid .program-card');
     if (!modal || cards.length === 0) {
@@ -362,16 +361,23 @@ test('Step 4b: the modal shows the clicked program\'s name, department, credits,
 
     if (modalText.indexOf(String(expected.credits)) === -1) {
         throw new Error(
-            'The modal should contain the credits number ("' + expected.credits + '") but it does not. ' +
+            'The modal should contain the total credits number ("' + expected.credits + '") but it does not. ' +
             'Set #modal-credits.textContent using program.credits.'
         );
     }
 
-    var expectedPrice = expected.costPerCredit.toFixed(2);
-    if (modalText.indexOf(expectedPrice) === -1) {
+    if (modalText.indexOf(String(expected.majorCredits)) === -1) {
         throw new Error(
-            'The modal should contain the price formatted with two decimals ("' + expectedPrice + '") but it does not. ' +
-            'Set #modal-price.textContent using program.costPerCredit.toFixed(2).'
+            'The modal should contain the major credits number ("' + expected.majorCredits + '") but it does not. ' +
+            'Set #modal-major.textContent using program.majorCredits.'
+        );
+    }
+
+    var expectedRemaining = expected.credits - expected.majorCredits;
+    if (modalText.indexOf(String(expectedRemaining)) === -1) {
+        throw new Error(
+            'The modal should contain the remaining credits ("' + expectedRemaining + '") — that is total credits minus major credits. ' +
+            'Set #modal-remaining.textContent using (program.credits - program.majorCredits).'
         );
     }
 });
@@ -390,9 +396,9 @@ test('Step 5: submitting the add-program form adds a new card to the grid', func
     var nameInput = document.querySelector('#new-name');
     var deptInput = document.querySelector('#new-department');
     var creditsInput = document.querySelector('#new-credits');
-    var priceInput = document.querySelector('#new-price');
+    var majorInput = document.querySelector('#new-major');
 
-    if (!nameInput || !deptInput || !creditsInput || !priceInput) {
+    if (!nameInput || !deptInput || !creditsInput || !majorInput) {
         throw new Error('Could not find one or more form inputs. Do not rename the form fields.');
     }
 
@@ -407,7 +413,7 @@ test('Step 5: submitting the add-program form adds a new card to the grid', func
     nameInput.value = testName;
     deptInput.value = 'Test Department';
     creditsInput.value = '120';
-    priceInput.value = '200';
+    majorInput.value = '60';
 
     // Submit — some handlers use submit event, others a button click.
     if (typeof form.requestSubmit === 'function') {
@@ -439,7 +445,7 @@ test('Step 5: submitting the add-program form adds a new card to the grid', func
         throw new Error(
             'After submitting the form, a new card containing "' + testName + '" should appear in the grid. ' +
             'In your submit handler: call event.preventDefault(), build a new program object from the input values ' +
-            '(using Number() for credits and costPerCredit), push it into programs, and call renderPrograms(programs).'
+            '(using Number() for credits and majorCredits), push it into programs, and call renderPrograms(programs).'
         );
     }
 });

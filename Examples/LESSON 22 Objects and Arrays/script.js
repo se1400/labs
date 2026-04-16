@@ -21,8 +21,8 @@ function renderPrograms(list) {
         <div class="program-card" data-id="${program.id}">
             <span class="badge">${program.department}</span>
             <h4>${program.name}</h4>
-            <p class="card-meta">${program.credits} credits</p>
-            <p class="card-price">$${program.costPerCredit.toFixed(2)}/credit</p>
+            <p class="card-meta">${program.credits} total credits</p>
+            <p class="card-major">${program.majorCredits} in major</p>
         </div>
     `).join('');
 }
@@ -30,10 +30,10 @@ function renderPrograms(list) {
 renderPrograms(programs);
 
 
-// ── Step 3: Control Buttons (Sort Price, Sort Name, Clear All) ──
+// ── Step 3: Control Buttons (Sort Major, Sort Name, Clear All) ──
 
-document.querySelector('#sort-price').addEventListener('click', function() {
-    const sorted = [...programs].sort((a, b) => a.costPerCredit - b.costPerCredit);
+document.querySelector('#sort-major').addEventListener('click', function() {
+    const sorted = [...programs].sort((a, b) => a.majorCredits - b.majorCredits);
     renderPrograms(sorted);
 });
 
@@ -60,8 +60,8 @@ grid.addEventListener('click', function(event) {
     document.querySelector('#modal-department').textContent = program.department;
     document.querySelector('#modal-program-name').textContent = program.name;
     document.querySelector('#modal-credits').textContent = program.credits + ' credits';
-    document.querySelector('#modal-price').textContent = '$' + program.costPerCredit.toFixed(2);
-    document.querySelector('#modal-total').textContent = '$' + (program.credits * program.costPerCredit).toFixed(2);
+    document.querySelector('#modal-major').textContent = program.majorCredits + ' credits';
+    document.querySelector('#modal-remaining').textContent = (program.credits - program.majorCredits) + ' credits';
     document.querySelector('#program-modal').classList.add('visible');
 });
 
@@ -80,7 +80,7 @@ document.querySelector('#add-program-form').addEventListener('submit', function(
         name: document.querySelector('#new-name').value,
         department: document.querySelector('#new-department').value,
         credits: Number(document.querySelector('#new-credits').value),
-        costPerCredit: Number(document.querySelector('#new-price').value)
+        majorCredits: Number(document.querySelector('#new-major').value)
     };
 
     programs.push(newProgram);
