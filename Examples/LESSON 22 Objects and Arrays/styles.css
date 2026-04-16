@@ -1,0 +1,1166 @@
+/* ===== Layer Declaration ===== */
+@layer base, components, forms, utilities;
+
+/* ===== BASE LAYER ===== */
+@layer base {
+
+    /* CSS Custom Properties */
+    :root {
+        /* Brand tokens */
+        --ut-navy: #003058;
+        --ut-white: #ffffff;
+        --space-fluid: clamp(1rem, 3vw, 2rem);
+
+        /* Semantic tokens (light mode defaults) */
+        --color-bg: #ffffff;
+        --color-surface: #f7f7f7;
+        --color-text: #003058;
+        --color-text-muted: #555;
+        --color-border: #f2f2f2;
+        --color-accent: #BA1C21;
+        --color-accent-hover: #8B1518;
+    }
+
+    /* Box Sizing */
+    *, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+    /* Smooth scrolling */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Responsive images */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Body grid — mobile-first single column */
+    body {
+        display: grid;
+        grid-template-columns: 1fr;
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--color-text);
+        background-color: var(--color-bg);
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    /* Fluid typography with clamp() */
+    h1 {
+        margin: 0;
+        font-family: 'Montserrat', sans-serif;
+        font-size: clamp(1.5rem, 4vw + 1rem, 3rem);
+        background: linear-gradient(to right, var(--ut-navy), var(--color-accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+
+    :is(h2, h3, h4) {
+        color: var(--color-accent);
+        margin-top: 0;
+    }
+
+    h2 {
+        font-size: clamp(1.25rem, 3vw + 0.5rem, 2rem);
+    }
+
+    h3, h4 {
+        font-size: clamp(1rem, 2vw + 0.5rem, 1.5rem);
+    }
+
+    /* Link styling — :where() for zero specificity base */
+    :where(a:link) { color: var(--color-accent); }
+    :where(a:visited) { color: var(--color-accent-hover); }
+    :where(a:hover) { color: hsl(0, 65%, 51%); }
+    :where(a:active) { color: var(--color-text); }
+
+    /* Skip link (accessibility) */
+    .skip-link {
+        position: absolute;
+        left: -9999px;
+
+        &:focus-visible {
+            left: 0;
+            top: 0;
+            background: var(--ut-navy);
+            color: var(--ut-white);
+            padding: 8px;
+            z-index: 100;
+            outline: 2px solid var(--ut-white);
+            outline-offset: -4px;
+        }
+    }
+
+    /* Pre tag styling */
+    pre {
+        margin: 0;
+        font-family: inherit;
+        white-space: pre-wrap;
+    }
+
+    address {
+        font-style: normal;
+        line-height: 1.4;
+    }
+
+    /* Responsive video */
+    video {
+        max-width: 100%;
+        height: auto;
+    }
+
+    /* Selection colors */
+    ::selection {
+        background-color: var(--color-accent);
+        color: var(--ut-white);
+    }
+}
+
+/* ===== COMPONENTS LAYER ===== */
+@layer components {
+
+    /* Header — radial gradient spotlight */
+    header {
+        padding: 1rem;
+        background: radial-gradient(circle at 50% 50%, #fff 0%, #eee 70%);
+        text-align: center;
+
+        & img {
+            max-width: 120px;
+            margin-bottom: 8px;
+        }
+    }
+
+    /* Hamburger menu toggle button */
+    .menu-toggle {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        background: var(--ut-navy);
+        border: none;
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        width: 100%;
+
+        & span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--ut-white);
+            border-radius: 2px;
+        }
+    }
+
+    /* Nav — with nesting */
+    nav {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        background-color: var(--ut-navy);
+        color: var(--ut-white);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+
+        &.nav-open {
+            display: flex;
+        }
+
+        & a {
+            position: relative;
+            transition: color 0.2s ease-out;
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: -4px;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background: var(--ut-white);
+                transform: scaleX(0);
+                transform-origin: right;
+                transition: transform 0.3s ease;
+            }
+
+            &:hover::after {
+                transform: scaleX(1);
+                transform-origin: left;
+            }
+        }
+
+        & :is(a:link, a:visited) {
+            color: var(--ut-white);
+            text-decoration: none;
+        }
+
+        & a:hover {
+            color: var(--ut-white);
+        }
+
+        & a:focus-visible {
+            outline: 2px solid var(--ut-white);
+            outline-offset: 4px;
+            border-radius: 2px;
+        }
+    }
+
+    /* Hero section */
+    #welcome {
+        background: linear-gradient(to bottom, rgba(0, 48, 88, 0.3) 0%, rgba(0, 20, 60, 0.78) 100%),
+                    url("https://se1400.github.io/labs/assets/campus.jpg") center / cover no-repeat;
+        min-height: 60vh;
+        min-height: 60dvh;
+        display: grid;
+        align-items: end;
+    }
+
+    .hero-overlay {
+        grid-column: 1 / -1;
+        color: var(--ut-white);
+        backdrop-filter: blur(3px);
+
+        & h2 {
+            color: inherit;
+        }
+    }
+
+    .hero-content {
+        padding: clamp(1rem, 5vw, 2rem) clamp(1rem, 8vw, 1.5rem);
+
+        & h2 {
+            animation: fadeSlideIn 0.6s ease-out both;
+        }
+
+        & p {
+            animation: fadeSlideIn 0.6s ease-out 0.2s both;
+        }
+
+        & p:first-of-type::first-letter {
+            float: left;
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 0.85;
+            margin-right: 0.1em;
+            color: var(--ut-white);
+        }
+    }
+
+    /* Full-width elements span all columns — :is() */
+    :is(header, .menu-toggle, nav, #welcome, footer) {
+        grid-column: 1 / -1;
+    }
+
+    /* Main and sidebar — stack on mobile */
+    main {
+        padding: var(--space-fluid);
+    }
+
+    .sidebar {
+        padding: var(--space-fluid);
+        align-self: start;
+
+        & li::marker {
+            color: var(--color-accent);
+            font-size: 1.2em;
+        }
+    }
+
+    /* Panel component */
+    .panel {
+        background-color: var(--color-surface);
+        padding: clamp(0.75rem, 3vw, 1.5rem);
+        border-top: 3px solid var(--color-accent);
+        margin-bottom: var(--space-fluid);
+        border-radius: 0 0 0.5rem 0.5rem;
+    }
+
+    /* Intrinsic programs grid */
+    .programs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
+        gap: var(--space-fluid);
+        container-type: inline-size;
+    }
+
+    /* Figure — with nesting */
+    #colleges figure {
+        margin: 0 0 var(--space-fluid) 0;
+        position: relative;
+        overflow: hidden;
+
+        & img {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border-radius: 0.25rem;
+            display: block;
+            transition: transform 0.4s ease;
+        }
+
+        &:hover img {
+            transform: scale(1.05);
+        }
+    }
+
+    /* :has() — figures with captions get a bottom border */
+    figure:has(figcaption) {
+        border-bottom: 2px solid var(--color-accent);
+        padding-bottom: 0;
+    }
+
+    #colleges figcaption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgba(0, 0, 0, 0.6);
+        color: var(--ut-white);
+        padding: 0.5rem;
+        border-radius: 0 0 0.25rem 0.25rem;
+    }
+
+    /* Program cards — with nesting */
+    .program-card {
+        background-color: var(--color-bg);
+        border: 1px solid var(--color-border);
+        border-top: 3px solid var(--color-accent);
+        padding: 1rem;
+        border-radius: 0 0 0.5rem 0.5rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+        &:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        & h4 {
+            margin: 0.25rem 0 0.5rem 0;
+        }
+    }
+
+    /* Key dates styling */
+    .key-dates dl {
+        margin: 0;
+    }
+
+    .key-dates dt {
+        font-weight: bold;
+        color: var(--color-accent);
+
+        &:not(:first-child) {
+            margin-top: 0.5rem;
+        }
+    }
+
+    .key-dates dd {
+        margin-left: 0;
+    }
+
+    /* Footer — with nesting */
+    footer {
+        padding: 1rem;
+        background-color: var(--ut-navy);
+        color: var(--ut-white);
+        text-align: center;
+
+        & :is(a:link, a:visited) {
+            color: var(--ut-white);
+        }
+
+        & a:hover {
+            color: hsl(0, 65%, 51%);
+        }
+
+        & img {
+            filter: grayscale(100%);
+            transition: transform 0.6s ease-in-out, filter 0.3s ease;
+
+            &:hover {
+                filter: grayscale(0%);
+                transform: rotate(360deg);
+            }
+        }
+    }
+
+    /* Scrollable table on mobile */
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin-top: 12px;
+    }
+
+    th, td {
+        border: 1px solid var(--ut-navy);
+        padding: 0.5rem 0.75rem;
+        text-align: left;
+    }
+
+    th {
+        background-color: var(--ut-navy);
+        color: var(--ut-white);
+    }
+
+    tbody tr:nth-child(odd) {
+        background-color: var(--color-surface);
+    }
+
+    /* Placeholder text — :is() grouping */
+    :is(input, textarea)::placeholder {
+        color: #94a3b8;
+        font-style: italic;
+    }
+}
+
+/* ===== FORMS LAYER ===== */
+@layer forms {
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+
+        /* :has() — highlight form group when input is focused */
+        &:has(:focus) {
+            background-color: var(--color-surface);
+            border-radius: 0.25rem;
+            padding: 0.5rem;
+        }
+    }
+
+    fieldset {
+        border: 1px solid var(--color-border);
+        border-radius: 0.25rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        min-width: 0;
+    }
+
+    legend {
+        font-weight: bold;
+        color: var(--color-text);
+        padding: 0 0.5rem;
+        font-size: 1.05rem;
+    }
+
+    form label {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: var(--color-text);
+    }
+
+    input:not([type="radio"]):not([type="checkbox"]),
+    select,
+    textarea {
+        padding: 0.5rem 0.75rem;
+        border: 2px solid var(--color-border);
+        border-radius: 0.25rem;
+        font-family: inherit;
+        font-size: 1rem;
+        width: 100%;
+        background-color: var(--color-bg);
+        color: var(--color-text);
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    .field-hint {
+        font-size: 0.85rem;
+        color: var(--color-text-muted);
+        margin: 0;
+    }
+
+    input:not([type="radio"]):not([type="checkbox"]):focus,
+    select:focus,
+    textarea:focus {
+        outline: 2px solid var(--color-text);
+        outline-offset: 1px;
+        border-color: var(--color-text);
+    }
+
+    input:required:not([type="radio"]):not([type="checkbox"]),
+    select:required,
+    textarea:required {
+        border-left: 3px solid var(--color-text);
+    }
+
+    input:user-invalid,
+    textarea:user-invalid {
+        border-color: var(--color-accent);
+        background-color: #fff5f5;
+    }
+
+    input:valid:not(:placeholder-shown):not([type="radio"]):not([type="checkbox"]) {
+        border-color: #2d8a4e;
+    }
+
+    /* :has() — form border when it contains invalid inputs */
+    form:has(:invalid) {
+        border-left: 3px solid var(--color-accent);
+        padding-left: 1rem;
+    }
+
+    button[type="submit"] {
+        background-color: var(--color-accent);
+        color: var(--ut-white);
+        border: none;
+        padding: 0.75rem 2rem;
+        font-size: 1rem;
+        font-weight: bold;
+        border-radius: 0.25rem;
+        cursor: pointer;
+        align-self: flex-start;
+        transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        animation: pulse 1.2s ease-in-out infinite alternate;
+
+        &:hover {
+            background-color: var(--color-accent-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(186, 28, 33, 0.4);
+        }
+    }
+
+    /* Add-program form submit button — no pulsing glow, fits inline with the section */
+    #add-program-form button[type="submit"] {
+        animation: none;
+    }
+}
+
+/* ===== UTILITIES LAYER ===== */
+@layer utilities {
+
+    /* Hero entrance animation */
+    @keyframes fadeSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Scroll indicator bounce */
+    @keyframes bounce {
+        from {
+            transform: translateY(0) scale(1);
+        }
+        to {
+            transform: translateY(4px) scale(1.1);
+        }
+    }
+
+    /* Submit button glow */
+    @keyframes pulse {
+        from {
+            box-shadow: 0 0 4px rgba(186, 28, 33, 0.3);
+        }
+        to {
+            box-shadow: 0 0 20px rgba(186, 28, 33, 0.6);
+        }
+    }
+
+    /* Scroll-driven card entrance */
+    @keyframes cardEntrance {
+        0% {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .scroll-arrow {
+        grid-column: 1 / -1;
+        justify-self: center;
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        font-size: 0;
+        animation: bounce 0.8s ease-in-out infinite alternate;
+
+        &::after {
+            content: "";
+            display: block;
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid var(--ut-white);
+            border-bottom: 2px solid var(--ut-white);
+            transform: rotate(45deg);
+            margin-top: -4px;
+        }
+    }
+
+    .programs-grid > * {
+        animation: cardEntrance 0.4s ease-out both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 40%;
+    }
+
+    /* prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+            transition-duration: 0.01ms !important;
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+        }
+    }
+}
+
+/* ===== DARK MODE (JavaScript toggle — Lab 20) ===== */
+body.dark-mode {
+    --color-bg: #0f172a;
+    --color-surface: #1e293b;
+    --color-text: #f1f5f9;
+    --color-text-muted: #94a3b8;
+    --color-border: #334155;
+    --color-accent: #e2434b;
+    --color-accent-hover: #c7363d;
+}
+
+body.dark-mode header {
+    background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 70%);
+}
+
+body.dark-mode header img {
+    filter: brightness(0) invert(1);
+}
+
+body.dark-mode h1 {
+    background: linear-gradient(to right, #94b8d8, var(--color-accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+body.dark-mode input:not([type="radio"]):not([type="checkbox"]),
+body.dark-mode select,
+body.dark-mode textarea {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+}
+
+body.dark-mode input:user-invalid,
+body.dark-mode textarea:user-invalid {
+    background-color: #2d1b1b;
+}
+
+/* ===== DESKTOP BREAKPOINT ===== */
+@media (min-width: 1024px) {
+    body {
+        grid-template-columns: minmax(0, 1fr) minmax(640px, 1fr) 280px minmax(0, 1fr);
+        column-gap: 1.5rem;
+    }
+
+    :is(header, .menu-toggle, nav, #welcome, footer) {
+        grid-column: 1 / -1;
+    }
+
+    main {
+        grid-column: 2;
+        grid-row: 4;
+        padding-top: 1.5rem;
+    }
+
+    .sidebar {
+        grid-column: 3;
+        grid-row: 4;
+        padding-top: 1.5rem;
+    }
+
+    /* Desktop nav — show nav, hide hamburger */
+    .menu-toggle {
+        display: none;
+    }
+
+    nav {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 2rem;
+    }
+
+    /* Taller hero on desktop */
+    #welcome {
+        display: grid;
+        grid-template-columns: subgrid;
+        align-items: end;
+    }
+
+    .hero-overlay {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: subgrid;
+    }
+
+    .hero-content {
+        grid-column: 2 / 4;
+    }
+}
+
+/* ===== LAB 19 UTILITY CLASSES ===== */
+
+/* Small button that lives inside a <legend> */
+.toggle-btn {
+    font-size: 0.75rem;
+    padding: 0.15rem 0.5rem;
+    margin-left: 0.5rem;
+    background: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 0.25rem;
+    cursor: pointer;
+    vertical-align: middle;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+        background-color: var(--color-border);
+    }
+}
+
+/* Live character counter below a textarea */
+.char-count {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    margin-top: 0.25rem;
+}
+
+/* Major program feedback line */
+.major-feedback {
+    font-style: italic;
+    transition: color 0.2s ease;
+}
+
+/* Form submission result area */
+.form-feedback {
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    font-weight: bold;
+}
+
+.form-feedback.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.form-feedback.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Toggle hide/show — used by Lab 19 Step 1 */
+.hidden {
+    display: none;
+}
+
+
+/* ===== LAB 20: TOGGLE EVERYTHING — Pre-built CSS ===== */
+
+/* ── Dark Mode Toggle Button ────────────────────────── */
+#dark-toggle {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background-color: var(--ut-navy);
+    color: var(--ut-white);
+    border: 2px solid var(--ut-navy);
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#dark-toggle:hover {
+    background-color: transparent;
+    color: var(--ut-navy);
+}
+
+body.dark-mode #dark-toggle {
+    background-color: var(--ut-white);
+    color: var(--ut-navy);
+    border-color: var(--ut-white);
+}
+
+body.dark-mode #dark-toggle:hover {
+    background-color: transparent;
+    color: var(--ut-white);
+}
+
+/* ── FAQ Accordion ──────────────────────────────────── */
+.faq-question {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.faq-question:hover {
+    background-color: var(--color-border);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+}
+
+.faq-answer.open {
+    max-height: 500px;
+}
+
+.faq-answer p {
+    padding: 0.75rem;
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--color-text-muted);
+}
+
+/* ── Schedule Tour Button ───────────────────────────── */
+#tour-btn {
+    display: block;
+    width: 100%;
+    margin-top: 0.75rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background-color: var(--color-accent);
+    color: var(--ut-white);
+    border: none;
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+#tour-btn:hover {
+    background-color: var(--color-accent-hover);
+}
+
+/* ── Modal Overlay ──────────────────────────────────── */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-box {
+    background: var(--color-bg);
+    color: var(--color-text);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    max-width: 480px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.visible .modal-box {
+    transform: translateY(0);
+}
+
+.modal-box h3 {
+    margin-top: 0;
+}
+
+.modal-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--color-text-muted);
+    line-height: 1;
+    padding: 0.25rem;
+}
+
+.modal-close:hover {
+    color: var(--color-text);
+}
+
+/* ── Toast Notification ─────────────────────────────── */
+.toast {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background-color: #155724;
+    color: #fff;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    z-index: 200;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* ===== LAB 21: FUNCTIONS & LOOPS — Pre-built CSS ===== */
+
+/* ── Greeting paragraph — hidden when empty ─────────── */
+#greeting:empty {
+    display: none;
+}
+
+#greeting {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ut-navy);
+    margin: 0.5rem 0 0 0;
+}
+
+body.dark-mode #greeting {
+    color: var(--color-text);
+}
+
+/* ── Tuition Highlight Box ──────────────────────────── */
+.tuition-highlight {
+    background-color: var(--color-bg);
+    border: 2px solid var(--color-accent);
+    border-radius: 0.5rem;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.tuition-highlight p {
+    margin: 0.25rem 0;
+}
+
+
+/* ===== LAB 22: OBJECTS & ARRAYS — Pre-built CSS ===== */
+
+/* ── Featured program banner ───────────────────────── */
+.featured-program-banner {
+    background-color: var(--color-bg);
+    border-left: 4px solid var(--color-accent);
+    padding: 0.75rem 1rem;
+    margin: 0 0 1rem 0;
+    font-weight: 600;
+    font-size: 0.95rem;
+    border-radius: 0.25rem;
+}
+
+.featured-program-banner:empty {
+    display: none;
+}
+
+/* ── Program control buttons row ───────────────────── */
+.program-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.program-controls button {
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background-color: var(--ut-navy);
+    color: var(--ut-white);
+    border: 2px solid var(--ut-navy);
+    border-radius: 0.25rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.program-controls button:hover {
+    background-color: transparent;
+    color: var(--ut-navy);
+}
+
+#clear-programs {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+#clear-programs:hover {
+    color: var(--color-accent);
+}
+
+body.dark-mode .program-controls button {
+    background-color: var(--ut-white);
+    color: var(--ut-navy);
+    border-color: var(--ut-white);
+}
+
+body.dark-mode .program-controls button:hover {
+    background-color: transparent;
+    color: var(--ut-white);
+}
+
+body.dark-mode #clear-programs {
+    background-color: var(--color-accent);
+    color: var(--ut-white);
+    border-color: var(--color-accent);
+}
+
+body.dark-mode #clear-programs:hover {
+    background-color: transparent;
+    color: var(--color-accent);
+}
+
+/* ── Program card details ──────────────────────────── */
+.program-card .badge {
+    display: inline-block;
+    background-color: var(--ut-navy);
+    color: var(--ut-white);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+}
+
+.program-card .card-meta {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.program-card .card-price {
+    margin: 0.25rem 0 0 0;
+    font-weight: 700;
+    color: var(--color-accent);
+}
+
+/* ── Empty state for the grid ──────────────────────── */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2rem 1rem;
+    background-color: var(--color-bg);
+    border: 2px dashed var(--color-border);
+    border-radius: 0.5rem;
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+/* ── Add-program form ──────────────────────────────── */
+.add-program-form {
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+}
+
+.add-program-form h4 {
+    margin: 0 0 0.75rem 0;
+}
+
+/* ── Program modal — details list ──────────────────── */
+#program-modal .badge {
+    display: inline-block;
+    background-color: var(--ut-navy);
+    color: var(--ut-white);
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    margin-bottom: 0.5rem;
+}
+
+#program-modal .badge:empty {
+    display: none;
+}
+
+.modal-details {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 1rem;
+    row-gap: 0.25rem;
+    margin: 1rem 0 0 0;
+}
+
+.modal-details dt {
+    font-weight: 700;
+    color: var(--color-text-muted);
+}
+
+.modal-details dd {
+    margin: 0;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.modal-details dd:last-of-type {
+    color: var(--color-accent);
+    font-size: 1.1rem;
+}
