@@ -220,7 +220,7 @@
                     <label><input type="radio" name="attendance" value="hybrid"> Hybrid</label>
                 </fieldset>
 
-                <fieldset id="interests-fieldset">
+                <fieldset>
                     <legend>Areas of Interest <button type="button" id="toggle-interests" class="toggle-btn">Hide</button></legend>
                     <div id="interests-content">
                         <label><input type="checkbox" name="interests" value="research"> Research Opportunities</label>
@@ -292,9 +292,9 @@
             <button type="button" id="tour-btn">Schedule a Tour</button>
         </section>
 
-        <section class="panel faq-panel">
+        <section class="panel">
             <h4>FAQ</h4>
-            <div class="faq-item">
+            <div>
                 <button type="button" class="faq-question" id="faq-toggle">Is housing guaranteed for freshmen?</button>
                 <div class="faq-answer" id="faq-answer">
                     <p>Yes! All first-year students who apply by May 1 are guaranteed on-campus housing. Our residence halls are located steps from classrooms, dining, and the recreation center.</p>
@@ -352,85 +352,89 @@ St. George, UT 84770</pre>
     <script>
         document.querySelector('#year').textContent = new Date().getFullYear();
 
-        // Hamburger menu toggle
-        const menuToggle = document.querySelector('.menu-toggle');
-        const nav = document.querySelector('#main-nav');
+        // Lab 19 answers and hamburger menu — wrapped so variable names
+        // do not collide with code written in the JS tab.
+        (function() {
+            // Hamburger menu toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const nav = document.querySelector('#main-nav');
 
-        menuToggle.addEventListener('click', () => {
-            const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
-            menuToggle.setAttribute('aria-expanded', String(!expanded));
-            nav.classList.toggle('nav-open', !expanded);
-        });
+            menuToggle.addEventListener('click', () => {
+                const expanded = menuToggle.getAttribute('aria-expanded') === 'true';
+                menuToggle.setAttribute('aria-expanded', String(!expanded));
+                nav.classList.toggle('nav-open', !expanded);
+            });
 
-        // Lab 19 answers — these behaviors are already complete
-        const toggleBtn = document.querySelector('#toggle-interests');
-        toggleBtn.addEventListener('click', function() {
-            const content = document.querySelector('#interests-content');
-            content.classList.toggle('hidden');
-            toggleBtn.textContent = content.classList.contains('hidden') ? 'Show' : 'Hide';
-        });
+            // Lab 19 answers — these behaviors are already complete
+            const toggleBtn = document.querySelector('#toggle-interests');
+            toggleBtn.addEventListener('click', function() {
+                const content = document.querySelector('#interests-content');
+                content.classList.toggle('hidden');
+                toggleBtn.textContent = content.classList.contains('hidden') ? 'Show' : 'Hide';
+            });
 
-        const statement = document.querySelector('#statement');
-        const charCount = document.querySelector('#char-count');
-        statement.addEventListener('input', function(event) {
-            const length = event.target.value.length;
-            if (length >= 100) {
-                charCount.textContent = `Looks great! (${length} characters)`;
-            } else if (length >= 50) {
-                charCount.textContent = `Getting there (${length} characters)`;
-            } else {
-                charCount.textContent = `Keep writing... (${length} characters)`;
-            }
-        });
+            const statement = document.querySelector('#statement');
+            const charCount = document.querySelector('#char-count');
+            statement.addEventListener('input', function(event) {
+                const length = event.target.value.length;
+                if (length >= 100) {
+                    charCount.textContent = `Looks great! (${length} characters)`;
+                } else if (length >= 50) {
+                    charCount.textContent = `Getting there (${length} characters)`;
+                } else {
+                    charCount.textContent = `Keep writing... (${length} characters)`;
+                }
+            });
 
-        const usernameInput = document.querySelector('#username');
-        const usernameHint = document.querySelector('#username-hint');
-        usernameInput.addEventListener('input', function(event) {
-            const value = event.target.value;
-            if (!value) {
-                usernameHint.textContent = '';
-            } else if (value.includes(' ')) {
-                usernameHint.textContent = 'No spaces allowed';
-            } else if (value.length < 4) {
-                usernameHint.textContent = 'Too short — at least 4 characters needed';
-            } else {
-                usernameHint.textContent = 'Username looks good!';
-            }
-        });
+            const usernameInput = document.querySelector('#username');
+            const usernameHint = document.querySelector('#username-hint');
+            usernameInput.addEventListener('input', function(event) {
+                const value = event.target.value;
+                if (!value) {
+                    usernameHint.textContent = '';
+                } else if (value.includes(' ')) {
+                    usernameHint.textContent = 'No spaces allowed';
+                } else if (value.length < 4) {
+                    usernameHint.textContent = 'Too short — at least 4 characters needed';
+                } else {
+                    usernameHint.textContent = 'Username looks good!';
+                }
+            });
 
-        const majorSelect = document.querySelector('#major');
-        const majorFeedback = document.querySelector('#major-feedback');
-        majorSelect.addEventListener('change', function(event) {
-            const value = event.target.value;
-            if (value === 'cs' || value === 'se' || value === 'cyber') {
-                majorFeedback.textContent = 'Great choice! The School of Computing prepares students for in-demand tech careers.';
-            } else if (value === 'nursing' || value === 'public-health') {
-                majorFeedback.textContent = 'The College of Health Sciences has state-of-the-art simulation labs.';
-            } else if (value === 'bio') {
-                majorFeedback.textContent = "Biology students benefit from Utah Tech's unique desert research environment.";
-            } else if (value === '') {
-                majorFeedback.textContent = '';
-            } else {
-                majorFeedback.textContent = 'Great choice! Our faculty are dedicated to your success.';
-            }
-        });
+            const majorSelect = document.querySelector('#major');
+            const majorFeedback = document.querySelector('#major-feedback');
+            majorSelect.addEventListener('change', function(event) {
+                const value = event.target.value;
+                if (value === 'cs' || value === 'se' || value === 'cyber') {
+                    majorFeedback.textContent = 'Great choice! The School of Computing prepares students for in-demand tech careers.';
+                } else if (value === 'nursing' || value === 'public-health') {
+                    majorFeedback.textContent = 'The College of Health Sciences has state-of-the-art simulation labs.';
+                } else if (value === 'bio') {
+                    majorFeedback.textContent = "Biology students benefit from Utah Tech's unique desert research environment.";
+                } else if (value === '') {
+                    majorFeedback.textContent = '';
+                } else {
+                    majorFeedback.textContent = 'Great choice! Our faculty are dedicated to your success.';
+                }
+            });
 
-        const form = document.querySelector('#apply form');
-        const formFeedback = document.querySelector('#form-feedback');
-        form.addEventListener('submit', function(event) {
-            event.preventDefault();
-            const firstName = document.querySelector('#first-name').value;
-            const email = document.querySelector('#email').value;
-            if (!firstName || !email) {
-                formFeedback.textContent = 'Please fill in your name and email address before submitting.';
-                formFeedback.className = 'form-feedback error';
-                formFeedback.hidden = false;
-            } else {
-                formFeedback.textContent = firstName + ', your application has been received! We\'ll be in touch at ' + email + '.';
-                formFeedback.className = 'form-feedback success';
-                formFeedback.hidden = false;
-            }
-        });
+            const form = document.querySelector('#apply form');
+            const formFeedback = document.querySelector('#form-feedback');
+            form.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const firstName = document.querySelector('#first-name').value;
+                const email = document.querySelector('#email').value;
+                if (!firstName || !email) {
+                    formFeedback.textContent = 'Please fill in your name and email address before submitting.';
+                    formFeedback.className = 'form-feedback error';
+                    formFeedback.hidden = false;
+                } else {
+                    formFeedback.textContent = firstName + ', your application has been received! We\'ll be in touch at ' + email + '.';
+                    formFeedback.className = 'form-feedback success';
+                    formFeedback.hidden = false;
+                }
+            });
+        })();
     </script>
 </body>
 </html>

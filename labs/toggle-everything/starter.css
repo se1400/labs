@@ -696,51 +696,6 @@
     }
 }
 
-/* ===== DARK MODE (browser preference) ===== */
-@media (prefers-color-scheme: dark) {
-    :root {
-        --color-bg: #0f172a;
-        --color-surface: #1e293b;
-        --color-text: #f1f5f9;
-        --color-text-muted: #94a3b8;
-        --color-border: #334155;
-        --color-accent: #e2434b;
-        --color-accent-hover: #c7363d;
-    }
-
-    header {
-        background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 70%);
-    }
-
-    header img {
-        filter: brightness(0) invert(1);
-    }
-
-    h1 {
-        background: linear-gradient(to right, #94b8d8, var(--color-accent));
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-    }
-
-    .featured,
-    .flip-card-front {
-        background: conic-gradient(from 200deg at 0% 100%, #1e3a5f, var(--color-surface) 40%, #3d2020 80%, var(--color-surface));
-    }
-
-    input:not([type="radio"]):not([type="checkbox"]),
-    select,
-    textarea {
-        background-color: var(--color-surface);
-        color: var(--color-text);
-    }
-
-    input:user-invalid,
-    textarea:user-invalid {
-        background-color: #2d1b1b;
-    }
-}
-
 /* ===== DARK MODE (JavaScript toggle — Step 1) ===== */
 body.dark-mode {
     --color-bg: #0f172a;

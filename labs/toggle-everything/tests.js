@@ -8,20 +8,13 @@
 
 // ── Step 1: Dark Mode Toggle ────────────────────────────
 
-test('Step 1a: #dark-toggle button is in the HTML', function() {
+test('Step 1a: clicking the dark toggle adds the "dark-mode" class to body', function() {
     const btn = document.querySelector('#dark-toggle');
     if (!btn) {
         throw new Error(
             '#dark-toggle was not found. ' +
             'This button is already in the starter HTML — make sure you have not changed it.'
         );
-    }
-});
-
-test('Step 1b: clicking the dark toggle adds the "dark-mode" class to body', function() {
-    const btn = document.querySelector('#dark-toggle');
-    if (!btn) {
-        throw new Error('#dark-toggle was not found.');
     }
 
     // Ensure known starting state — light mode
@@ -41,17 +34,17 @@ test('Step 1b: clicking the dark toggle adds the "dark-mode" class to body', fun
     }
 });
 
-test('Step 1c: clicking the dark toggle a second time removes the "dark-mode" class', function() {
+test('Step 1b: clicking the dark toggle when dark mode is on removes the "dark-mode" class', function() {
     const btn = document.querySelector('#dark-toggle');
     if (!btn) {
         throw new Error('#dark-toggle was not found.');
     }
 
-    // Start in light mode
-    document.body.classList.remove('dark-mode');
+    // Manually put the page into dark mode
+    document.body.classList.add('dark-mode');
 
-    btn.click(); // → dark
-    btn.click(); // → light again
+    // The student's click should toggle it off
+    btn.click();
     const hasDarkMode = document.body.classList.contains('dark-mode');
 
     // Reset
@@ -59,13 +52,13 @@ test('Step 1c: clicking the dark toggle a second time removes the "dark-mode" cl
 
     if (hasDarkMode) {
         throw new Error(
-            'After clicking #dark-toggle twice, the body should NOT have the "dark-mode" class. ' +
+            'When the body already has the "dark-mode" class, clicking #dark-toggle should remove it. ' +
             'Make sure you are using classList.toggle("dark-mode") — not classList.add("dark-mode").'
         );
     }
 });
 
-test('Step 1d: the button label changes when dark mode is toggled', function() {
+test('Step 1c: the button label changes when dark mode is toggled', function() {
     const btn = document.querySelector('#dark-toggle');
     if (!btn) {
         throw new Error('#dark-toggle was not found.');
@@ -89,7 +82,7 @@ test('Step 1d: the button label changes when dark mode is toggled', function() {
             'After clicking #dark-toggle, the button text should change ' +
             '(e.g., from "Switch to Dark Mode" to "Switch to Light Mode"). ' +
             'Use a ternary operator to pick the right label based on whether ' +
-            'body.classList.contains("dark-mode") is true or false.'
+            'document.body.classList.contains("dark-mode") is true or false.'
         );
     }
 
@@ -104,31 +97,14 @@ test('Step 1d: the button label changes when dark mode is toggled', function() {
 
 // ── Step 2: FAQ Accordion ───────────────────────────────
 
-test('Step 2a: #faq-toggle button is in the HTML', function() {
-    const btn = document.querySelector('#faq-toggle');
-    if (!btn) {
-        throw new Error(
-            '#faq-toggle was not found. ' +
-            'This button is already in the starter HTML — make sure you have not changed it.'
-        );
-    }
-});
-
-test('Step 2b: #faq-answer div is in the HTML', function() {
-    const answer = document.querySelector('#faq-answer');
-    if (!answer) {
-        throw new Error(
-            '#faq-answer was not found. ' +
-            'This div is already in the starter HTML — make sure you have not changed it.'
-        );
-    }
-});
-
-test('Step 2c: clicking the FAQ button adds the "open" class to #faq-answer', function() {
+test('Step 2a: clicking the FAQ button adds the "open" class to #faq-answer', function() {
     const btn = document.querySelector('#faq-toggle');
     const answer = document.querySelector('#faq-answer');
     if (!btn || !answer) {
-        throw new Error('Could not find #faq-toggle or #faq-answer.');
+        throw new Error(
+            'Could not find #faq-toggle or #faq-answer. ' +
+            'These elements are already in the starter HTML — make sure you have not changed them.'
+        );
     }
 
     // Ensure known starting state — closed
@@ -148,18 +124,18 @@ test('Step 2c: clicking the FAQ button adds the "open" class to #faq-answer', fu
     }
 });
 
-test('Step 2d: clicking the FAQ button again removes the "open" class', function() {
+test('Step 2b: clicking the FAQ button when open removes the "open" class', function() {
     const btn = document.querySelector('#faq-toggle');
     const answer = document.querySelector('#faq-answer');
     if (!btn || !answer) {
         throw new Error('Could not find #faq-toggle or #faq-answer.');
     }
 
-    // Start closed
-    answer.classList.remove('open');
+    // Manually open the accordion
+    answer.classList.add('open');
 
-    btn.click(); // → open
-    btn.click(); // → closed
+    // The student's click should toggle it closed
+    btn.click();
     const isOpen = answer.classList.contains('open');
 
     // Reset
@@ -167,7 +143,7 @@ test('Step 2d: clicking the FAQ button again removes the "open" class', function
 
     if (isOpen) {
         throw new Error(
-            'After clicking #faq-toggle twice, #faq-answer should NOT have the "open" class. ' +
+            'When #faq-answer already has the "open" class, clicking #faq-toggle should remove it. ' +
             'Make sure you are using classList.toggle("open") — not classList.add("open").'
         );
     }
@@ -176,41 +152,14 @@ test('Step 2d: clicking the FAQ button again removes the "open" class', function
 
 // ── Step 3: Tour Modal ──────────────────────────────────
 
-test('Step 3a: #tour-btn button is in the HTML', function() {
-    const btn = document.querySelector('#tour-btn');
-    if (!btn) {
-        throw new Error(
-            '#tour-btn was not found. ' +
-            'This button is already in the starter HTML — make sure you have not changed it.'
-        );
-    }
-});
-
-test('Step 3b: #tour-modal overlay is in the HTML', function() {
-    const modal = document.querySelector('#tour-modal');
-    if (!modal) {
-        throw new Error(
-            '#tour-modal was not found. ' +
-            'This overlay is already in the starter HTML — make sure you have not changed it.'
-        );
-    }
-});
-
-test('Step 3c: #modal-close button is in the HTML', function() {
-    const closeBtn = document.querySelector('#modal-close');
-    if (!closeBtn) {
-        throw new Error(
-            '#modal-close was not found. ' +
-            'This button is already in the starter HTML — make sure you have not changed it.'
-        );
-    }
-});
-
-test('Step 3d: clicking #tour-btn adds the "visible" class to #tour-modal', function() {
+test('Step 3a: clicking #tour-btn adds the "visible" class to #tour-modal', function() {
     const btn = document.querySelector('#tour-btn');
     const modal = document.querySelector('#tour-modal');
     if (!btn || !modal) {
-        throw new Error('Could not find #tour-btn or #tour-modal.');
+        throw new Error(
+            'Could not find #tour-btn or #tour-modal. ' +
+            'These elements are already in the starter HTML — make sure you have not changed them.'
+        );
     }
 
     // Ensure known starting state — modal hidden
@@ -230,19 +179,20 @@ test('Step 3d: clicking #tour-btn adds the "visible" class to #tour-modal', func
     }
 });
 
-test('Step 3e: clicking #modal-close removes the "visible" class from #tour-modal', function() {
-    const btn = document.querySelector('#tour-btn');
+test('Step 3b: clicking #modal-close removes the "visible" class from #tour-modal', function() {
     const modal = document.querySelector('#tour-modal');
     const closeBtn = document.querySelector('#modal-close');
-    if (!btn || !modal || !closeBtn) {
-        throw new Error('Could not find #tour-btn, #tour-modal, or #modal-close.');
+    if (!modal || !closeBtn) {
+        throw new Error(
+            'Could not find #tour-modal or #modal-close. ' +
+            'These elements are already in the starter HTML — make sure you have not changed them.'
+        );
     }
 
-    // Open the modal first
-    modal.classList.remove('visible');
-    btn.click();
+    // Manually open the modal — do not rely on the student's open listener
+    modal.classList.add('visible');
 
-    // Now close it
+    // The student's close listener should remove it
     closeBtn.click();
     const isVisible = modal.classList.contains('visible');
 
@@ -260,38 +210,25 @@ test('Step 3e: clicking #modal-close removes the "visible" class from #tour-moda
 
 // ── Step 4: Toast Notification ──────────────────────────
 
-test('Step 4a: #toast element is in the HTML', function() {
-    const toast = document.querySelector('#toast');
-    if (!toast) {
-        throw new Error(
-            '#toast was not found. ' +
-            'This element is already in the starter HTML — make sure you have not changed it.'
-        );
-    }
-});
-
-test('Step 4b: submitting the form shows the toast with a message', function() {
+test('Step 4a: submitting the form with valid data shows the toast with a message', function() {
     const formEl = document.querySelector('#apply form');
     const toast = document.querySelector('#toast');
     if (!formEl || !toast) {
-        throw new Error('Could not find the form inside #apply or #toast.');
+        throw new Error(
+            'Could not find the form inside #apply or #toast. ' +
+            'These elements are already in the starter HTML — make sure you have not changed them.'
+        );
     }
 
     // Fill in required fields so submission logic runs the success path
     const firstName = document.querySelector('#first-name');
-    const lastName = document.querySelector('#last-name');
     const email = document.querySelector('#email');
-    const phone = document.querySelector('#phone');
 
     const origFirst = firstName.value;
-    const origLast = lastName.value;
     const origEmail = email.value;
-    const origPhone = phone.value;
 
     firstName.value = 'Test';
-    lastName.value = 'User';
     email.value = 'test@example.com';
-    phone.value = '555-555-5555';
 
     // Reset toast state
     toast.classList.remove('show');
@@ -307,9 +244,12 @@ test('Step 4b: submitting the form shows the toast with a message', function() {
 
     // Reset form values
     firstName.value = origFirst;
-    lastName.value = origLast;
     email.value = origEmail;
-    phone.value = origPhone;
+
+    // Reset toast
+    toast.classList.remove('show');
+    toast.hidden = true;
+    toast.textContent = '';
 
     if (!hasShow || !isVisible) {
         throw new Error(
@@ -326,6 +266,51 @@ test('Step 4b: submitting the form shows the toast with a message', function() {
     }
 });
 
+test('Step 4b: submitting the form with empty fields does NOT show the toast', function() {
+    const formEl = document.querySelector('#apply form');
+    const toast = document.querySelector('#toast');
+    if (!formEl || !toast) {
+        throw new Error('Could not find the form inside #apply or #toast.');
+    }
+
+    // Clear the fields the student should be checking
+    const firstName = document.querySelector('#first-name');
+    const email = document.querySelector('#email');
+
+    const origFirst = firstName.value;
+    const origEmail = email.value;
+
+    firstName.value = '';
+    email.value = '';
+
+    // Reset toast state
+    toast.classList.remove('show');
+    toast.hidden = true;
+    toast.textContent = '';
+
+    // Submit with empty fields
+    formEl.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+
+    const hasShow = toast.classList.contains('show');
+
+    // Reset form values
+    firstName.value = origFirst;
+    email.value = origEmail;
+
+    // Reset toast
+    toast.classList.remove('show');
+    toast.hidden = true;
+    toast.textContent = '';
+
+    if (hasShow) {
+        throw new Error(
+            'The toast should NOT appear when the form is submitted with empty fields. ' +
+            'Check that the first name and email both have values before showing the toast — ' +
+            'use if (firstName && email) to verify both are filled in.'
+        );
+    }
+});
+
 test('Step 4c: the toast disappears after a delay (uses setTimeout)', function() {
     const formEl = document.querySelector('#apply form');
     const toast = document.querySelector('#toast');
@@ -335,19 +320,13 @@ test('Step 4c: the toast disappears after a delay (uses setTimeout)', function()
 
     // Fill in required fields
     const firstName = document.querySelector('#first-name');
-    const lastName = document.querySelector('#last-name');
     const email = document.querySelector('#email');
-    const phone = document.querySelector('#phone');
 
     const origFirst = firstName.value;
-    const origLast = lastName.value;
     const origEmail = email.value;
-    const origPhone = phone.value;
 
     firstName.value = 'Test';
-    lastName.value = 'User';
     email.value = 'test@example.com';
-    phone.value = '555-555-5555';
 
     // Reset toast
     toast.classList.remove('show');
@@ -367,14 +346,12 @@ test('Step 4c: the toast disappears after a delay (uses setTimeout)', function()
     // Submit
     formEl.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
 
-    // Restore setTimeout
+    // Restore setTimeout immediately
     window.setTimeout = originalSetTimeout;
 
     // Reset form values
     firstName.value = origFirst;
-    lastName.value = origLast;
     email.value = origEmail;
-    phone.value = origPhone;
 
     // Reset toast
     toast.classList.remove('show');
