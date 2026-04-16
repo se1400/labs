@@ -34,22 +34,20 @@ Each object has five properties. Read a property with dot notation: `programs[0]
 
 ## Step 1 — Featured Program
 
-Just below the campus photo there is an empty `<p id="featured-program">`. Your job is to fill it with a short sentence that reads from the **first program** in the array.
-
-**What you need to write:**
-
-Select `#featured-program` and set its `textContent` to a string built from `programs[0]`. The string should look like this:
+**Goal:** Fill the empty `<p id="featured-program">` with a short sentence built from the **first program** in the array. It should read exactly like this:
 
 > Featured program: Computer Science — Computing department
 
-The cleanest way to build it is with a template literal. Remember template literals from Lab 21? They use backticks (`` ` ``) and let you drop values in with `${}`. Inside the `${}`, you can read object properties with dot notation:
+**Why this step:** Before you can render eight cards, you need to know how to pull one piece of information off one object. This step is the smallest possible taste of that — one sentence, one object.
 
-```
-document.querySelector('#featured-program').textContent =
-    `Featured program: ${programs[0].name} — ${programs[0].department} department`;
-```
+**What to do:**
 
-`programs[0]` grabs the **first object** in the array. The `.name` and `.department` after it read those specific properties off that object.
+1. Use `document.querySelector()` to grab `#featured-program`.
+2. Set its `textContent` to a **template literal** — the backtick string from Lab 21. Template literals let you drop values into a string using `${}`.
+3. Inside the template literal, write the words **Featured program:**, then the program's name, then a space, an em-dash (`—`), a space, the department, and the word **department**.
+4. To read the name and department, use **dot notation** on the first object in the array. `programs[0]` pulls the first object out. Adding `.name` to the end returns that object's name property; `.department` returns its department property.
+
+**Example of new syntax:** `programs[0].name` evaluates to the string `'Computer Science'`. That is the only new pattern you need for this step — combine it with template literals from Lab 21 to build the full sentence.
 
 **What you will see:** A small banner appears above the programs grid showing the name and department of the first program in the list.
 
@@ -57,108 +55,81 @@ document.querySelector('#featured-program').textContent =
 
 ## Step 2 — renderPrograms (data-driven cards)
 
-The `#programs-grid` div is empty. Your job is to write a `renderPrograms` function that takes a list of program objects and builds a card for each one — showing **four** pieces of data per card (department badge, name, total credits, major credits). While you are at it, you will teach the function to handle an empty list gracefully, so Step 3's **Clear All** button has something to lean on.
+**Goal:** Write a function called `renderPrograms(list)` that takes an array of program objects and fills `#programs-grid` with a card for each one — showing **four** pieces of data per card (department badge, name, total credits, major credits). The function also needs to handle an empty list gracefully, so Step 3's **Clear All** button has something to lean on.
 
-This step replaces what you did in Steps 4 and 5 of Lab 21, but in a more powerful way. Instead of `for...of` and string concatenation, you will use `.map()` and `.join('')` — the standard pattern for turning an array into HTML.
+**Why this step:** This is the heart of a data-driven page. You are replacing the `for...of` loop from Lab 21 with `.map()` + `.join('')` — the standard modern pattern for turning an array into HTML. And because you write ONE function that the whole rest of the lab calls, every feature after this (sort, clear, add) becomes trivial.
 
-**First — select the grid once, outside the function.**
+**What to do:**
 
-Above your function, grab the grid and store it in a variable so the function can reach it:
+**1. Grab the grid once, ABOVE your function.**
 
-```
-const grid = document.querySelector('#programs-grid');
-```
+Use `document.querySelector()` to grab `#programs-grid` and store it in a constant called `grid`. Declare it **outside** the function body. That way the function can reach it every time it runs, without re-querying the DOM.
 
-**Second — start the function with an empty-state guard.**
+**2. Declare the function with an empty-state guard.**
 
-Declare a function called `renderPrograms` that takes one parameter called `list`. Before you do anything else, check if the list has no items and show a friendly message if so:
+Use the `function` keyword (not `const` or `let` — the tests rely on it being a real function declaration) to define `renderPrograms`, taking one parameter named `list`.
 
-```
-function renderPrograms(list) {
-    if (list.length === 0) {
-        grid.innerHTML = '<p class="empty-state">No programs available. Add one below to get started.</p>';
-        return;
-    }
-    // normal rendering goes here ↓
-}
-```
+The very first thing inside the function: check whether `list.length === 0`. When that is true:
+- Set `grid.innerHTML` to a `<p>` with class `empty-state` and the text **No programs available. Add one below to get started.**
+- Write `return;` by itself — no value after it — to exit the function early.
 
-`return` by itself (with nothing after it) simply exits the function early — not every `return` has to send a value back. This pattern is called a **guard clause**: good functions handle edge cases at the top, then the rest of the function can focus on the normal case without extra nesting. Writing this now means Step 3's Clear All button is literally `renderPrograms([])` — this guard does the work.
+This pattern is called a **guard clause**: handle the edge case at the top, then the rest of the function only has to worry about the normal case. Not every `return` has to send back a value — a bare `return;` just means "stop here." Writing this now means Step 3's Clear All button becomes a one-liner.
 
-**Third — render the cards with .map() and .join('').**
+**3. Render the cards with `.map()` and `.join('')`.**
 
-Below the guard, turn each program object into an HTML string with `.map(...)`, join them together with `.join('')`, and assign the result to `grid.innerHTML`:
+Below the guard, set `grid.innerHTML` equal to `list.map(...).join('')`.
 
-```
-grid.innerHTML = list.map(program => `
-    <div class="program-card" data-id="${program.id}">
-        <span class="badge">${program.department}</span>
-        <h4>${program.name}</h4>
-        <p class="card-meta">${program.credits} total credits</p>
-        <p class="card-major">${program.majorCredits} in major</p>
-    </div>
-`).join('');
-```
+Inside `.map()`, pass an arrow function that receives **one parameter** named `program` and returns a template literal. The template literal should produce a single `<div>` with class `program-card`. On the opening tag, include a `data-id` attribute set to `${program.id}` — you will read that in Step 4 to know which card was clicked.
 
-Two things to notice:
+Inside the div, lay out four lines:
+- A `<span class="badge">` containing the program's **department**.
+- An `<h4>` containing the program's **name**.
+- A `<p class="card-meta">` containing the **total credits** followed by the words `total credits`.
+- A `<p class="card-major">` containing the **major credits** followed by the words `in major`.
 
-- `.map(program => ...)` is an arrow function (same as Lab 21) that runs once for every item in the array. On each pass, `program` is the current object — so `program.name` reads the name off that specific program.
-- `data-id="${program.id}"` stores the program's id directly on the card in the HTML. You will use that in Step 4 to figure out which program was clicked. Any attribute that starts with `data-` is a **custom data attribute** — a place to stash information on an element that JavaScript can read later.
+Read each value off the `program` parameter with dot notation — `program.name`, `program.department`, `program.credits`, `program.majorCredits` — wrapped in `${}` placeholders.
 
-**Fourth — call the function to render the initial cards.**
+Then chain `.join('')` onto the end of `.map(...)`. `.map()` returns an ARRAY of strings (one per program); `.join('')` glues them into one big string with nothing between them, which is what `innerHTML` needs.
 
-Below the function, call it with the full `programs` array:
+**Why `data-id`?** Any HTML attribute that starts with `data-` is a **custom data attribute** — a place to stash information on an element that you can read back later with `.dataset`. You'll use this in Step 4 to look up which program was clicked.
 
-```
-renderPrograms(programs);
-```
+**4. Call your function once with the full programs array.**
 
-**What you will see:** Eight program cards appear, each with a navy department badge, the program name, a total-credits line, and a red "in major" line. If you temporarily try `renderPrograms([])`, you will see the empty-state message instead — your function is already ready for the Clear All button in Step 3.
+Below the function definition, call `renderPrograms(programs)` so the page renders its initial eight cards.
+
+**What you will see:** Eight program cards appear, each with a navy department badge, the program name, a total-credits line, and a red "in major" line. If you temporarily call `renderPrograms([])` (an empty array), you should see the empty-state paragraph instead — your function is already ready for the Clear All button in Step 3.
 
 ---
 
 ## Step 3 — Control Buttons
 
-Above the grid there are three buttons: **Sort by Name**, **Sort by Major Credits**, and **Clear All**. All three do the same kind of thing: they call `renderPrograms` with a different list. You are about to write three click listeners — each one a single idea, each one four lines of code.
+**Goal:** Wire up the three buttons above the grid — **Sort by Major Credits**, **Sort by Name**, and **Clear All** — so they re-render the grid with a different list each time.
 
-**First — Sort by Major Credits.**
+**Why this step:** All three buttons illustrate the same powerful idea: the `programs` array never changes. Each click handler just builds a different list and hands it to the same `renderPrograms` function. That is how real apps handle sorting and filtering — one source of truth, many views of it.
 
-Select `#sort-major` and attach a `click` listener. Inside the handler, build a sorted copy of the array and pass it to `renderPrograms`:
+**What to do:**
 
-```
-document.querySelector('#sort-major').addEventListener('click', function() {
-    const sorted = [...programs].sort((a, b) => a.majorCredits - b.majorCredits);
-    renderPrograms(sorted);
-});
-```
+**1. Sort by Major Credits.**
 
-Two things to notice:
+Select `#sort-major` and attach a **click** listener with `.addEventListener('click', ...)`. Inside the handler:
 
-- `[...programs]` uses the spread operator (same one you used in Lab 21 for `.reverse()`) to make a **copy** of the array. `.sort()` changes the array it is called on — calling it on a copy keeps the original `programs` array in its original order.
-- The function passed to `.sort()` is called a **comparator**. It takes two items (`a` and `b`) and returns a number. If the number is negative, `a` comes before `b`. If positive, `b` comes first. For numbers, `a.majorCredits - b.majorCredits` sorts ascending (fewest major credits first).
+- Make a **copy** of the `programs` array using the spread operator — `[...programs]`. You saw this in Lab 21. Sorting a copy is important because `.sort()` **mutates** (changes) the array it is called on. If you sorted the original, then Clear All followed by Sort by Name would give the wrong "original" order.
+- Call `.sort()` on the copy and pass it an arrow function called a **comparator**. A comparator receives two items (call them `a` and `b`) and returns a number. If the number is negative, `a` comes before `b`; if positive, `b` comes first; if zero, their order is unchanged. For numeric properties, the idiomatic comparator is simply `a.property - b.property` — which sorts ascending (smallest first).
+- Pass the sorted copy to `renderPrograms`.
 
-**Second — Sort by Name.**
+For this button, the comparator should return `a.majorCredits - b.majorCredits`.
 
-Names are strings, so subtraction does not work. Use `.localeCompare()` — a string method that returns a negative number, zero, or a positive number depending on alphabetical order:
+**2. Sort by Name.**
 
-```
-document.querySelector('#sort-name').addEventListener('click', function() {
-    const sorted = [...programs].sort((a, b) => a.name.localeCompare(b.name));
-    renderPrograms(sorted);
-});
-```
+Select `#sort-name` and attach a click listener. Same pattern as above, with one change: names are **strings**, and subtracting strings does not work.
 
-**Third — Clear All.**
+Instead, use the built-in string method `.localeCompare()`. Call it on `a.name` and pass `b.name` — it returns a negative number, zero, or a positive number depending on alphabetical order. That is exactly the shape `.sort()` wants.
 
-Clear All is the simplest of the three: pass `renderPrograms` an empty array, and the guard clause you wrote in Step 2 takes care of the rest.
+**3. Clear All.**
 
-```
-document.querySelector('#clear-programs').addEventListener('click', function() {
-    renderPrograms([]);
-});
-```
+Select `#clear-programs` and attach a click listener. Inside, just call `renderPrograms([])` — pass an empty array. The guard clause you wrote in Step 2 does the rest of the work and shows the empty-state message.
 
-Notice that this does **not** erase the `programs` array — it just re-renders the grid with nothing in it. Click Sort by Name next and all eight programs come right back, because the real data is untouched.
+Notice that Clear All does **not** erase the `programs` array — it just re-renders the grid with nothing. Click Sort by Name next and all eight programs come right back, because the real data is untouched.
 
 **What you will see:** Clicking **Sort by Major Credits** puts Computer Science (42 major credits) at the top. Clicking **Sort by Name** puts Biology at the top alphabetically. Clicking **Clear All** shows the empty-state message. The `programs` array itself never changes — each click just passes a different list to the same render function.
 
@@ -166,99 +137,89 @@ Notice that this does **not** erase the `programs` array — it just re-renders 
 
 ## Step 4 — Click a Card to Open a Modal
 
-Right now the cards just sit there. Your job is to make each card open a details modal when clicked — showing the department, name, total credits, credits in the major, and **remaining credits** (total − major = credits needed for gen ed and electives).
+**Goal:** Make each card open a details modal when clicked — showing the department, name, total credits, credits in the major, and **remaining credits** (total minus major — the credits needed for gen ed and electives).
 
-The obvious approach would be: loop through every card and attach a click listener to each one. That works, but it breaks the moment you re-render — the new cards have no listeners. The better approach, called **event delegation**, attaches a **single** listener to the grid and asks the click event which card was clicked.
+**Why this step:** The obvious approach would be to loop through every card and attach a click listener to each one. That works — until you re-sort, because the new cards are brand-new elements with no listeners on them. The better pattern, called **event delegation**, attaches ONE listener to the grid and asks each click which card it came from. One listener handles every card — even cards that do not exist yet.
 
-**First — attach one listener to the grid.**
+**What to do:**
 
-```
-grid.addEventListener('click', function(event) {
-    const card = event.target.closest('.program-card');
-    if (!card) return;
-```
+**1. Attach ONE click listener to the grid.**
 
-- `event.target` is whatever the user actually clicked — it might be the `<h4>`, the badge span, the major-credits paragraph, or the card itself.
-- `.closest('.program-card')` walks up from `event.target` and returns the nearest ancestor (including itself) that matches the selector. If the user clicked inside a card, you get the card. If they clicked empty space between cards, you get `null`.
-- `if (!card) return;` bails out on null clicks. This is the `!` operator (NOT) combined with the truthy-falsy idea from Lab 19 — `null` is falsy, so `!null` is `true` and `return` runs.
+On your `grid` variable (the constant you declared in Step 2), call `.addEventListener('click', ...)`. The handler function receives an `event` parameter.
 
-**Second — look up the program from the card's data-id.**
+Inside the handler, find the clicked card by calling `event.target.closest('.program-card')` and storing the result in a variable called `card`:
+- `event.target` is whatever the user actually clicked — it might be the `<h4>`, the badge span, a paragraph, or the card itself.
+- `.closest('.program-card')` walks up the DOM starting from `event.target` and returns the nearest ancestor (including itself) that matches the selector. If the user clicked inside a card, you get that card back. If they clicked the empty space between cards, you get `null`.
 
-The `data-id` you added in Step 2 is how you know which program was clicked. Read it with `card.dataset.id`:
+Right after that, **guard against null clicks**: `if (!card) return;`. This uses the `!` (NOT) operator with the truthy/falsy idea from Lab 19 — `null` is falsy, so `!null` is `true`, and the handler exits early.
 
-```
-const id = Number(card.dataset.id);
-const program = programs.find(p => p.id === id);
-if (!program) return;
-```
+**2. Look up the program from the card's data-id.**
 
-- `card.dataset.id` reads the `data-id` attribute. All `data-*` attributes are exposed as properties on `card.dataset`. The value always comes back as a string, so wrap it in `Number()`.
-- `.find()` walks through the array and returns the **first** item where the callback returns `true` — or `undefined` if nothing matches. Here, it finds the program whose id equals the one stored on the card.
+Read the card's `data-id` attribute with `card.dataset.id`. All `data-*` attributes on an element are exposed as properties on its `.dataset` object. The value always comes back as a **string**, so wrap it in `Number()` and store the result in a constant called `id`.
 
-**Third — fill in the modal and show it.**
+Then use the `.find()` array method to get the matching program object. `.find()` takes a callback that receives one item at a time; the first item for which the callback returns `true` is the one returned. If nothing matches, `.find()` returns `undefined`. Inside your callback, compare each program's `.id` to the `id` variable you just built.
 
-The modal is already in the HTML as `#program-modal`. It has five elements you need to fill: `#modal-department`, `#modal-program-name`, `#modal-credits`, `#modal-major`, `#modal-remaining`.
+Store the result in a constant called `program`, then guard against `undefined`: `if (!program) return;`.
 
-```
-document.querySelector('#modal-department').textContent = program.department;
-document.querySelector('#modal-program-name').textContent = program.name;
-document.querySelector('#modal-credits').textContent = program.credits + ' credits';
-document.querySelector('#modal-major').textContent = program.majorCredits + ' credits';
-document.querySelector('#modal-remaining').textContent = (program.credits - program.majorCredits) + ' credits';
-document.querySelector('#program-modal').classList.add('visible');
-});
-```
+**3. Fill in the modal and show it.**
 
-Notice the last data line — `program.credits - program.majorCredits` — is a little computation done at display time. You are not storing "remaining credits" on the object, because it can always be derived from the two values you *do* store. Keeping data minimal and computing the rest on demand is a habit worth building early. The final line — `classList.add('visible')` — reuses the exact same modal-open trick from Lab 20.
+The modal is already in the HTML as `#program-modal`. It has five fillable slots, each with its own id: `#modal-department`, `#modal-program-name`, `#modal-credits`, `#modal-major`, `#modal-remaining`.
 
-**Fourth — wire up the close button.**
+Select each one with `document.querySelector()` and set its `textContent`:
 
-```
-document.querySelector('#program-modal-close').addEventListener('click', function() {
-    document.querySelector('#program-modal').classList.remove('visible');
-});
-```
+- `#modal-department` — set to `program.department`.
+- `#modal-program-name` — set to `program.name`.
+- `#modal-credits` — set to `program.credits` followed by the word **credits**.
+- `#modal-major` — set to `program.majorCredits` followed by the word **credits**.
+- `#modal-remaining` — set to `program.credits - program.majorCredits` followed by the word **credits**. Wrap the subtraction in parentheses so the math happens before the string concatenation.
 
-**What you will see:** Clicking any card opens a modal showing the program's department badge, its name as the heading, its total credits, the credits required in the major, and the calculated remaining credits for gen ed and electives. Clicking the × closes the modal. Re-sort the cards and click a new one — it still works, because the listener is on the grid, not on each card.
+Finally, add the class `visible` to `#program-modal` — the same modal-open trick from Lab 20.
+
+**Why compute remaining instead of storing it?** You are NOT storing "remaining credits" on each object, because it can always be derived from the two values you DO store. Keeping data minimal and computing the rest on demand is a habit worth building early — it means there is only one place the truth lives, and no way the three numbers can fall out of sync.
+
+**4. Wire up the close button.**
+
+Select `#program-modal-close` and attach a click listener. Inside, remove the `visible` class from `#program-modal`.
+
+**What you will see:** Clicking any card opens a modal showing the program's department badge, its name as the heading, its total credits, the credits required in the major, and the calculated remaining credits for gen ed and electives. Clicking the × closes the modal. Re-sort the cards and click a new one — it still works, because the listener is on the grid, not on each individual card.
 
 ---
 
 ## Step 5 — Add a Program
 
-Your final step grows the catalog. The **Add a New Program** form lets the user type in a new program and append it to the grid — the first time in this course that the user adds data instead of the data being hard-coded.
+**Goal:** Let the user type a new program into the **Add a New Program** form and append it to the catalog. The form already exists in the HTML with four inputs (`#new-name`, `#new-department`, `#new-credits`, `#new-major`) and a submit button. You write the handler that brings it to life.
 
-The form has four inputs: `#new-name`, `#new-department`, `#new-credits`, `#new-major`. Your handler needs to read those values, build a new program **object**, push it into the array, and re-render.
+**Why this step:** So far you have only *read* from objects. This step is the first time you **build** one from scratch. Once you push that new object into `programs`, every other feature you already wrote — sort, clear, click to open the modal — works with it automatically. That is the payoff of having one source of truth for your data.
 
-**Building an object literal.**
+**What to do:**
 
-So far you have only *read* from objects — `programs[0].name`, `program.department`. This step is the first time you build one from scratch. The curly braces below are an **object literal**: the same shape as the objects in the `programs` array, but this one you are constructing yourself out of the values the user typed in.
+**1. Attach a `submit` listener to `#add-program-form`.**
 
-```
-document.querySelector('#add-program-form').addEventListener('submit', function(event) {
-    event.preventDefault();
+The handler receives an `event` parameter. The very first thing inside, call `event.preventDefault()` — this stops the form from submitting the traditional way and reloading the page. You saw this same trick in Lab 19.
 
-    const newProgram = {
-        id: programs.length + 1,
-        name: document.querySelector('#new-name').value,
-        department: document.querySelector('#new-department').value,
-        credits: Number(document.querySelector('#new-credits').value),
-        majorCredits: Number(document.querySelector('#new-major').value)
-    };
+**2. Build a new program object from the form values.**
 
-    programs.push(newProgram);
-    renderPrograms(programs);
-    event.target.reset();
-});
-```
+Declare a constant called `newProgram` and set it equal to an **object literal**. An object literal is curly braces containing `key: value` pairs, separated by commas — the same shape as the objects already in the `programs` array, but this one you are constructing yourself out of what the user typed.
 
-A few things worth pausing on:
+Your new object needs **five properties**:
 
-- `event.preventDefault()` stops the form from submitting the traditional way and reloading the page (same as Lab 19).
-- `Number(...)` converts the string the user typed into an actual number. Input `.value` is always a string, and the sort comparator you wrote in Step 3 does math on these values — subtracting strings would not do what you want.
-- `.push(newProgram)` adds the object to the **end** of the array. The array grew from 8 items to 9. The next `renderPrograms(programs)` call will build 9 cards.
-- `event.target.reset()` clears the form inputs so the user can add another program without retyping.
+- `id` — set to `programs.length + 1` so each new program gets a unique id. (When the array has 8 programs, the next id is 9.)
+- `name` — read the `.value` of `#new-name`.
+- `department` — read the `.value` of `#new-department`.
+- `credits` — read the `.value` of `#new-credits`, wrapped in `Number()`.
+- `majorCredits` — read the `.value` of `#new-major`, wrapped in `Number()`.
 
-**What you will see:** Fill in the form with a new program and click Add Program — a ninth card appears at the end of the grid, stylishly matching the others. Click it and the modal shows your new program's details. Click Sort by Major Credits and your new program slots in based on its major-credit count. Click Clear All and the empty state returns — click Sort by Name and your new program is back, because it is saved in the array.
+**Why `Number()`?** Input `.value` is always a **string**, even for number inputs. But your Step 3 sort comparator does math on these values (`a.majorCredits - b.majorCredits`) — and subtracting strings does not do what you want. `Number(...)` converts the string into an actual number so sorting stays correct.
+
+**3. Push the new object into the array and re-render.**
+
+Call `programs.push(newProgram)`. `.push()` adds an item to the **end** of an array; the array grows from 8 items to 9.
+
+Then call `renderPrograms(programs)` so the grid rebuilds with the new program included.
+
+Finally, call `event.target.reset()` to clear the form inputs, so the user can add another program without having to retype.
+
+**What you will see:** Fill in the form with a new program and click Add Program — a ninth card appears at the end of the grid, matching the style of the others. Click it and the modal shows your new program's details. Click Sort by Major Credits and your new program slots in based on its major-credit count. Click Clear All and the empty state returns — click Sort by Name and your new program is back, because it is saved in the array.
 
 ---
 
