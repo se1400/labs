@@ -17,14 +17,16 @@ test('Step 1a: clicking the dark toggle adds the "dark-mode" class to body', fun
         );
     }
 
-    // Ensure known starting state — light mode
+    // Ensure known starting state — light mode, original label
     document.body.classList.remove('dark-mode');
+    btn.textContent = 'Switch to Dark Mode';
 
     btn.click();
     const hasDarkMode = document.body.classList.contains('dark-mode');
 
     // Reset
     document.body.classList.remove('dark-mode');
+    btn.textContent = 'Switch to Dark Mode';
 
     if (!hasDarkMode) {
         throw new Error(
@@ -40,8 +42,9 @@ test('Step 1b: clicking the dark toggle when dark mode is on removes the "dark-m
         throw new Error('#dark-toggle was not found.');
     }
 
-    // Manually put the page into dark mode
+    // Ensure known starting state — dark mode on, label matches
     document.body.classList.add('dark-mode');
+    btn.textContent = 'Switch to Light Mode';
 
     // The student's click should toggle it off
     btn.click();
@@ -49,6 +52,7 @@ test('Step 1b: clicking the dark toggle when dark mode is on removes the "dark-m
 
     // Reset
     document.body.classList.remove('dark-mode');
+    btn.textContent = 'Switch to Dark Mode';
 
     if (hasDarkMode) {
         throw new Error(
@@ -64,9 +68,9 @@ test('Step 1c: the button label changes when dark mode is toggled', function() {
         throw new Error('#dark-toggle was not found.');
     }
 
-    // Start in light mode
+    // Reset to known starting state — light mode, original label
     document.body.classList.remove('dark-mode');
-    const originalText = btn.textContent;
+    btn.textContent = 'Switch to Dark Mode';
 
     btn.click(); // → dark
     const darkText = btn.textContent;
@@ -76,8 +80,9 @@ test('Step 1c: the button label changes when dark mode is toggled', function() {
 
     // Reset
     document.body.classList.remove('dark-mode');
+    btn.textContent = 'Switch to Dark Mode';
 
-    if (darkText === originalText) {
+    if (darkText === 'Switch to Dark Mode') {
         throw new Error(
             'After clicking #dark-toggle, the button text should change ' +
             '(e.g., from "Switch to Dark Mode" to "Switch to Light Mode"). ' +
@@ -86,10 +91,10 @@ test('Step 1c: the button label changes when dark mode is toggled', function() {
         );
     }
 
-    if (lightText !== originalText) {
+    if (lightText !== 'Switch to Dark Mode') {
         throw new Error(
-            'After clicking #dark-toggle twice, the button text should return to its original value. ' +
-            'Make sure your ternary updates the label in both directions.'
+            'After clicking #dark-toggle twice, the button text should return to ' +
+            '"Switch to Dark Mode". Make sure your ternary updates the label in both directions.'
         );
     }
 });
