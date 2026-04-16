@@ -273,22 +273,39 @@ test('Step 4b: submitting the form with empty fields does NOT show the toast', f
         throw new Error('Could not find the form inside #apply or #toast.');
     }
 
-    // Clear the fields the student should be checking
     const firstName = document.querySelector('#first-name');
     const email = document.querySelector('#email');
 
     const origFirst = firstName.value;
     const origEmail = email.value;
 
-    firstName.value = '';
-    email.value = '';
-
-    // Reset toast state
+    // First, verify the toast handler exists by submitting with valid data
+    firstName.value = 'Test';
+    email.value = 'test@example.com';
     toast.classList.remove('show');
     toast.hidden = true;
     toast.textContent = '';
 
-    // Submit with empty fields
+    formEl.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+
+    const toastWorked = toast.classList.contains('show');
+
+    // Reset toast
+    toast.classList.remove('show');
+    toast.hidden = true;
+    toast.textContent = '';
+
+    if (!toastWorked) {
+        throw new Error(
+            'The toast does not appear even with valid data — finish Step 4a first. ' +
+            'Your submit handler should show the toast when both fields have values.'
+        );
+    }
+
+    // Now submit with empty fields — the toast should NOT appear
+    firstName.value = '';
+    email.value = '';
+
     formEl.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
 
     const hasShow = toast.classList.contains('show');
